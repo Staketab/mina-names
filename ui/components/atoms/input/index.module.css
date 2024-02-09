@@ -1,0 +1,34 @@
+.wrapper {
+    width: 100%;
+    position: relative;
+}
+
+.input {
+  border: 1px solid #dde0eb;
+  border-radius: 7px;
+  color: #000c;
+  display: block;
+  font-family: Inter, sans-serif;
+  font-size: 16px;
+  font-weight: 500;
+  line-height: 133%;
+  line-height: 20px;
+  padding: 18px 89px 18px 23px;
+  width: 100%;
+}
+
+.input:hover {
+  outline: 3px solid #ced9ff;
+  transition: outline-width 0.1s ease;
+}
+
+.input:focus {
+  border: 1px solid #597fff;
+  outline: 3px solid #ced9ff;
+}
+
+.searchIcon {
+  position: absolute;
+  right: 18px;
+  top: 12px;
+}
