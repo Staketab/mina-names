@@ -1,12 +1,9 @@
-import { ORDER_BY, SORT_BY } from "../../../comman/types";
-import { useTable } from "../../../hooks/useTable";
 import { ConnectWalletButton } from "../../molecules/connectWalletButton";
 import { Table } from "../table";
 import { ScoringConfig, mockData } from "./constants";
 import style from "./index.module.css";
 
 const AccountContent = () => {
-
   return (
     <div className={style.wrapper}>
       <div className={style.header}>
