@@ -1,6 +1,4 @@
 import { useState } from "react";
-import { ORDER_BY, SORT_BY } from "../../../comman/types";
-import { useTable } from "../../../hooks/useTable";
 import { SwitchView } from "../../atoms/switchView";
 import { TypeView } from "../../atoms/switchView/switchView";
 import { ConnectWalletButton } from "../../molecules/connectWalletButton";
