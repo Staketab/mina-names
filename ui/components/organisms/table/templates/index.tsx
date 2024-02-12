@@ -1,6 +1,5 @@
 import React from "react";
 import StringTemplate from "./stringTemplate";
-import AccountTemplate from "./accountTemplate/accountTemplate";
 import AmountTemplate from "./amountTemplate";
 import CardsTemplate from "./cardsTemplate/cardsTemplate";
 import NamesTemplate from "./namesTemplate/namesTemplate";
