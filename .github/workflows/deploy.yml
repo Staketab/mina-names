@@ -63,7 +63,7 @@ jobs:
         mode: fill
 
     - name: Deploy React.js
-      uses: ./.github/actions/frontend-next-deploy-score-lst-pnpm
+      uses: ./.github/actions/mina-names
       with:
         webroot: ${{ steps.settings.outputs.webroot }}
         temproot: ${{ steps.settings.outputs.temproot }}
