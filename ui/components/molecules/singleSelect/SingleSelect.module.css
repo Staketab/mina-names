@@ -1,0 +1,19 @@
+.singleSelect {
+    position: relative;
+}
+
+.dropdown {
+    padding: 0;
+    border-radius: 7px;
+    width: 100%;
+}
+
+.item {
+    padding: 6px 12px;
+    transition: all ease 200ms;
+    cursor: pointer;
+}
+
+.item:hover {
+    background-color: var(--col--gray3);
+}
