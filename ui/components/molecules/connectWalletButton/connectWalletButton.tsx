@@ -13,7 +13,7 @@ const ConnectWalletButton = () => {
   const {
     accountId,
     connectMessage,
-    actions: { onConnectWallet, onDisconnectWallet, setConnectMessage },
+    actions: { onConnectWallet, onDisconnectWallet },
   } = useWallet();
 
   const walletName = accountId ? "Auro Wallet" : null;

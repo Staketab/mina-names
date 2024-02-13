@@ -23,12 +23,7 @@ const Navigation = () => {
                 [style.active]: pathname.includes(url),
               })}
             >
-              <Image
-                src={icon}
-                alt=""
-                style={{ fill: "red" }}
-                className="object-contain filter brightness-0"
-              />
+              <Image src={icon} alt="" />
               {title}
             </Link>
           );

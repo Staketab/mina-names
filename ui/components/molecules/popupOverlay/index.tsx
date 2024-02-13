@@ -76,7 +76,7 @@ const PopupOverlay = ({
     document
       .getElementById("popup-overlay")
       ?.classList.add(style.overlayWrapperActive);
-    document.body.style.overflowY = "hidden";
+    // document.body.style.overflowY = "hidden";
 
     const currentBodyWidth = document.body.offsetWidth;
     if (initBodyWidth !== currentBodyWidth) {
@@ -109,7 +109,7 @@ const PopupOverlay = ({
       !unmount && onClose();
       if (completeClose) {
         document.body.style.paddingRight = "0";
-        document.body.style.overflowY = "hidden";
+        // document.body.style.overflowY = "hidden";
       }
     }, 300);
     setTimeoutID(timeout);

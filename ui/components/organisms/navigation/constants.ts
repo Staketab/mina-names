@@ -8,7 +8,7 @@ export const navList: {
 }[] = [
   {
     title: "My Names",
-    url: "account",
+    url: "names",
     icon: accountIcon,
     id: "1",
   },

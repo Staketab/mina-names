@@ -9,15 +9,16 @@ import style from "./index.module.css";
 const AccountContent = () => {
   const [typeView, setTypeView] = useState<TypeView>(TypeView.CARD);
   const handleSwitchView = (typeView: TypeView) => {
-    setTypeView(typeView)
+    setTypeView(typeView);
   };
+
   return (
     <div className={style.wrapper}>
       <div className={style.header}>
         <div className="t-inter-semi-bold">My Names</div>
         <ConnectWalletButton />
       </div>
-      <SwitchView onClick={handleSwitchView} className={style.switchView}/>
+      <SwitchView onClick={handleSwitchView} className={style.switchView} />
       <Table
         data={mockData}
         config={ScoringConfig}
