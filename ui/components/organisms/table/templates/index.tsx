@@ -1,7 +1,6 @@
 import React from "react";
 import StringTemplate from "./stringTemplate";
 import AmountTemplate from "./amountTemplate";
-import CardsTemplate from "./cardsTemplate/cardsTemplate";
 import NamesTemplate from "./namesTemplate/namesTemplate";
 import ButtonTemplate from "./buttonTemplate/buttonTemplate";
 import TimeTemplate from "./timeTemplate/timeTemplate";
@@ -21,8 +20,6 @@ const getCell = ({ data, config }): JSX.Element => {
       return <StringTemplate data={data} config={config} />;
     case TableTemplates.AMOUNT:
       return <AmountTemplate data={data} config={config} />;
-    case TableTemplates.CARDS:
-      return <CardsTemplate data={data} config={config} />;
     case TableTemplates.NAMES:
       return <NamesTemplate data={data} config={config} />;
     case TableTemplates.BUTTON:

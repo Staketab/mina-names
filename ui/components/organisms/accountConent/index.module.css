@@ -14,3 +14,7 @@
 .header > div:first-child {
     font-size: 20px;
 }
+
+.switchView {
+  margin-bottom: 3px;
+}

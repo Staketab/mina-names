@@ -75,9 +75,9 @@
 
 .grey {
     border-radius: 6px;
-    box-shadow: 0px 0px 0px 1px var(--col--button14);
-    background-color: var(--col--light);
+    background-color: #F0F1F5;
     color: var(--col--dark2);
+    border: none;
 }
 
 .grey svg {
@@ -85,7 +85,8 @@
 }
 
 .grey:hover {
-    background-color: var(--col--button15);
+    background-color: var(--col--light);
+    box-shadow: 0px 0px 0px 1px var(--col--button14);
 }
 
 .grey:active {

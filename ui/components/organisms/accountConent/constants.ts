@@ -8,7 +8,7 @@ export const ScoringConfig = [
     headerText: "Registered Names",
     columnTemplate: TableTemplates.NAMES,
     fields: {
-      value: "id",
+      value: "name",
       url: "url",
     },
   },
@@ -33,13 +33,13 @@ export const ScoringConfig = [
 
 export const mockData = {
   data: [
-    { id: "Evgeniy-dev.mina", url: iconMock, time: 1707757181674 },
-    { id: "mina.mina", url: iconMock, time: 1707757181674 },
-    { id: "Evgeniy-dev.mina", url: iconMock, time: 1707757181674 },
-    { id: "mina.mina", url: iconMock, time: 1707757181674 },
-    { id: "Evgeniy-dev.mina", url: iconMock, time: 1707757181674 },
-    { id: "Vitality.mina", url: iconMock, time: 1707757181674 },
-    { id: "@@@@@@@.mina", url: iconMock, time: 1707757181674 },
+    { name: "Evgeniy-dev.mina", url: iconMock, time: 1707757181674 },
+    { name: "mina.mina", url: iconMock, time: 1707757181674 },
+    { name: "Evgeniy-dev.mina", url: iconMock, time: 1707757181674 },
+    { name: "mina.mina", url: iconMock, time: 1707757181674 },
+    { name: "Evgeniy-dev.mina", url: iconMock, time: 1707757181674 },
+    { name: "Vitality.mina", url: iconMock, time: 1707757181674 },
+    { name: "@@@@@@@.mina", url: iconMock, time: 1707757181674 },
   ],
   size: 100,
   totalPages: 1,
