@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import classNames from "classnames";
 
 import style from "./index.module.css";

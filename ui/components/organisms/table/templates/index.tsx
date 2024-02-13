@@ -8,7 +8,6 @@ import TimeTemplate from "./timeTemplate/timeTemplate";
 
 export enum TableTemplates {
   STRING = "string",
-  ACCOUNT_TEMPLATE = "accountTemplate",
   AMOUNT = "amount",
   CARDS = "cards",
   NAMES = "names",
