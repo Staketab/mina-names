@@ -31,7 +31,7 @@ const Input = ({
   return (
     <div className={style.wrapper}>
       <input
-        className={classNames(style.input, className)}
+        className={classNames(style.input, className, 't-inter-medium')}
         onChange={onChange}
         placeholder={placeholder}
         value={value}

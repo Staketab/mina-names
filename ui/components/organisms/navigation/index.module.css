@@ -28,6 +28,7 @@
   justify-content: flex-start;
   padding: 0 38px 0 24px;
   height: 40px;
+  gap: 12px;
 }
 
 .link img {
