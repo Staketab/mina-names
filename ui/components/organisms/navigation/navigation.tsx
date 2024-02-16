@@ -3,9 +3,9 @@ import { Logo } from "../../atoms/logo";
 import { navList } from "./constants";
 
 import style from "./index.module.css";
-import Image from "next/image";
 import classNames from "classnames";
 import { useRouter } from "next/router";
+import AccountIcon from "../../atoms/iconComponents/account";
 
 const Navigation = () => {
   const { pathname } = useRouter();
@@ -23,12 +23,7 @@ const Navigation = () => {
                 [style.active]: pathname.includes(url),
               })}
             >
-              <Image
-                src={icon}
-                alt=""
-                style={{ fill: "red" }}
-                className="object-contain filter brightness-0"
-              />
+              <AccountIcon isActive={pathname.includes(url)}/>
               {title}
             </Link>
           );

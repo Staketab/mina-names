@@ -7,8 +7,8 @@ import { Input } from "../components/atoms/input";
 import { InputVariant } from "../components/atoms/input/input";
 import { useKeyPress } from "../hooks/useKeyPress";
 import { useState } from "react";
-import ResultItem from "../components/atoms/resultItem/resultItem";
 import classNames from "classnames";
+import { ResultItem } from "../components/atoms/resultItem";
 
 export default function Home() {
   const [value, setValue] = useState("");
@@ -41,8 +41,10 @@ export default function Home() {
           <ConnectWalletButton />
         </div>
         <div className={style.content}>
-          <h1>Reveal Your True Self</h1>
-          <p>A creative ID that showcases your personality</p>
+          <h1 className="t-inter-semi-bold">Reveal Your True Self</h1>
+          <p className="t-inter-medium">
+            A creative ID that showcases your personality
+          </p>
           <Input
             placeholder="Search .mina Names"
             value={value}
@@ -50,7 +52,7 @@ export default function Home() {
             onChange={(e) => setValue(e.target.value)}
             variant={InputVariant.search}
           />
-          {resultContent.isShow && <ResultItem text={resultContent.text} />}
+          {resultContent.isShow && <ResultItem text={resultContent.text} className={style.resultItem}/>}
         </div>
       </div>
     </>

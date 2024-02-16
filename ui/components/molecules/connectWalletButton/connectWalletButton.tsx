@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import classNames from "classnames";
 
 import style from "./index.module.css";
@@ -13,7 +13,7 @@ const ConnectWalletButton = () => {
   const {
     accountId,
     connectMessage,
-    actions: { onConnectWallet, onDisconnectWallet, setConnectMessage },
+    actions: { onConnectWallet, onDisconnectWallet },
   } = useWallet();
 
   const walletName = accountId ? "Auro Wallet" : null;

@@ -1,20 +1,17 @@
 .wrapper {
-    width: 100%;
-    position: relative;
+  width: 100%;
+  position: relative;
 }
 
 .input {
-  border: 1px solid #dde0eb;
-  border-radius: 7px;
-  color: #000c;
+  border: none;
+  border-radius: 12px;
+  color: var(--col--dark);
   display: block;
-  font-family: Inter, sans-serif;
   font-size: 16px;
-  font-weight: 500;
-  line-height: 133%;
-  line-height: 20px;
   padding: 18px 89px 18px 23px;
   width: 100%;
+  font-size: 28px;
 }
 
 .input:hover {
@@ -30,5 +27,9 @@
 .searchIcon {
   position: absolute;
   right: 18px;
-  top: 12px;
+  top: 18px;
+}
+
+.input::placeholder {
+  color: #9c9ea6;
 }

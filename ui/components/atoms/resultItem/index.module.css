@@ -1,10 +1,14 @@
 .wrapper {
   border-radius: 12px;
-  background: #fff;
+  background: var(--col--light);
   padding: 18px 18px 18px 23px;
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-top: 20px;
   width: 100%;
+  font-size: 28px;
+}
+
+.wrapper span {
+  color: #9c9ea6;
 }

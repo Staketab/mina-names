@@ -34,11 +34,11 @@ const ButtonWithAddress = ({ address, onDisconnect }: { address: string; onDisco
                         <div
                             className={classNames(style.item, 't-inter-semi-bold')}
                             onClick={() => {
-                                router.push('/account')
+                                router.push('/names')
                             }}
                         >
                             <Image src={account} alt="" className={style.icon} />
-                            Account
+                            Names
                         </div>
                         {onDisconnect && (
                             <div

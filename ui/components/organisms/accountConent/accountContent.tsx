@@ -1,15 +1,24 @@
+import { useState } from "react";
+import { SwitchView } from "../../atoms/switchView";
+import { TypeView } from "../../atoms/switchView/switchView";
 import { ConnectWalletButton } from "../../molecules/connectWalletButton";
 import { Table } from "../table";
 import { ScoringConfig, mockData } from "./constants";
 import style from "./index.module.css";
 
 const AccountContent = () => {
+  const [typeView, setTypeView] = useState<TypeView>(TypeView.CARD);
+  const handleSwitchView = (typeView: TypeView) => {
+    setTypeView(typeView);
+  };
+
   return (
     <div className={style.wrapper}>
       <div className={style.header}>
         <div className="t-inter-semi-bold">My Names</div>
         <ConnectWalletButton />
       </div>
+      <SwitchView onClick={handleSwitchView} className={style.switchView} />
       <Table
         data={mockData}
         config={ScoringConfig}
@@ -18,6 +27,7 @@ const AccountContent = () => {
         pageLimit={50}
         totalElements={mockData.totalElements}
         pagesCount={mockData.totalPages}
+        typeView={typeView}
         limitOptions={[
           { text: "10", value: 10 },
           { text: "50", value: 50 },
