@@ -1,10 +1,10 @@
+"use client";
 import classNames from "classnames";
-import { Navigation } from "../../components/organisms/navigation";
-import { AccountContent } from "../../components/organisms/accountConent";
 
 import style from "./index.module.css";
-
-export default function Account() {
+import { Navigation } from "@/components/organisms/navigation";
+import { AccountContent } from "@/components/organisms/accountConent";
+export default function Page() {
   return (
     <div className={classNames(style.wrapper)}>
       <Navigation />

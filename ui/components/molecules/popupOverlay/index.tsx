@@ -2,8 +2,8 @@ import classNames from "classnames";
 import React, { useEffect, useState, useRef } from "react";
 import { createPortal } from "react-dom";
 import style from "./PopupOverlay.module.css";
-import { useRouter } from "next/router";
 import { useMedia } from "../../../hooks/useMedia";
+import { usePathname, useRouter } from "next/navigation";
 
 type PopupOverlayProps = {
   children: React.ReactNode;
@@ -43,7 +43,7 @@ const PopupOverlay = ({
   forwardedRef,
   height = "auto",
 }: PopupOverlayProps): JSX.Element | null => {
-  const location = useRouter();
+  const pathname = usePathname();
 
   const overlayRef = useRef(null);
 
@@ -128,7 +128,7 @@ const PopupOverlay = ({
       handleClose();
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [location.pathname]);
+  }, [pathname]);
 
   useEffect(() => {
     return () => {

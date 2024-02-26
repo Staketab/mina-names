@@ -1,8 +1,8 @@
 import React from 'react';
 import style from './index.module.css';
-import { LimitOptions } from '../../../comman/types';
 import Pager from '../pager';
-import { SingleSelect } from '../../molecules/singleSelect';
+import { SingleSelect } from '@/components/molecules/singleSelect';
+import { LimitOptions } from '@/comman/types';
 
 type PaginationProps = {
     currentPage: number;

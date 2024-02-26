@@ -1,3 +1,4 @@
+"use client";
 import { useState } from "react";
 import { SwitchView } from "../../atoms/switchView";
 import { TypeView } from "../../atoms/switchView/switchView";

@@ -1,3 +1,5 @@
+"use client";
+
 import { useState } from "react";
 import classNames from "classnames";
 
@@ -6,7 +8,7 @@ import ButtonWithAddress from "./buttonWithAddress";
 import ConnectButton from "./connectButton";
 import WalletConnectPopUp from "./walletConnectPopUp";
 import getWalletConfig from "./hellper";
-import useWallet from "../../../store/hooks/useWallet";
+import useWallet from "@/hooks/useWallet";
 
 const ConnectWalletButton = () => {
   const [showPopup, setShowPopup] = useState(false);
