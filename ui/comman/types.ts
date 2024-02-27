@@ -1,54 +1,56 @@
 export type View = {
-    sm: number;
-    md: number;
-    lg: number;
+  sm: number;
+  md: number;
+  lg: number;
 };
 export type LimitOptions = { text: string; value: number }[];
 export type TabSwitcherOptions = string[];
 
 export type DataTable = {
-    data?: any[];
-    content?: any[];
-    size: number;
-    totalPages: number;
-    pageable: {
-        sort: {
-            sorted: boolean;
-            unsorted: boolean;
-            empty: boolean;
-        };
-        offset: number;
-        pageNumber: number;
-        pageSize: number;
-        unpaged: boolean;
-        paged: boolean;
-    };
-    last: boolean;
-    totalElements: number;
-    number: number;
+  data?: any[];
+  content?: any[];
+  size: number;
+  totalPages: number;
+  pageable: {
     sort: {
-        sorted: boolean;
-        unsorted: boolean;
-        empty: boolean;
+      sorted: boolean;
+      unsorted: boolean;
+      empty: boolean;
     };
-    first: boolean;
-    numberOfElements: number;
+    offset: number;
+    pageNumber: number;
+    pageSize: number;
+    unpaged: boolean;
+    paged: boolean;
+  };
+  last: boolean;
+  totalElements: number;
+  number: number;
+  sort: {
+    sorted: boolean;
+    unsorted: boolean;
     empty: boolean;
+  };
+  first: boolean;
+  numberOfElements: number;
+  empty: boolean;
 };
 
 export enum SORT_BY {
-    SCORE = 'score',
-    STAKE = 'stake',
+  AMOUNT = "amount",
+  STATUS = "status",
+  RESERVATION_TIMESTAMP = "RESERVATION_TIMESTAMP",
+  IS_SEND_TO_CLOUD_WORKER = "IS_SEND_TO_CLOUD_WORKER",
 }
 
 export enum ORDER_BY {
-    DESC = 'DESC',
-    ASC = 'ASC',
+  DESC = "DESC",
+  ASC = "ASC",
 }
 
 export enum DATA_STATUS {
-    INITIAL = 'initial',
-    LOADING = 'loading',
-    SUCCESS = 'success',
-    ERROR = 'error',
+  INITIAL = "initial",
+  LOADING = "loading",
+  SUCCESS = "success",
+  ERROR = "error",
 }
