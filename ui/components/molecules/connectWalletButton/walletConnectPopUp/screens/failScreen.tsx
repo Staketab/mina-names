@@ -4,6 +4,7 @@ import { Button } from '../../../../atoms/button';
 import classNames from 'classnames';
 
 import style from './Screens.module.css';
+import { interSemiBold } from '@/app/fonts';
 
 type FailScreenProps = {
     walletName: string;
@@ -16,7 +17,7 @@ type FailScreenProps = {
 const FailScreen = ({ walletName, walletImg, installed, onReturn, onRetry }: FailScreenProps): JSX.Element => {
     return (
         <div className={style.failScreen}>
-            <p className={classNames(style.screenTitle, 't-inter-semi-bold')}>Mina Wallet</p>
+            <p className={classNames(style.screenTitle, interSemiBold.className)}>Mina Wallet</p>
             <div className={style.loadingWrapper}>
                 <div className={style.failIcon}>
                     <Image src={Triangle} alt="" className={style.failIconTriangle} />

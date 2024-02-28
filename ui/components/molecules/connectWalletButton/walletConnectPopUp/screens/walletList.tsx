@@ -3,6 +3,7 @@ import style from "./Screens.module.css";
 import Wallet from "../wallet";
 import CustomScrollList from "../../../customScrollList";
 import classNames from "classnames";
+import { interSemiBold } from "@/app/fonts";
 
 const WalletList = ({
   list,
@@ -44,7 +45,12 @@ const WalletList = ({
         wallets.map((array, i) =>
           array.length > 0 ? (
             <div className={style.listBlock} key={array[0]?.name}>
-              <p className={classNames(style.screenTitle, "t-inter-semi-bold")}>
+              <p
+                className={classNames(
+                  style.screenTitle,
+                  interSemiBold.className
+                )}
+              >
                 {hasInstalled
                   ? (i === 0 && "Installed") || "More"
                   : "Available Wallets"}{" "}

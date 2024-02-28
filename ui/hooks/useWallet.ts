@@ -1,8 +1,6 @@
-import { PayloadAction } from "@reduxjs/toolkit";
 
-import * as WalletStore from "../wallet/walletSlice";
-import { useLocalStorage } from "../../hooks/useLocalStorage";
 import { useEffect, useState } from "react";
+import { useLocalStorage } from "./useLocalStorage";
 export type SendPaymentresponse = {
   hash?: string;
   message?: string;
@@ -18,11 +16,13 @@ export type OnSend = (
 
 export const isConnectedAuro = "isConnectedAuro";
 
-interface IUseGlobal extends WalletStore.IWalletData {
+interface IUseGlobal {
+  accountId,
+  connectMessage,
   actions: {
     setWalletData: (
-      payload: WalletStore.IWalletData
-    ) => PayloadAction<WalletStore.IWalletData>;
+      payload: any
+    ) => any
     onConnectWallet: () => Promise<void>;
     onDisconnectWallet: () => Promise<void>;
     setConnectMessage: (value: string | null) => void;
@@ -34,8 +34,7 @@ export default function useWallet(): IUseGlobal {
 
   const [walletData, setWalletData] = useState(null);
   const [, setIsConnectedAuro] = useLocalStorage(isConnectedAuro);
-console.log(account);
-console.log(walletData);
+
 useEffect(() => {
     !!account && setWalletData(JSON.parse(account))
 }, [])

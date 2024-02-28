@@ -3,6 +3,7 @@ import style from './Screens.module.css';
 import success from '../img/success.png';
 import Image from 'next/image';
 import classNames from 'classnames';
+import { interSemiBold } from '@/app/fonts';
 
 type SuccessScreenProps = {
     onClose: () => void;
@@ -21,9 +22,9 @@ const SuccessScreen = ({ onClose, walletName, onResolve }: SuccessScreenProps): 
 
     return (
         <div className={style.connectingScreen}>
-            <p className={classNames(style.screenTitle, 't-inter-semi-bold')}>Mina Wallet</p>
+            <p className={classNames(style.screenTitle, interSemiBold.className)}>Mina Wallet</p>
             <Image src={success} alt="Success!" />
-            <p className={classNames(style.connectingScreenSubtitle, 't-inter-semi-bold')}>
+            <p className={classNames(style.connectingScreenSubtitle, interSemiBold.className)}>
                 <span>{walletName ?? 'wallet'}</span> Connected!
             </p>
         </div>

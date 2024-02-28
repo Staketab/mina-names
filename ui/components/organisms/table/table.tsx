@@ -1,11 +1,11 @@
 import style from "./index.module.css";
 import { ORDER_BY } from "../../../comman/types";
 import { TableErrorMessage } from "../../atoms/tableErrorMessage";
-import Pagination from "../pagination/pagination";
 import { Loader, LoaderVariant } from "../../atoms/loader";
 import { TypeView } from "../../atoms/switchView/switchView";
 import NameCards from "./view/nameCards";
 import ListTableContent from "./view/listTableContent";
+import Pagination from "../pagination/pagination";
 
 const Table = ({
   data,

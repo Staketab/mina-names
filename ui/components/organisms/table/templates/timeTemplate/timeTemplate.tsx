@@ -1,12 +1,11 @@
 import { useEffect, useState } from "react";
-import {
-  dateTimeFromTimestamp,
-  getTimeFromMilliseconds,
-  getTimeFromMillisecondsDynamic,
-} from "../../../../../helpers/timeHelper";
 
 import style from "../index.module.css";
 import classNames from "classnames";
+import {
+  dateTimeFromTimestamp,
+  getTimeFromMillisecondsDynamic,
+} from "@/helpers/timeHelper";
 
 type TimeTemplateProps = {
   data: any;
@@ -31,7 +30,7 @@ const TimeTemplate = ({ data, config }: TimeTemplateProps) => {
   }, []);
 
   return (
-    <div className={classNames(style.timeTemplate, 't-inter-medium')}>
+    <div className={classNames(style.timeTemplate, "t-inter-medium")}>
       <span>{getTimeFromMillisecondsDynamic(date - value, false, true)}</span>
       <span>{dateTimeFromTimestamp(value)}</span>
     </div>

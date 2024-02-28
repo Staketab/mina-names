@@ -2,8 +2,8 @@ import React, { useState, useEffect } from "react";
 
 import style from "./index.module.css";
 import classNames from "classnames";
-import { View } from "../../../comman/types";
 import { useMedia } from "../../../hooks/useMedia";
+import { View } from "@/comman/types";
 
 const StaticEllipse = ({
   text,

@@ -2,13 +2,14 @@ import React from 'react';
 import style from './Screens.module.css';
 import { Button } from '../../../../atoms/button';
 import classNames from 'classnames';
+import { interSemiBold } from '@/app/fonts';
 
 const InstallScreen = ({ onReturn, walletName = 'wallet', downloadUrl, downloadUrlMobile, isMobileConnection }) => {
     return (
         <div className={style.installScreen}>
             {!isMobileConnection || downloadUrlMobile ? (
                 <>
-                    <p className={classNames(style.screenTitle, 't-inter-semi-bold')}>Mima Wallet</p>
+                    <p className={classNames(style.screenTitle, interSemiBold.className)}>Mima Wallet</p>
                     <p className={style.installScreenSubtitle}>
                         <span>{walletName}</span> is not installed
                     </p>

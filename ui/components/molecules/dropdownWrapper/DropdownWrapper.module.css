@@ -19,6 +19,7 @@
   box-shadow: 0px 10px 30px rgba(0, 0, 0, 0.1);
   transition: all ease 200ms;
   z-index: 20;
+  color: var(--col--dark);
 }
 
 .dropdownWrapperMobile {

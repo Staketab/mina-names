@@ -1,14 +1,15 @@
+"use client";
 import Link from "next/link";
 import { Logo } from "../../atoms/logo";
 import { navList } from "./constants";
 
 import style from "./index.module.css";
 import classNames from "classnames";
-import { useRouter } from "next/router";
 import AccountIcon from "../../atoms/iconComponents/account";
+import { usePathname } from "next/navigation";
 
 const Navigation = () => {
-  const { pathname } = useRouter();
+  const pathname = usePathname();
 
   return (
     <div className={style.wrapper}>
@@ -23,7 +24,7 @@ const Navigation = () => {
                 [style.active]: pathname.includes(url),
               })}
             >
-              <AccountIcon isActive={pathname.includes(url)}/>
+              <AccountIcon isActive={pathname.includes(url)} />
               {title}
             </Link>
           );
