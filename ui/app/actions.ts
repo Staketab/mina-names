@@ -49,3 +49,26 @@ export async function getAccountDomains({
   );
   return await res.json();
 }
+
+export async function getDomains({
+  page,
+  size,
+  orderBy,
+  sortBy,
+}: {
+  page: number;
+  size: number;
+  orderBy: ORDER_BY;
+  sortBy: SORT_BY;
+}) {
+  const res = await fetch(
+    `${process.env.NEXT_PUBLIC_API_URL}/domains/?page=${page}&size=${size}&orderBy=${orderBy}&sortBy=${sortBy}`,
+    {
+      headers: {
+        "Content-Type": "application/json",
+        "x-api-key": process.env.NEXT_PUBLIC_X_API_KEY,
+      },
+    }
+  );
+  return await res.json();
+}
