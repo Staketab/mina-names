@@ -8,17 +8,21 @@ import { interSemiBold } from "@/app/fonts";
 import { Input } from "@/components/atoms/input";
 import { ResultItem } from "@/components/atoms/resultItem";
 import { InputVariant } from "@/components/atoms/input/input";
-import { useState } from "react";
+import { useRef, useState } from "react";
 import { useKeyPress } from "@/hooks/useKeyPress";
-import { checkName } from "@/app/actions";
+import { checkName, checkReservedName } from "@/app/actions";
 
 const HomeSection = () => {
-  const [response, setResponse] = useState(null);
+  const [statusName, setStatusName] = useState<{
+    isReserved: boolean;
+    name: string;
+  }>(null);
   const [value, setValue] = useState("");
   const [resultContent, setResultContent] = useState({
     isShow: false,
     text: "",
   });
+  const ref = useRef();
 
   const handleInput = async () => {
     const isShow = !!value;
@@ -26,9 +30,11 @@ const HomeSection = () => {
       text: value,
       isShow: isShow,
     });
-    const res = await checkName(value);
-    const result = await res;
-    setResponse(result);
+    const response = await checkReservedName(value);
+    setStatusName({
+      isReserved: response,
+      name: value,
+    });
   };
 
   useKeyPress("Enter", handleInput);
@@ -51,8 +57,8 @@ const HomeSection = () => {
           onChange={(e) => setValue(e.target.value)}
           variant={InputVariant.search}
         />
-        {response && (
-          <ResultItem text={response.domainName} className={style.resultItem} />
+        {statusName?.name && (
+          <ResultItem statusName={statusName} className={style.resultItem} />
         )}
       </div>
     </div>
