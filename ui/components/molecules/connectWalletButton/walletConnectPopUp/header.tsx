@@ -5,7 +5,7 @@ import CloseIcon from './img/CloseIcon.svg';
 import WalletConnectPopUpProgress from './stepProgress';
 import Image from 'next/image';
 import classNames from 'classnames';
-import { interSemiBold } from '@/app/fonts';
+import { interMedium, interSemiBold } from '@/app/fonts';
 
 const WalletConnectPopUpHeader = ({ step, onClose, message, action, isMobile }) => {
     return (
@@ -21,7 +21,7 @@ const WalletConnectPopUpHeader = ({ step, onClose, message, action, isMobile }) 
             <div className={style.progressContainer}>
                 <WalletConnectPopUpProgress step={step} />
             </div>
-            <p className={classNames(style.message, 't-inter-medium')}>{message}</p>
+            <p className={classNames(style.message, interMedium.className)}>{message}</p>
         </div>
     );
 };

@@ -3,6 +3,7 @@ import style from './SelectPlate.module.css';
 import ArrowIcon from './img/Arrow.svg';
 import classNames from 'classnames';
 import Image from 'next/image';
+import { interSemiBold } from '@/app/fonts';
 
 type SelectPlateProps = {
     onClick: () => void;
@@ -14,7 +15,7 @@ type SelectPlateProps = {
 const SelectPlate = ({ onClick, expanded, title, disable }: SelectPlateProps): JSX.Element => {
     return (
         <div className={classNames(style.selectPlate, expanded && style.expanded)} onClick={!disable ? onClick : null}>
-            <span className={classNames('t-inter-semi-bold', style.selectTitle)}>{title}</span>
+            <span className={classNames(interSemiBold.className, style.selectTitle)}>{title}</span>
             <Image
                 src={ArrowIcon}
                 alt=""

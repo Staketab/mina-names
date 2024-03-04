@@ -12,3 +12,17 @@
 .wrapper span {
   color: #9c9ea6;
 }
+
+.wrapper .status {
+  margin-left: 8px;
+  padding: 2px 8px;
+  background-color: #E0F9EB;
+  color: #3CA568;
+  border-radius: 5.5px;
+  font-size: 16px;
+}
+
+.wrapper .unavailable {
+  color: var(--col--button9);
+  background-color: rgba(234, 57, 67, .3);
+}

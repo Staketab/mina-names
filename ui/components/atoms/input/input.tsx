@@ -2,6 +2,7 @@ import classNames from "classnames";
 import SearchIcon from "../../../assets/search.svg";
 import style from "./index.module.css";
 import Image from "next/image";
+import { interMedium } from "@/app/fonts";
 
 export enum InputVariant {
   search = "search",
@@ -31,7 +32,7 @@ const Input = ({
   return (
     <div className={style.wrapper}>
       <input
-        className={classNames(style.input, className, 't-inter-medium')}
+        className={classNames(style.input, className, interMedium.className)}
         onChange={onChange}
         placeholder={placeholder}
         value={value}

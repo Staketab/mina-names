@@ -4,13 +4,13 @@ import classNames from "classnames";
 
 import style from "./index.module.css";
 import { ConnectWalletButton } from "@/components/molecules/connectWalletButton";
-import { interSemiBold } from "@/app/fonts";
+import { interMedium, interSemiBold } from "@/app/fonts";
 import { Input } from "@/components/atoms/input";
 import { ResultItem } from "@/components/atoms/resultItem";
 import { InputVariant } from "@/components/atoms/input/input";
 import { useRef, useState } from "react";
 import { useKeyPress } from "@/hooks/useKeyPress";
-import { checkName, checkReservedName } from "@/app/actions";
+import { checkReservedName } from "@/app/actions/clientActions";
 
 const HomeSection = () => {
   const [statusName, setStatusName] = useState<{
@@ -47,7 +47,7 @@ const HomeSection = () => {
       </div>
       <div className={style.content}>
         <h1 className={interSemiBold.className}>Reveal Your True Self</h1>
-        <p className="t-inter-medium">
+        <p className={interMedium.className}>
           A creative ID that showcases your personality
         </p>
         <Input

@@ -3,7 +3,7 @@ import style from './Screens.module.css';
 import { Button } from '../../../../atoms/button';
 import classNames from 'classnames';
 import Image from 'next/image';
-import { interSemiBold } from '@/app/fonts';
+import { interBold, interMedium, interSemiBold } from '@/app/fonts';
 
 const ConnectingScreen = ({ onReturn, walletName, walletImg }) => {
     return (
@@ -14,10 +14,10 @@ const ConnectingScreen = ({ onReturn, walletName, walletImg }) => {
                     <Image src={walletImg} alt="" />
                 </div>
             </div>
-            <p className={classNames(style.connectingScreenSubtitle, 't-inter-bold')}>
+            <p className={classNames(style.connectingScreenSubtitle, interBold.className)}>
                 Opening {walletName ?? 'wallet'}...
             </p>
-            <p className={classNames(style.connectingScreenText, 't-inter-medium')}>
+            <p className={classNames(style.connectingScreenText, interMedium.className)}>
                 Confirm connection in the extension.
             </p>
             <Button text="Back to wallets" onClick={onReturn} className={style.connectingScreenButton} />

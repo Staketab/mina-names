@@ -7,6 +7,7 @@ import style from "./index.module.css";
 import classNames from "classnames";
 import AccountIcon from "../../atoms/iconComponents/account";
 import { usePathname } from "next/navigation";
+import { interMedium } from "@/app/fonts";
 
 const Navigation = () => {
   const pathname = usePathname();
@@ -20,7 +21,7 @@ const Navigation = () => {
             <Link
               href={url}
               key={id}
-              className={classNames(style.link, "t-inter-medium", {
+              className={classNames(style.link, interMedium.className, {
                 [style.active]: pathname.includes(url),
               })}
             >

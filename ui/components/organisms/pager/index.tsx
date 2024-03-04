@@ -4,6 +4,7 @@ import style from './Pager.module.css';
 import ArrowIcon from './img/ArrowIcon.svg';
 import Image from 'next/image';
 import { useMedia } from '../../../hooks/useMedia';
+import { interMedium } from '@/app/fonts';
 
 type PagerProps = {
     page: number;
@@ -81,7 +82,7 @@ const Pager = ({ page, count = 1, onChange, pageNeighbours = 1 }: PagerProps): J
         <div className={style.pager}>
             {showPrevButton && (
                 <button
-                    className={classNames('t-inter-medium', style.control, style.btn)}
+                    className={classNames(interMedium.className, style.control, style.btn)}
                     onClick={() => changeHandler(page - 1)}
                 >
                     <Image src={ArrowIcon} alt="" style={{ transform: 'rotateY(180deg)' }} />
@@ -91,7 +92,7 @@ const Pager = ({ page, count = 1, onChange, pageNeighbours = 1 }: PagerProps): J
             {fetchPageNumbers().map((el, i) => {
                 if (el === ELLIPSIS)
                     return (
-                        <button key={el + i} className={classNames('t-inter-medium', style.btn, style.ellipsis)}>
+                        <button key={el + i} className={classNames(interMedium.className, style.btn, style.ellipsis)}>
                             {el}
                         </button>
                     );
@@ -99,7 +100,7 @@ const Pager = ({ page, count = 1, onChange, pageNeighbours = 1 }: PagerProps): J
                 return (
                     <button
                         key={el}
-                        className={classNames('t-inter-medium', style.btn, {
+                        className={classNames(interMedium.className, style.btn, {
                             [style.active]: page === el,
                         })}
                         onClick={() => changeHandler(el)}
@@ -111,7 +112,7 @@ const Pager = ({ page, count = 1, onChange, pageNeighbours = 1 }: PagerProps): J
 
             {showNextButton && (
                 <button
-                    className={classNames('t-inter-medium', style.control, style.btn)}
+                    className={classNames(interMedium.className, style.control, style.btn)}
                     onClick={() => changeHandler(page + 1)}
                 >
                     <Image src={ArrowIcon} alt="" />
