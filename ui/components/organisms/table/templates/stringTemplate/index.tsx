@@ -2,6 +2,7 @@ import React from "react";
 import classNames from "classnames";
 
 import styles from "../index.module.css";
+import { interMedium } from "@/app/fonts";
 
 type StringTemplateProps = {
   data: any;
@@ -33,7 +34,7 @@ const StringTemplate = ({ data, config }: StringTemplateProps) => {
     value === null;
 
   return (
-    <div className={classNames("t-inter-medium", styles.stringTemplate)}>
+    <div className={classNames(interMedium.className, styles.stringTemplate)}>
       {isShowDash ? (
         "-"
       ) : (

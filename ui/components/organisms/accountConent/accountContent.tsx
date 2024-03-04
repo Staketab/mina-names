@@ -6,6 +6,7 @@ import { ConnectWalletButton } from "../../molecules/connectWalletButton";
 import { Table } from "../table";
 import { ScoringConfig, mockData } from "./constants";
 import style from "./index.module.css";
+import { interSemiBold } from "@/app/fonts";
 
 const AccountContent = () => {
   const [typeView, setTypeView] = useState<TypeView>(TypeView.CARD);
@@ -16,7 +17,7 @@ const AccountContent = () => {
   return (
     <div className={style.wrapper}>
       <div className={style.header}>
-        <div className="t-inter-semi-bold">My Names</div>
+        <div className={interSemiBold.className}>My Names</div>
         <ConnectWalletButton />
       </div>
       <SwitchView onClick={handleSwitchView} className={style.switchView} />

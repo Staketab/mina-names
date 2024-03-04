@@ -2,6 +2,7 @@ import Image from "next/image";
 
 import style from "../index.module.css";
 import classNames from "classnames";
+import { interMedium } from "@/app/fonts";
 
 type NamesTemplateProps = {
   data: any;
@@ -18,7 +19,7 @@ const NamesTemplate = ({ data, config }: NamesTemplateProps) => {
   const imgUrl = data[config.fields.url];
 
   return (
-    <div className={classNames(style.namesTemplate, "t-inter-medium")}>
+    <div className={classNames(style.namesTemplate, interMedium.className)}>
       <Image src={imgUrl} alt="" />
       {value}
     </div>

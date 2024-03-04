@@ -5,6 +5,7 @@ import sortIcon from "../img/SortIcon.svg";
 
 import { ORDER_BY, SORT_BY } from "../../../../comman/types";
 import getCell from "../templates";
+import { interSemiBold } from "@/app/fonts";
 
 type ListTableContent = {
   data: any[];
@@ -33,7 +34,7 @@ const ListTableContent = ({
             <th
               key={headerText}
               onClick={() => handleSort(configSortBy)}
-              className={classNames("t-inter-semi-bold", {
+              className={classNames(interSemiBold.className, {
                 [style.headerCellHover]: configSortBy,
               })}
             >

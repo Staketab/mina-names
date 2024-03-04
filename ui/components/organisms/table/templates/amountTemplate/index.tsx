@@ -1,6 +1,7 @@
 import classNames from 'classnames';
 import styles from './index.module.css';
 import { formatNum } from '../../../../../comman/helpers';
+import { interMedium } from '@/app/fonts';
 
 type AmountTemplateProps = {
     data: any;
@@ -17,7 +18,7 @@ const AmountTemplate = ({ data, config }: AmountTemplateProps): JSX.Element => {
     const additionValue = data[config.fields.additionValue] || config.fields.additionValue;
 
     return (
-        <div className={classNames('t-inter-medium', styles.stringTemplate)}>
+        <div className={classNames(interMedium.className, styles.stringTemplate)}>
             <>
                 {formatNum(value, 2, true, true)}
                 {additionValue && <span className={styles.addionValue}>{additionValue}</span>}
