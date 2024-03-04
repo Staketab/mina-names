@@ -27,7 +27,7 @@ export const ScoringConfig = [
     fields: {
       value: "time",
     },
-    sortBy: SORT_BY.SCORE,
+    sortBy: SORT_BY.AMOUNT,
   },
 ];
 
