@@ -9,6 +9,10 @@
   font-size: 28px;
 }
 
+.wrapper > div {
+  display: flex;
+}
+
 .wrapper span {
   color: #9c9ea6;
 }
@@ -23,6 +27,6 @@
 }
 
 .wrapper .unavailable {
-  color: var(--col--button9);
-  background-color: rgba(234, 57, 67, .3);
+  color: #CD4B83;
+  background-color: #FFDAEA;
 }

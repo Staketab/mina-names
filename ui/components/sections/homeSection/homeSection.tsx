@@ -8,7 +8,7 @@ import { interMedium, interSemiBold } from "@/app/fonts";
 import { Input } from "@/components/atoms/input";
 import { ResultItem } from "@/components/atoms/resultItem";
 import { InputVariant } from "@/components/atoms/input/input";
-import { useRef, useState } from "react";
+import { useState } from "react";
 import { useKeyPress } from "@/hooks/useKeyPress";
 import { checkReservedName } from "@/app/actions/clientActions";
 
@@ -18,18 +18,8 @@ const HomeSection = () => {
     name: string;
   }>(null);
   const [value, setValue] = useState("");
-  const [resultContent, setResultContent] = useState({
-    isShow: false,
-    text: "",
-  });
-  const ref = useRef();
 
   const handleInput = async () => {
-    const isShow = !!value;
-    setResultContent({
-      text: value,
-      isShow: isShow,
-    });
     const response = await checkReservedName(value);
     setStatusName({
       isReserved: response,

@@ -94,3 +94,8 @@ export const dateTimeFromTimestamp = (timestamp) => {
 	const date = dayjs(new Date(timestamp)).format('DD.MM.YYYY HH:mm')
 	return date
 }
+
+export const monthDayYearTimeFormat = (timestamp) => {
+	const date = dayjs(new Date(timestamp)).format('MMMM D, YYYY h:mm A UTC')
+	return date
+}

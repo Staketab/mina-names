@@ -1,0 +1,58 @@
+.content {
+  padding: 48px 45px 24px 45px;
+  background-color: var(--col--light);
+  border-radius: 12px;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.content .closeIcon {
+  width: 24px;
+  height: 24px;
+  position: absolute;
+  top: 24px;
+  right: 24px;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.closeIcon:hover {
+  opacity: 0.5;
+}
+
+.content img {
+  width: 234px;
+  height: 234px;
+}
+
+.content button {
+  margin-top: 25px;
+}
+
+.infoWrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  width: 100%;
+}
+
+.header {
+  text-align: center;
+  font-size: 16px;
+}
+
+.infoItem > span {
+  color: rgba(0, 0, 0, 0.3);
+  font-size: 13px;
+}
+
+.infoItem div {
+  color: var(--col--dark);
+}
+
+.infoItem div span {
+  background-color: var(--col--dark);
+}
