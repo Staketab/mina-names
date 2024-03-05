@@ -4,15 +4,18 @@ import style from "./index.module.css";
 import classNames from "classnames";
 import { useMedia } from "../../../hooks/useMedia";
 import { View } from "@/comman/types";
+import { robotoMedium } from "@/app/fonts";
 
 const StaticEllipse = ({
   text,
   view,
   isActive,
+  className,
 }: {
   text: string;
   view: View;
   isActive?: boolean;
+  className?: string;
 }): JSX.Element | null => {
   const [firstString, setFirstString] = useState<string | null>(null);
   const [secondString, setSecondString] = useState<string | null>(null);
@@ -55,7 +58,7 @@ const StaticEllipse = ({
 
   return (
     <div
-      className={classNames(style.wrapper, "t-robot-medium", {
+      className={classNames(style.wrapper, robotoMedium.className, className, {
         [style.active]: isActive,
       })}
     >
