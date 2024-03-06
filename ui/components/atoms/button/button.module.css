@@ -26,7 +26,7 @@
 
 .apiButton:disabled {
     background-color: var(--col--button4);
-    cursor: not-allowed;
+    cursor: default;
     box-shadow: none;
 }
 

@@ -1,0 +1,79 @@
+.wrapper {
+  border-radius: 12px;
+  background: var(--col--light);
+  padding: 24px 24px 34px 24px;
+  width: 654px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.header {
+  font-size: 28px;
+}
+
+.header span {
+  color: #9c9ea6;
+}
+
+.periodWrapper {
+  border-radius: 35px;
+  border: 1px solid rgba(0, 0, 0, 0.4);
+  padding: 10px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin: 22px 0;
+  width: 100%;
+}
+
+.periodWrapper > div {
+  color: #88d6a9;
+  font-size: 28px;
+  font-weight: 500;
+}
+
+.minus,
+.plus {
+  display: flex;
+  width: 50px;
+  height: 50px;
+  justify-content: center;
+  align-items: center;
+  border-radius: 50%;
+  border: 1px solid #597fff;
+  font-size: 20px;
+  color: #597fff;
+  cursor: pointer;
+}
+
+.disableActionIcon {
+  cursor: default;
+  border-color: var(--col--border);
+  color: rgba(0, 0, 0, 0.3);
+}
+
+.costInformation {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  padding: 16px 12px;
+  gap: 8px;
+  border-radius: 9px;
+  background: #f7f8fa;
+  margin-bottom: 32px;
+}
+
+.costInformation > div {
+  display: flex;
+  justify-content: space-between;
+  color: rgba(0, 0, 0, 0.6);
+}
+
+.totalText {
+  color: rgba(0, 0, 0, 0.6);
+}
+
+.costInformation > div span:last-child {
+  color: var(--col--dark)
+}

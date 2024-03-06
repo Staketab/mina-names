@@ -3,9 +3,10 @@ import { Button } from "../button";
 import { Variant } from "../button/types";
 import style from "./index.module.css";
 import { interMedium } from "@/app/fonts";
-import ModalInfo from "@/components/molecules/modals/modalInfo/modalInfo";
 import { useState } from "react";
 import { mockData } from "./response.mock";
+import { ModalInfo } from "@/components/molecules/modals/modalInfo";
+import { ModalPurchase } from "@/components/molecules/modals/modalPurchase";
 
 const ResultItem = ({
   statusName,
@@ -44,7 +45,15 @@ const ResultItem = ({
         variant={Variant.blue}
         onClick={handleInfo}
       />
-      <ModalInfo open={open} onClose={() => setOpen(false)} data={mockData} />
+      {isReserved ? (
+        <ModalInfo open={open} onClose={() => setOpen(false)} data={mockData} />
+      ) : (
+        <ModalPurchase
+          open={open}
+          onClose={() => setOpen(false)}
+          name={name}
+        />
+      )}
     </div>
   );
 };

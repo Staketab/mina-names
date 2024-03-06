@@ -11,6 +11,7 @@ body {
   --col--gray4: rgba(0, 0, 0, 0.3);
   --col--gray8: rgba(0, 0, 0, 0.05);
   --col--secondary8: rgba(57, 99, 255, 0.5);
+  --col--border: #dde0eb;
 
   /* BUTTON */
   /* rgba(52, 89, 231, 1) */
