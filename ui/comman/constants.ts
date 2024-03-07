@@ -1,4 +1,8 @@
-export const NETWORK = 'testworld';
-export const defaultWallet = 'B62qoTtn6hP2R1x5d4UQoJos9vjoNGxLhaQn5cSKneu25Q3wpmtPirT';
-export const PUBLIC_APP_BASE_URL = 'https://minascan.io/';
-export const POLLING_INTERVAL = 3000;
+export const fees = {
+  slow: 0.0011,
+  default: 0.0101,
+  fast: 0.2001,
+};
+
+export const accountAddress =
+  "B62qk1sJumHSS1hPKS2fSAbxkkwGcCiieb1PcM4PB182pa1MKE9H9AV";

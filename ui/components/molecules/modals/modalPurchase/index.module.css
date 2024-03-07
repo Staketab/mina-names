@@ -45,12 +45,14 @@
   font-size: 20px;
   color: #597fff;
   cursor: pointer;
+  background-color: #EEF1FF;
 }
 
 .disableActionIcon {
   cursor: default;
   border-color: var(--col--border);
   color: rgba(0, 0, 0, 0.3);
+  background-color: inherit;
 }
 
 .costInformation {

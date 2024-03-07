@@ -2,14 +2,20 @@
 
 import { ORDER_BY, SORT_BY } from "@/comman/types";
 
-export async function checkName(name: string) {
+export async function saveName({
+  name,
+  ownerAddress,
+  amount,
+  txHash,
+  expirationTime,
+}) {
   if (!name) return;
   const payload = {
-    ownerAddress: "string",
+    ownerAddress,
+    amount,
+    txHash,
     domainName: name,
-    expirationTime: 0,
-    amount: 0,
-    txHash: "string",
+    expirationTime: expirationTime,
   };
 
   const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/domains/save`, {
@@ -72,7 +78,6 @@ export async function getDomains({
   );
   return await res.json();
 }
-
 
 export async function getDomainsMetadata(id: string) {
   const res = await fetch(
