@@ -91,3 +91,13 @@ export async function getDomainsMetadata(id: string) {
   );
   return await res.json();
 }
+
+export async function getAccountDomainDetails(id: string) {
+  const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/domains/${id}`, {
+    headers: {
+      "Content-Type": "application/json",
+      "x-api-key": process.env.NEXT_PUBLIC_X_API_KEY,
+    },
+  });
+  return await res.json();
+}
