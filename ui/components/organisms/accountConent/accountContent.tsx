@@ -15,7 +15,7 @@ const AccountContent = () => {
   };
 
   return (
-    <div className={style.wrapper}>
+    <div>
       <div className={style.header}>
         <div className={interSemiBold.className}>My Names</div>
         <ConnectWalletButton />

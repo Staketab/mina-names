@@ -6,6 +6,7 @@
 
 .active {
     color: var(--link-active-color);
+    cursor: pointer;
 }
 
 .active:hover {

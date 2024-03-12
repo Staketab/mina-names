@@ -10,6 +10,8 @@ import { StaticEllipse } from "../../staticEllipse";
 import { monthDayYearTimeFormat } from "@/helpers/timeHelper";
 
 import style from "./index.module.css";
+import Link from "next/link";
+import { defaultDomainNameId } from "@/comman/constants";
 
 type ModalInfoProps = {
   open: boolean;
@@ -81,7 +83,9 @@ const ModalInfo = ({ open, onClose, data }: ModalInfoProps): JSX.Element => {
             />
           </div>
         </div>
-        <Button text="View Details" variant={Variant.blue} />
+        <Link href={`/names/${defaultDomainNameId}`}>
+          <Button text="View Details" variant={Variant.blue} />
+        </Link>
       </div>
     </PopupOverlay>
   );
