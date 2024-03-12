@@ -83,7 +83,7 @@ const ModalInfo = ({ open, onClose, data }: ModalInfoProps): JSX.Element => {
             />
           </div>
         </div>
-        <Link href={`/account_details/${defaultDomainNameId}`}>
+        <Link href={`/names/${defaultDomainNameId}`}>
           <Button text="View Details" variant={Variant.blue} />
         </Link>
       </div>

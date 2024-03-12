@@ -41,7 +41,6 @@ export default function Page() {
 
   return (
     <div className={classNames(style.wrapper)}>
-      <Navigation />
       <AccountContent />
     </div>
   );

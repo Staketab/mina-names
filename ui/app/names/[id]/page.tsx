@@ -3,19 +3,25 @@
 import { getAccountDomainDetails } from "@/app/actions/actions";
 import { useEffect, useState } from "react";
 
+import DetailsNameHeader from "@/components/organisms/detailsNameHeader/detailsNameHeader";
+
 export default function Page({ params }: { params: { id: string } }) {
-  const [name, setName] = useState(null);
+  const [accountDomainDetails, setAccountDomainDetails] = useState(null);
   const getAccountDomainDetailsById = async () => {
     const response = await getAccountDomainDetails(params.id);
-    setName(response);
+    setAccountDomainDetails(response);
   };
   useEffect(() => {
     if (params.id) {
       getAccountDomainDetailsById();
     }
   }, [params]);
-  
-  if (!name) return null;
 
-  return <div>My Post: {name.domainName}</div>;
+  if (!accountDomainDetails) return null;
+
+  return (
+    <div>
+      <DetailsNameHeader accountDomainDetails={accountDomainDetails} />
+    </div>
+  );
 }

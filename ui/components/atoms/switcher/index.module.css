@@ -1,0 +1,33 @@
+.switcherComponent {
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+  user-select: none;
+}
+
+.leftText {
+  margin-right: 8px;
+}
+
+.switcherComponent__plate {
+  position: relative;
+  background-color: rgba(221, 224, 235, 1);
+  width: 26px;
+  height: 16px;
+  border-radius: 8px;
+  padding: 2px;
+  transition: all ease 250ms;
+}
+
+.switcherComponent__btn {
+  display: inline-block;
+  position: absolute;
+  background-color: #fff;
+  box-shadow: 0px 1px 1px #ced1db;
+  border-radius: 50%;
+  transition: all ease 250ms;
+}
+
+.switcherComponent__rightText {
+  margin: 0 0 0 8px;
+}

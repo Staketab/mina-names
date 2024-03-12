@@ -1,6 +1,7 @@
 "use server";
 
 import { ORDER_BY, SORT_BY } from "@/comman/types";
+import { AccountDomainDetailsResponse } from "./types";
 
 export async function saveName({
   name,
@@ -92,7 +93,9 @@ export async function getDomainsMetadata(id: string) {
   return await res.json();
 }
 
-export async function getAccountDomainDetails(id: string) {
+export async function getAccountDomainDetails(
+  id: string
+): Promise<AccountDomainDetailsResponse> {
   const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/domains/${id}`, {
     headers: {
       "Content-Type": "application/json",

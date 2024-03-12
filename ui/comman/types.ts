@@ -54,3 +54,8 @@ export enum DATA_STATUS {
   SUCCESS = "success",
   ERROR = "error",
 }
+
+export enum DOMAINS_STATUS {
+  PENDING = "PENDING",
+  ACTIVE = "ACTIVE",
+}
