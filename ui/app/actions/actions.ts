@@ -24,7 +24,7 @@ export async function saveName({
     body: JSON.stringify(payload),
     headers: {
       "Content-Type": "application/json",
-      "x-api-key": process.env.NEXT_PUBLIC_X_API_KEY,
+      "x-api-key": process.env.NEXT_PUBLIC_API_KEY,
     },
   });
   return await res.json();
@@ -50,7 +50,7 @@ export async function getAccountDomains({
     {
       headers: {
         "Content-Type": "application/json",
-        "x-api-key": process.env.NEXT_PUBLIC_X_API_KEY,
+        "x-api-key": process.env.NEXT_PUBLIC_API_KEY,
       },
     }
   );
@@ -73,7 +73,7 @@ export async function getDomains({
     {
       headers: {
         "Content-Type": "application/json",
-        "x-api-key": process.env.NEXT_PUBLIC_X_API_KEY,
+        "x-api-key": process.env.NEXT_PUBLIC_API_KEY,
       },
     }
   );
@@ -86,7 +86,7 @@ export async function getDomainsMetadata(id: string) {
     {
       headers: {
         "Content-Type": "application/json",
-        "x-api-key": process.env.NEXT_PUBLIC_X_API_KEY,
+        "x-api-key": process.env.NEXT_PUBLIC_API_KEY,
       },
     }
   );
@@ -99,7 +99,7 @@ export async function getAccountDomainDetails(
   const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/domains/${id}`, {
     headers: {
       "Content-Type": "application/json",
-      "x-api-key": process.env.NEXT_PUBLIC_X_API_KEY,
+      "x-api-key": process.env.NEXT_PUBLIC_API_KEY,
     },
   });
   return await res.json();

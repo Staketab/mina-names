@@ -25,7 +25,7 @@ const ListTableContent = ({
   showErrorMessage,
   sortBy,
   orderBy,
-}: ListTableContent): JSX.Element => {
+}: ListTableContent): JSX.Element => {  
   return (
     <table className={style.table}>
       <thead>
@@ -39,7 +39,7 @@ const ListTableContent = ({
               })}
             >
               {headerText}
-              {sortBy === configSortBy && (
+              {configSortBy && sortBy === configSortBy && (
                 <Image
                   src={sortIcon}
                   alt="sort"

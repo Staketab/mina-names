@@ -1,15 +1,16 @@
 import style from "./index.module.css";
-import { ORDER_BY } from "../../../comman/types";
+import { ORDER_BY, SORT_BY } from "../../../comman/types";
 import { TableErrorMessage } from "../../atoms/tableErrorMessage";
 import { Loader, LoaderVariant } from "../../atoms/loader";
 import { TypeView } from "../../atoms/switchView/switchView";
 import NameCards from "./view/nameCards";
 import ListTableContent from "./view/listTableContent";
 import Pagination from "../pagination/pagination";
+import { TableProps } from "./types";
 
 const Table = ({
   data,
-  config: configs,
+  config,
   isLoading,
   currentPage,
   pageLimit,
@@ -23,8 +24,9 @@ const Table = ({
   onChangeSort,
   onChangeOrder,
   typeView,
-}) => {
-  const handleSort = (sort?: string): void => {
+  isHiddenPagination,
+}: TableProps): JSX.Element => {
+  const handleSort = (sort?: SORT_BY): void => {
     if (!sort) return;
     if (sort === sortBy) {
       return onChangeOrder(
@@ -37,6 +39,7 @@ const Table = ({
   const showErrorMessage = !isLoading && (!data || data?.data?.length < 1);
 
   const renderPagination = () => {
+    if (isHiddenPagination) return null;
     return (
       <Pagination
         currentPage={currentPage}
@@ -58,7 +61,7 @@ const Table = ({
         {typeView === TypeView.LIST ? (
           <ListTableContent
             data={data?.data}
-            configs={configs}
+            configs={config}
             isLoading={isLoading}
             showErrorMessage={showErrorMessage}
             sortBy={sortBy}

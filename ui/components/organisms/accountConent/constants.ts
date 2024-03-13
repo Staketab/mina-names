@@ -1,8 +1,8 @@
-import { SORT_BY } from "../../../comman/types";
+import { SORT_BY, TableConfig } from "../../../comman/types";
 import { TableTemplates } from "../table/templates";
 import iconMock from "./img/iconMock.svg";
 
-export const ScoringConfig = [
+export const ScoringConfig: TableConfig[] = [
   {
     colName: "names",
     headerText: "Registered Names",
