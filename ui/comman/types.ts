@@ -1,3 +1,5 @@
+import { TableTemplates } from "@/components/organisms/table/templates";
+
 export type View = {
   sm: number;
   md: number;
@@ -6,7 +8,7 @@ export type View = {
 export type LimitOptions = { text: string; value: number }[];
 export type TabSwitcherOptions = string[];
 
-export type DataTable = {
+export interface DataTable {
   data?: any[];
   content?: any[];
   size: number;
@@ -34,6 +36,26 @@ export type DataTable = {
   first: boolean;
   numberOfElements: number;
   empty: boolean;
+}
+
+export type TableConfig = {
+  colName: string;
+  headerText: string;
+  columnTemplate: TableTemplates;
+  fields: {
+    value?: string;
+    url?: string;
+    tooltipFromData?: string;
+    tooltipText?: string;
+    func?: (value: string) => void;
+    prefix?: string;
+    postfix?: string;
+    additionValue?: string;
+  };
+  sortBy?: SORT_BY;
+  style?: {
+    color?: string;
+  }
 };
 
 export enum SORT_BY {

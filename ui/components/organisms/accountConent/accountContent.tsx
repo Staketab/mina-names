@@ -7,6 +7,7 @@ import { Table } from "../table";
 import { ScoringConfig, mockData } from "./constants";
 import style from "./index.module.css";
 import { interSemiBold } from "@/app/fonts";
+import { ORDER_BY, SORT_BY } from "@/comman/types";
 
 const AccountContent = () => {
   const [typeView, setTypeView] = useState<TypeView>(TypeView.CARD);
@@ -15,7 +16,7 @@ const AccountContent = () => {
   };
 
   return (
-    <div>
+    <div className={style.wrapper}>
       <div className={style.header}>
         <div className={interSemiBold.className}>My Names</div>
         <ConnectWalletButton />
@@ -35,8 +36,8 @@ const AccountContent = () => {
           { text: "50", value: 50 },
           { text: "100", value: 100 },
         ]}
-        sortBy={"sortBy"}
-        orderBy={"orderBy"}
+        sortBy={SORT_BY.RESERVATION_TIMESTAMP}
+        orderBy={ORDER_BY.DESC}
         onChangePage={(data) => {
           console.log(data);
         }}

@@ -3,20 +3,11 @@ import classNames from "classnames";
 
 import styles from "../index.module.css";
 import { interMedium } from "@/app/fonts";
+import { TableConfig } from "@/comman/types";
 
 type StringTemplateProps = {
   data: any;
-  config: {
-    fields: {
-      value: string;
-      tooltipFromData?: string;
-      tooltipText?: string;
-      func: (value: string) => void;
-      prefix?: string;
-      postfix?: string;
-      additionValue?: string;
-    };
-  };
+  config: TableConfig;
 };
 
 const StringTemplate = ({ data, config }: StringTemplateProps) => {
@@ -34,7 +25,7 @@ const StringTemplate = ({ data, config }: StringTemplateProps) => {
     value === null;
 
   return (
-    <div className={classNames(interMedium.className, styles.stringTemplate)}>
+    <div className={classNames(interMedium.className, styles.stringTemplate)} style={config.style}>
       {isShowDash ? (
         "-"
       ) : (
