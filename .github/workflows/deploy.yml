@@ -27,6 +27,7 @@ jobs:
         path: .github/actions
         token: ${{ secrets.GH_TOKEN }}
 
+    # where should we deploy in case of PR?
     - name: calculate environment
       run: |
         pull_request_branch=${{ github.base_ref }}
@@ -50,7 +51,7 @@ jobs:
               "keep_source_maps": "false",
               "serv": "names-test.service"
             },
-            "^main$": {
+            "^dev$": {
               "node_env": "production",
               "webroot": "/var/www/prod/names",
               "temproot": "/var/www/prod/tmp-names",
@@ -63,6 +64,16 @@ jobs:
           }
         export_to: output,log
         mode: fill
+
+    - name: generate env.json
+      run: |
+        mkdir -p ui/build
+        cat > ui/build <<-EOF
+        {
+          "NEXT_PUBLIC_API_URL": "${{ secrets.NEXT_PUBLIC_API_URL }}",
+          "NEXT_PUBLIC_API_KEY": "${{ secrets.NEXT_PUBLIC_API_KEY }}"
+        }
+        EOF
 
     - name: Deploy React.js
       uses: ./.github/actions/mina-names
@@ -79,3 +90,4 @@ jobs:
         github_token: ${{ secrets.GH_TOKEN }}
       env:
         REACT_APP_ENVIRONMENT: ${{ steps.settings.outputs.node_env }}
+      working-directory: ui
