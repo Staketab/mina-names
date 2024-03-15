@@ -9,11 +9,13 @@ import style from "./index.module.css";
 import { interSemiBold } from "@/app/fonts";
 import { ORDER_BY, SORT_BY } from "@/comman/types";
 
-const AccountContent = () => {
+const AccountContent = ({ accountDomains }) => {
   const [typeView, setTypeView] = useState<TypeView>(TypeView.CARD);
   const handleSwitchView = (typeView: TypeView) => {
     setTypeView(typeView);
   };
+
+  if (!accountDomains) return null;
 
   return (
     <div className={style.wrapper}>
@@ -23,7 +25,7 @@ const AccountContent = () => {
       </div>
       <SwitchView onClick={handleSwitchView} className={style.switchView} />
       <Table
-        data={mockData}
+        data={accountDomains}
         config={ScoringConfig}
         isLoading={false}
         currentPage={0}

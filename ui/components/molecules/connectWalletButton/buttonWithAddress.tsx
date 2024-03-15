@@ -13,6 +13,7 @@ import { useRouter } from "next/navigation";
 import DropdownWrapper from "../dropdownWrapper";
 import { interSemiBold } from "@/app/fonts";
 import Link from "next/link";
+import { Routs } from "@/comman/types";
 
 const ButtonWithAddress = ({
   address,
@@ -49,7 +50,7 @@ const ButtonWithAddress = ({
           >
             <Link
               className={classNames(style.item, interSemiBold.className)}
-              href={"/names"}
+              href={Routs.NAMES}
             >
               <Image src={account} alt="" className={style.icon} />
               Names

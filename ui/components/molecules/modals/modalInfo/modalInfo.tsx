@@ -12,6 +12,7 @@ import { monthDayYearTimeFormat } from "@/helpers/timeHelper";
 import style from "./index.module.css";
 import Link from "next/link";
 import { defaultDomainNameId } from "@/comman/constants";
+import { Routs } from "@/comman/types";
 
 type ModalInfoProps = {
   open: boolean;
@@ -83,7 +84,7 @@ const ModalInfo = ({ open, onClose, data }: ModalInfoProps): JSX.Element => {
             />
           </div>
         </div>
-        <Link href={`/names/${defaultDomainNameId}`}>
+        <Link href={`${Routs.NAME}/${defaultDomainNameId}`}>
           <Button text="View Details" variant={Variant.blue} />
         </Link>
       </div>

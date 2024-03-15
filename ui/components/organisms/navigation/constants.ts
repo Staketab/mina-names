@@ -1,3 +1,4 @@
+import { Routs } from "@/comman/types";
 import accountIcon from "./img/account.svg";
 
 export const navList: {
@@ -8,7 +9,7 @@ export const navList: {
 }[] = [
   {
     title: "My Names",
-    url: "names",
+    url: Routs.NAMES,
     icon: accountIcon,
     id: "1",
   },

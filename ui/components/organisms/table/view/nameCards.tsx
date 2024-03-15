@@ -3,16 +3,20 @@ import style from "../index.module.css";
 
 type NameCardsProps = {
   data: {
-    name: string;
-    url: string;
+    domainName: string;
+    domainImg: string;
+    id: string;
   }[];
 };
 
 const NameCards = ({ data }: NameCardsProps): JSX.Element => {
+
+  if(!data) return null
+  
   return (
     <div className={style.nameCards}>
-      {data.map(({ name, url }, index) => {
-        return <NameCard name={name} img={url} key={index} />;
+      {data.map(({ domainName, domainImg, id }, index) => {
+        return <NameCard name={domainName} img={domainImg} key={index} id={id}/>;
       })}
     </div>
   );

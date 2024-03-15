@@ -17,7 +17,6 @@ const DetailsNameHeader = ({
   accountDomainDetails: AccountDomainDetailsResponse;
 }): JSX.Element => {
   const { domainImg, domainName } = accountDomainDetails;
-  console.log(accountDomainDetails);
 
   return (
     <div className={style.wrapper}>
@@ -36,7 +35,7 @@ const DetailsNameHeader = ({
         </div>
       </div>
       <div className={style.rightSide}>
-        <Switcher text="Set as default name" className={style.switcher}/>
+        <Switcher text="Set as default name" className={style.switcher} initialState={accountDomainDetails.isDefault}/>
         <Button text="Set reminder" variant={Variant.blue} />
       </div>
     </div>

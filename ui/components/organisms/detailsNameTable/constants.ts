@@ -3,7 +3,7 @@ import { TableTemplates } from "../table/templates";
 
 
 export const mockData = {
-    data: [
+    content: [
       { record: "Email", value: 'Set' },
       { record: "Discord",value: 'Set' },
       { record: "Github",  value: 'Set' },
