@@ -4,10 +4,7 @@ inputs:
   webroot:
     description: The root directory of the web server that will be used to search for a file
     required: true
-  temproot:
-    description: The temproot directory of the web server that will be used to search for a file
-    required: true
-  serv:
+  systemd_service:
     description: Systemd service name
     required: true
   ssh_hostname:
@@ -64,24 +61,26 @@ runs:
   - name: Build project
     working-directory: ui
     shell: sh
-    run: |
-      pnpm run build
-      rm -rf node_modules
+    run: pnpm run build
 
   - name: Deploy compiled project to the remote server
     shell: sh
     run: |
+      set -x
+
+      sshpass -p "${{ inputs.ssh_password }}" \
+        ssh ${{ inputs.ssh_username }}@${{ inputs.ssh_hostname }} rm -rf ${{ inputs.webroot }}/*
+
       sshpass -p "${{ inputs.ssh_password }}" \
         rsync \
           --archive \
           --verbose \
           --human-readable \
           --delete-before \
-          ${{ inputs.keep_source_maps == 'false' && '--exclude="*.map"' || '' }} ui/ ${{ inputs.ssh_username }}@${{ inputs.ssh_hostname }}:${{ inputs.webroot }}/
+          ui/ ${{ inputs.ssh_username }}@${{ inputs.ssh_hostname }}:${{ inputs.webroot }}/
 
       sshpass -p "${{ inputs.ssh_password }}" \
-        ssh ${{ inputs.ssh_username }}@${{ inputs.ssh_hostname }} "sudo systemctl restart ${{ inputs.serv }}"
-
+        ssh ${{ inputs.ssh_username }}@${{ inputs.ssh_hostname }} "sudo systemctl restart ${{ inputs.systemd_service }}"
 
   # - name: Copy Files to Server
   #   shell: sh

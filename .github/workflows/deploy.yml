@@ -48,7 +48,7 @@ jobs:
               "ssh_password": "${{ secrets.FRONT_SCORE_SSH }}",
               "lib_latest": "true",
               "keep_source_maps": "false",
-              "serv": "names-test.service"
+              "systemd_service": "names-test.service"
             },
             "^main$": {
               "node_env": "production",
@@ -58,7 +58,7 @@ jobs:
               "ssh_password": "${{ secrets.FRONT_SCORE_SSH }}",
               "lib_latest": "false",
               "keep_source_maps": "false",
-              "serv": "names.service"
+              "systemd_service": "names.service"
             }
           }
         export_to: output,log
@@ -69,7 +69,7 @@ jobs:
       with:
         webroot: ${{ steps.settings.outputs.webroot }}
         temproot: ${{ steps.settings.outputs.temproot }}
-        serv: ${{ steps.settings.outputs.serv }}
+        systemd_service: ${{ steps.settings.outputs.systemd_service }}
         ssh_hostname: ${{ steps.settings.outputs.ssh_hostname }}
         ssh_username: ${{ secrets.SERVER_USERNAME }}
         ssh_password: ${{ steps.settings.outputs.ssh_password }}
