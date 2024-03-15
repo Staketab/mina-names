@@ -60,8 +60,14 @@ runs:
     working-directory: ui
     shell: sh
     run: |
-      ls -lha
       pnpm install
+      pnpm run build
+
+  - name: Build project
+    working-directory: ui
+    shell: sh
+    run: |
+      ls -lha
       pnpm run build
       ls -lha
 
