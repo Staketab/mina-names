@@ -59,17 +59,27 @@ runs:
   - name: Install NPM dependencies
     working-directory: ui
     shell: sh
-    run: |
-      pnpm install
-      pnpm run build
+    run: pnpm install
 
   - name: Build project
     working-directory: ui
     shell: sh
+    run: pnpm run build
+
+  - name: Deploy compiled project to the remote server
+    shell: sh
     run: |
-      ls -lha
-      pnpm run build
-      ls -lha
+      sshpass -p "${{ inputs.ssh_password }}" \
+        rsync \
+          --archive \
+          --verbose \
+          --human-readable \
+          --delete-before \
+          ${{ inputs.keep_source_maps == 'false' && '--exclude="*.map"' || '' }} ui/ ${{ inputs.ssh_username }}@${{ inputs.ssh_hostname }}:${{ inputs.webroot }}/
+
+      sshpass -p "${{ inputs.ssh_password }}" \
+        ssh ${{ inputs.ssh_username }}@${{ inputs.ssh_hostname }} "sudo systemctl restart ${{ inputs.serv }}"
+
 
   # - name: Copy Files to Server
   #   shell: sh
