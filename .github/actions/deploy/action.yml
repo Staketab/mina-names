@@ -64,7 +64,9 @@ runs:
   - name: Build project
     working-directory: ui
     shell: sh
-    run: pnpm run build
+    run: |
+      pnpm run build
+      rm -rf node_modules
 
   - name: Deploy compiled project to the remote server
     shell: sh
