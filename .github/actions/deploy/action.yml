@@ -1,6 +1,8 @@
 name: Frontend Deploy
 
 inputs:
+  workdir:
+    default: '.'
   webroot:
     description: The root directory of the web server that will be used to search for a file
     required: true
@@ -16,15 +18,6 @@ inputs:
   ssh_password:
     description: SSH password
     required: true
-  lib_latest:
-    description: Install the latest version of @staketab/lib
-    default: false
-  keep_source_maps:
-    description: Keep JavaScript Source Maps
-    default: true
-  nodejs_version:
-    description: Node.js version
-    default: 18.x
   github_token:
     description: GitHub Personal Access Token (PAT)
     required: true
@@ -34,7 +27,6 @@ runs:
   steps:
   - name: Login to GitHub Packages
     shell: sh
-    working-directory: ./
     run: |
       cat > .npmrc <<-EOF
         //npm.pkg.github.com/:_authToken=${{ inputs.github_token }}
@@ -54,20 +46,18 @@ runs:
       run_install: false
 
   - name: Install NPM dependencies
-    working-directory: ui
+    working-directory: ${{ inputs.workdir }}
     shell: sh
     run: pnpm install
 
   - name: Build project
-    working-directory: ui
+    working-directory: ${{ inputs.workdir }}
     shell: sh
     run: pnpm run build
 
   - name: Deploy compiled project to the remote server
     shell: sh
     run: |
-      set -x
-
       sshpass -p "${{ inputs.ssh_password }}" \
         ssh ${{ inputs.ssh_username }}@${{ inputs.ssh_hostname }} rm -rf ${{ inputs.webroot }}/*
 
@@ -77,56 +67,7 @@ runs:
           --verbose \
           --human-readable \
           --delete-before \
-          ui/ ${{ inputs.ssh_username }}@${{ inputs.ssh_hostname }}:${{ inputs.webroot }}/
+          ${{ inputs.workdir }} ${{ inputs.ssh_username }}@${{ inputs.ssh_hostname }}:${{ inputs.webroot }}/
 
       sshpass -p "${{ inputs.ssh_password }}" \
         ssh ${{ inputs.ssh_username }}@${{ inputs.ssh_hostname }} "sudo systemctl restart ${{ inputs.systemd_service }}"
-
-  # - name: Copy Files to Server
-  #   shell: sh
-  #   run: |
-  #     sshpass -p "${{ inputs.ssh_password }}" \
-  #       rsync \
-  #         --archive \
-  #         --verbose \
-  #         --human-readable \
-  #         ./ui/ ${{ inputs.ssh_username }}@${{ inputs.ssh_hostname }}:${{ inputs.webroot }}
-
-  # - name: Install Dependencies and Build on Server
-  #   shell: sh
-  #   run: |
-  #     sshpass -p "${{ inputs.ssh_password }}" ssh ${{ inputs.ssh_username }}@${{ inputs.ssh_hostname }} "\
-  #       cd ${{ inputs.webroot }} && \
-  #       npm install --legacy-peer-deps && \
-  #       npm install -g next && \
-  #       npm install react --legacy-peer-deps && \
-  #       npm install react-dom --legacy-peer-deps && \
-  #       npm install -g pnpm && \
-  #       pnpm i && \
-  #       pnpm run build
-  #     "
-  #     sshpass -p "${{ inputs.ssh_password }}" ssh ${{ inputs.ssh_username }}@${{ inputs.ssh_hostname }} "sudo find ${{ inputs.webroot }} -not -user root -or -not -group root -exec chown root:root '{}' +"
-
-  # - name: Deploy Compiled Project
-  #   shell: sh
-  #   run: |
-  #     sshpass -p "${{ inputs.ssh_password }}" ssh ${{ inputs.ssh_username }}@${{ inputs.ssh_hostname }} "\
-  #       rsync \
-  #         --archive \
-  #         --verbose \
-  #         --human-readable \
-  #         --delete-before \
-  #         ${{ inputs.keep_source_maps == 'false' && '--exclude=\"*.map\"' || '' }} ${{ inputs.temproot }}/ ${{ inputs.webroot }}/
-  #     "
-
-  # - name: Restart Next.js service on the server
-  #   shell: sh
-  #   run: |
-  #     sshpass -p "${{ inputs.ssh_password }}" ssh ${{ inputs.ssh_username }}@${{ inputs.ssh_hostname }} "sudo systemctl restart ${{ inputs.serv }}"
-
-  # - name: Remove Temporary Directory on the Server
-  #   shell: sh
-  #   run: |
-  #     sshpass -p "${{ inputs.ssh_password }}" ssh ${{ inputs.ssh_username }}@${{ inputs.ssh_hostname }} "\
-  #       rm -rf ${{ inputs.temproot }}/ \
-  #     "
