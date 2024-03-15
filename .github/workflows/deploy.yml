@@ -28,7 +28,7 @@ jobs:
       uses: kanga333/variable-mapper@v0.2.2
       id: settings
       with:
-        key: ${{ github.ref_name }}
+        key: ${{ github.event.inputs.environment }}
         map: |
           {
             "^t-names$": {
