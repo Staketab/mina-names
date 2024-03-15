@@ -1,17 +1,17 @@
 name: Deploy Mina Names
 
 on:
-  pull_request:
+  push:
     branches:
-    - main
-    - t-names
-  workflow_dispatch:
-    inputs:
-      environment:
-        type: choice
-        options:
-        - main
-        - t-names
+    - deploy-pipeline
+  # workflow_dispatch:
+  #   inputs:
+  #     environment:
+  #       type: choice
+  #       options:
+  #       - main
+  #       - t-names
+
 jobs:
   deploy:
     runs-on: ubuntu-latest
@@ -20,18 +20,18 @@ jobs:
     - name: Checkout
       uses: actions/checkout@v3
 
-    - name: Checkout GitHub Actions
-      uses: actions/checkout@v3
-      with:
-        repository: Staketab/github-actions
-        path: .github/actions
-        token: ${{ secrets.GH_TOKEN }}
+    # - name: Checkout GitHub Actions
+    #   uses: actions/checkout@v3
+    #   with:
+    #     repository: Staketab/github-actions
+    #     path: .github/actions
+    #     token: ${{ secrets.GH_TOKEN }}
 
-    - name: calculate environment
-      run: |
-        pull_request_branch=${{ github.base_ref }}
-        dispatch_branch=${{ github.event.inputs.environment }}
-        echo "ENVIRONMENT=${pull_request_branch:-$dispatch_branch}" >> $GITHUB_ENV
+    # - name: calculate environment
+    #   run: |
+    #     pull_request_branch=${{ github.base_ref }}
+    #     dispatch_branch=${{ github.event.inputs.environment }}
+    #     echo "ENVIRONMENT=${pull_request_branch:-$dispatch_branch}" >> $GITHUB_ENV
 
     - name: Settings
       uses: kanga333/variable-mapper@v0.2.2
@@ -65,7 +65,7 @@ jobs:
         mode: fill
 
     - name: Deploy React.js
-      uses: ./.github/actions/mina-names
+      uses: ./.github/actions/deploy
       with:
         webroot: ${{ steps.settings.outputs.webroot }}
         temproot: ${{ steps.settings.outputs.temproot }}
