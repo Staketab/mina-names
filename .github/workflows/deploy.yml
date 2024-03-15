@@ -1,9 +1,6 @@
 name: Deploy Mina Names
 
 on:
-  push:
-    branches:
-    - deploy-pipeline
   workflow_dispatch:
     inputs:
       environment:
@@ -34,7 +31,7 @@ jobs:
         key: ${{ github.ref_name }}
         map: |
           {
-            "^(t-names|deploy-pipeline)$": {
+            "^t-names$": {
               "node_env": "development",
               "webroot": "/var/www/test/names",
               "ssh_hostname": "${{ secrets.FRONT_SCORE_IP }}",
