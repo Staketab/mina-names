@@ -67,7 +67,7 @@ runs:
           --verbose \
           --human-readable \
           --delete-before \
-          ${{ inputs.workdir }} ${{ inputs.ssh_username }}@${{ inputs.ssh_hostname }}:${{ inputs.webroot }}/
+          ${{ inputs.workdir }}/ ${{ inputs.ssh_username }}@${{ inputs.ssh_hostname }}:${{ inputs.webroot }}/
 
       sshpass -p "${{ inputs.ssh_password }}" \
         ssh ${{ inputs.ssh_username }}@${{ inputs.ssh_hostname }} "sudo systemctl restart ${{ inputs.systemd_service }}"

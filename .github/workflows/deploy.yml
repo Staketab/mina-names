@@ -59,8 +59,8 @@ jobs:
         NEXT_PUBLIC_API_KEY=${{ secrets.NEXT_PUBLIC_API_KEY }}
         EOF
 
-    - name: Deploy React.js
-      uses: ./.github/actions/deploy
+    - name: Deploy
+      uses: ./.github/actions/mina-names
       with:
         workdir: ui
         webroot: ${{ steps.settings.outputs.webroot }}
