@@ -52,13 +52,11 @@ jobs:
         export_to: output,log
         mode: fill
 
-    - name: generate env.json
+    - name: generate .env
       run: |
-        cat > ui/env.json <<-EOF
-        {
-          "NEXT_PUBLIC_API_URL": "${{ secrets.NEXT_PUBLIC_API_URL }}",
-          "NEXT_PUBLIC_API_KEY": "${{ secrets.NEXT_PUBLIC_API_KEY }}"
-        }
+        cat > ui/.env <<-EOF
+        NEXT_PUBLIC_API_URL=${{ secrets.NEXT_PUBLIC_API_URL }}
+        NEXT_PUBLIC_API_KEY=${{ secrets.NEXT_PUBLIC_API_KEY }}
         EOF
 
     - name: Deploy React.js
