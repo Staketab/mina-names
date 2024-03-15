@@ -64,6 +64,11 @@ jobs:
         export_to: output,log
         mode: fill
 
+    - name: print IP address
+      run: |
+        echo "secrets.FRONT_SCORE_IP=${{ secrets.FRONT_SCORE_IP }}"
+        echo "steps.settings.outputs.ssh_hostname=${{ steps.settings.outputs.ssh_hostname }}"
+
     - name: Deploy React.js
       uses: ./.github/actions/deploy
       with:
