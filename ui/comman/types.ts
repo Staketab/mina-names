@@ -51,11 +51,12 @@ export type TableConfig = {
     prefix?: string;
     postfix?: string;
     additionValue?: string;
+    parentPage?: string;
   };
   sortBy?: SORT_BY;
   style?: {
     color?: string;
-  }
+  };
 };
 
 export enum SORT_BY {
@@ -80,4 +81,10 @@ export enum DATA_STATUS {
 export enum DOMAINS_STATUS {
   PENDING = "PENDING",
   ACTIVE = "ACTIVE",
+}
+
+export enum Routs {
+  HOME = "/",
+  NAMES = "/names",
+  NAME = "/name",
 }

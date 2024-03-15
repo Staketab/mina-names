@@ -20,7 +20,7 @@ const NamesTemplate = ({ data, config }: NamesTemplateProps) => {
 
   return (
     <div className={classNames(style.namesTemplate, interMedium.className)}>
-      <Image src={imgUrl} alt="" />
+      <Image src={imgUrl} alt="" width={32} height={32}/>
       {value}
     </div>
   );

@@ -12,6 +12,7 @@
     "classnames": "^2.5.1",
     "dayjs": "^1.11.10",
     "dayjs-plugin-utc": "^0.1.2",
+    "js-base64": "^3.7.7",
     "lodash": "^4.17.21",
     "next": "14.1.0",
     "react": "^18",

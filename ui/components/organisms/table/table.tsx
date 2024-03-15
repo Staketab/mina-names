@@ -26,6 +26,7 @@ const Table = ({
   typeView,
   isHiddenPagination,
 }: TableProps): JSX.Element => {
+  
   const handleSort = (sort?: SORT_BY): void => {
     if (!sort) return;
     if (sort === sortBy) {
@@ -36,7 +37,7 @@ const Table = ({
     onChangeSort(sort);
     onChangeOrder(undefined);
   };
-  const showErrorMessage = !isLoading && (!data || data?.data?.length < 1);
+  const showErrorMessage = !isLoading && (!data || data?.content?.length < 1);
 
   const renderPagination = () => {
     if (isHiddenPagination) return null;
@@ -60,7 +61,7 @@ const Table = ({
       <div className={style.wrapper}>
         {typeView === TypeView.LIST ? (
           <ListTableContent
-            data={data?.data}
+            data={data?.content}
             configs={config}
             isLoading={isLoading}
             showErrorMessage={showErrorMessage}
@@ -69,7 +70,7 @@ const Table = ({
             handleSort={handleSort}
           />
         ) : (
-          <NameCards data={data?.data} />
+          <NameCards data={data?.content} />
         )}
       </div>
       {showErrorMessage && <TableErrorMessage />}

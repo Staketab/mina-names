@@ -41,7 +41,7 @@ export default function Page() {
 
   return (
     <div className={classNames(style.wrapper)}>
-      <AccountContent />
+      <AccountContent accountDomains={accountDomains}/>
     </div>
   );
 }

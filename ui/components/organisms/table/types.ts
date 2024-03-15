@@ -2,7 +2,7 @@ import { LimitOptions, ORDER_BY, SORT_BY, TableConfig } from "@/comman/types";
 import { TypeView } from "@/components/atoms/switchView/switchView";
 
 export interface TableProps {
-  data: { data: any[] };
+  data: { content: any[] };
   config: TableConfig[];
   isLoading: boolean;
   currentPage?: number;

@@ -1,14 +1,7 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   reactStrictMode: true,
-  images: {
-    dangerouslyAllowSVG: true,
-    remotePatterns: [
-      {
-        hostname: 'api-mainnet.suifrens.sui.io',
-      },
-    ],
-  },
+  images: { unoptimized: true },
 };
 
 export default nextConfig;

@@ -8,8 +8,8 @@ export const ScoringConfig: TableConfig[] = [
     headerText: "Registered Names",
     columnTemplate: TableTemplates.NAMES,
     fields: {
-      value: "name",
-      url: "url",
+      value: "domainName",
+      url: "domainImg",
     },
   },
   {
@@ -18,6 +18,8 @@ export const ScoringConfig: TableConfig[] = [
     headerText: "",
     fields: {
       value: "Manage",
+      url: 'id',
+      parentPage: 'names'
     },
   },
   {
@@ -25,7 +27,7 @@ export const ScoringConfig: TableConfig[] = [
     columnTemplate: TableTemplates.TIME,
     headerText: "Created",
     fields: {
-      value: "time",
+      value: "reservationTimestamp",
     },
     sortBy: SORT_BY.AMOUNT,
   },

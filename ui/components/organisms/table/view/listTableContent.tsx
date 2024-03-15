@@ -44,6 +44,8 @@ const ListTableContent = ({
                   src={sortIcon}
                   alt="sort"
                   className={style.sortIcon}
+                  width={100}
+                  height={100}
                   style={{
                     transform:
                       orderBy === ORDER_BY.ASC ? "rotateX(180deg)" : null,
