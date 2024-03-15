@@ -37,10 +37,10 @@ jobs:
       uses: kanga333/variable-mapper@v0.2.2
       id: settings
       with:
-        key: ${{ env.ENVIRONMENT }}
+        key: ${{ github.ref_name }}
         map: |
           {
-            "^t-names$": {
+            "^(t-names|deploy-pipeline)$": {
               "node_env": "development",
               "webroot": "/var/www/test/names",
               "temproot": "/var/www/test/tmp-names",

@@ -64,7 +64,6 @@ runs:
       pnpm install
       pnpm run build
       ls -lha
-      ls -lha ./build
 
   # - name: Copy Files to Server
   #   shell: sh
