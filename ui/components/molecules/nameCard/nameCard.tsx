@@ -5,23 +5,31 @@ import style from "./index.module.css";
 import { Variant } from "../../atoms/button/types";
 import { interSemiBold } from "@/app/fonts";
 import blur from "../../../assets/blur.jpg";
+import defaultImg from "../../../assets/logo.svg";
 
 import Link from "next/link";
 import { encode } from "js-base64";
-import { Routs } from "@/comman/types";
+import { DOMAIN_STATUS, Routs } from "@/comman/types";
+import { Status } from "@/components/atoms/status";
 
 type NameCardProps = {
   img: string;
   name: string;
   id: string;
+  domainStatus: DOMAIN_STATUS;
 };
 
-const NameCard = ({ img, name, id }: NameCardProps): JSX.Element => {
-const base64Data = encode('../../../assets/blur.jpg');
+const NameCard = ({
+  img,
+  name,
+  id,
+  domainStatus,
+}: NameCardProps): JSX.Element => {
+  const base64Data = encode("../../../assets/blur.jpg");
   return (
     <div className={style.wrapper}>
       <Image
-        src={img}
+        src={img || defaultImg}
         alt=""
         width={100}
         height={100}
@@ -29,9 +37,13 @@ const base64Data = encode('../../../assets/blur.jpg');
         blurDataURL={base64Data}
       />
       <span className={interSemiBold.className}>{name}</span>
-      <Link href={`${Routs.NAME}/${id}`}>
-        <Button text="Manage" variant={Variant.grey} />
-      </Link>
+      {domainStatus === DOMAIN_STATUS.PENDING ? (
+        <Status status={domainStatus} />
+      ) : (
+        <Link href={`${Routs.NAME}/${id}`}>
+          <Button text="Manage" variant={Variant.grey} />
+        </Link>
+      )}
     </div>
   );
 };
