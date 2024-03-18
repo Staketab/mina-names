@@ -52,6 +52,7 @@ export type TableConfig = {
     postfix?: string;
     additionValue?: string;
     parentPage?: string;
+    status?: string;
   };
   sortBy?: SORT_BY;
   style?: {
@@ -78,7 +79,7 @@ export enum DATA_STATUS {
   ERROR = "error",
 }
 
-export enum DOMAINS_STATUS {
+export enum DOMAIN_STATUS {
   PENDING = "PENDING",
   ACTIVE = "ACTIVE",
 }
@@ -88,3 +89,4 @@ export enum Routs {
   NAMES = "/names",
   NAME = "/name",
 }
+

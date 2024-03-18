@@ -1,4 +1,5 @@
 import Image from "next/image";
+import defaultIcon from '../../../../../assets/logo.svg'
 
 import style from "../index.module.css";
 import classNames from "classnames";
@@ -20,7 +21,7 @@ const NamesTemplate = ({ data, config }: NamesTemplateProps) => {
 
   return (
     <div className={classNames(style.namesTemplate, interMedium.className)}>
-      <Image src={imgUrl} alt="" width={32} height={32}/>
+      <Image src={imgUrl || defaultIcon} alt="" width={32} height={32}/>
       {value}
     </div>
   );

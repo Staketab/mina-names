@@ -1,0 +1,23 @@
+.status {
+  text-transform: lowercase;
+  padding: 5px;
+  border-radius: 30px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.status img {
+  width: 13px;
+  height: 13px;
+  margin: 0 3px 0 0;
+}
+
+.status span::first-letter {
+  text-transform: uppercase;
+}
+
+.pending {
+  color: #f2994a;
+  background-color: rgba(242, 153, 74, 0.2);
+}

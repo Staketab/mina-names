@@ -1,4 +1,4 @@
-import { DOMAINS_STATUS } from "@/comman/types"
+import { DOMAIN_STATUS } from "@/comman/types"
 
 export type AccountDomainDetailsResponse = {
     id: string,
@@ -10,7 +10,7 @@ export type AccountDomainDetailsResponse = {
     reservationTimestamp: number,
     expirationTime: number,
     startTimestamp: number,
-    domainStatus: DOMAINS_STATUS,
+    domainStatus: DOMAIN_STATUS,
     isSendToCloudWorker: boolean,
     isDefault: boolean
   }

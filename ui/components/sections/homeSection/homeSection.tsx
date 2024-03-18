@@ -14,7 +14,7 @@ import { checkReservedName } from "@/app/actions/clientActions";
 
 const HomeSection = () => {
   const [statusName, setStatusName] = useState<{
-    isReserved: boolean;
+    id: string | null;
     name: string;
   }>(null);
   const [value, setValue] = useState("");
@@ -22,7 +22,7 @@ const HomeSection = () => {
   const handleInput = async () => {
     const response = await checkReservedName(value);
     setStatusName({
-      isReserved: response,
+      id: response.id,
       name: value,
     });
   };

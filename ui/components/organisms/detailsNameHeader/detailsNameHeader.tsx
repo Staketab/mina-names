@@ -4,6 +4,8 @@ import { Button } from "@/components/atoms/button";
 import { Variant } from "@/components/atoms/button/types";
 import { Switcher } from "@/components/atoms/switcher";
 import { StaticEllipse } from "@/components/molecules/staticEllipse";
+import icon from "../../../assets/logo.svg";
+
 import Image from "next/image";
 
 import style from "./index.module.css";
@@ -21,7 +23,7 @@ const DetailsNameHeader = ({
   return (
     <div className={style.wrapper}>
       <div className={style.leftSide}>
-        <Image src={domainImg} alt="icon" width={120} height={120} />
+        <Image src={domainImg || icon} alt="icon" width={120} height={120} />
         <div>
           <Name name={domainName} />
           <div className={classNames(interMedium.className, style.address)}>
