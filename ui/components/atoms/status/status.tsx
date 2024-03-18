@@ -20,7 +20,7 @@ const Status = ({
       })}
     >
       {status === DOMAIN_STATUS.PENDING && (
-        <Image src={pendingIcon} alt="" width={20} height={20} />
+        <Image src={pendingIcon} alt="" width={20} height={20} className={style.icon} />
       )}
       <span>{status}</span>
     </div>
