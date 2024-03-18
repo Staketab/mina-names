@@ -28,11 +28,18 @@ jobs:
         path: .github/actions
         token: ${{ secrets.GH_TOKEN }}
 
+    - name: calculate environment
+      shell: bash
+      run: |
+        dispatch_branch=${{ github.event.inputs.environment }}
+        pull_request_branch=${GITHUB_BASE_REF#refs/heads/}
+        echo "ENVIRONMENT=${pull_request_branch:-$dispatch_branch}" >> $GITHUB_ENV
+
     - name: Settings
       uses: kanga333/variable-mapper@v0.2.2
       id: settings
       with:
-        key: ${{ github.event.inputs.environment }}
+        key: ${{ env.ENVIRONMENT }}
         map: |
           {
             "^t-names$": {
