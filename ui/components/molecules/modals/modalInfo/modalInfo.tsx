@@ -11,7 +11,6 @@ import { monthDayYearTimeFormat } from "@/helpers/timeHelper";
 
 import style from "./index.module.css";
 import Link from "next/link";
-import { defaultDomainNameId } from "@/comman/constants";
 import { Routs } from "@/comman/types";
 
 type ModalInfoProps = {
@@ -34,7 +33,10 @@ type ModalInfoProps = {
 };
 
 const ModalInfo = ({ open, onClose, data }: ModalInfoProps): JSX.Element => {
+  if (!data) return null;
+
   const {
+    id,
     ownerAddress,
     domainName,
     reservationTimestamp,
@@ -58,7 +60,7 @@ const ModalInfo = ({ open, onClose, data }: ModalInfoProps): JSX.Element => {
           width={240}
           height={240}
         />
-        <Image src={icon} alt="" />
+        <Image src={domainImg || icon} alt="" width={100} height={100} />
         <div className={style.header}>{domainName}</div>
         <div className={style.infoWrapper}>
           <div className={classNames(style.infoItem, interMedium.className)}>
@@ -84,7 +86,7 @@ const ModalInfo = ({ open, onClose, data }: ModalInfoProps): JSX.Element => {
             />
           </div>
         </div>
-        <Link href={`${Routs.NAME}/${defaultDomainNameId}`}>
+        <Link href={`${Routs.NAME}/${id}`}>
           <Button text="View Details" variant={Variant.blue} />
         </Link>
       </div>

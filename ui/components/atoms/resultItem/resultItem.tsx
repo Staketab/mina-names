@@ -4,24 +4,34 @@ import { Variant } from "../button/types";
 import style from "./index.module.css";
 import { interMedium } from "@/app/fonts";
 import { useState } from "react";
-import { mockData } from "./response.mock";
 import { ModalInfo } from "@/components/molecules/modals/modalInfo";
 import { ModalPurchase } from "@/components/molecules/modals/modalPurchase";
+import { getAccountDomainDetails } from "@/app/actions/actions";
+import { AccountDomainDetailsResponse } from "@/app/actions/types";
 
 const ResultItem = ({
   statusName,
   className,
 }: {
   statusName: {
-    isReserved: boolean;
+    id: string;
     name: string;
   };
   className: string;
 }) => {
   const [open, setOpen] = useState<boolean>(false);
-  const { isReserved, name } = statusName;
+  const [accountDomainDetails, setAccountDomainDetails] =
+    useState<AccountDomainDetailsResponse>(null);
+  const { id, name } = statusName;
 
-  const handleInfo = () => {
+  const handleInfo = async () => {
+    if (id) {
+      const response = await getAccountDomainDetails(id);
+      console.log(response);
+      
+      setAccountDomainDetails(response);
+    }
+
     setOpen(true);
   };
 
@@ -34,25 +44,25 @@ const ResultItem = ({
         <span>.mina</span>
         <span
           className={classNames(style.status, interMedium.className, {
-            [style.unavailable]: isReserved,
+            [style.unavailable]: id,
           })}
         >
-          {isReserved ? "Taken" : "available"}
+          {id ? "Taken" : "available"}
         </span>
       </div>
       <Button
-        text={isReserved ? "Info" : "Purchase"}
+        text={id ? "Info" : "Purchase"}
         variant={Variant.blue}
         onClick={handleInfo}
       />
-      {isReserved ? (
-        <ModalInfo open={open} onClose={() => setOpen(false)} data={mockData} />
-      ) : (
-        <ModalPurchase
+      {id ? (
+        <ModalInfo
           open={open}
           onClose={() => setOpen(false)}
-          name={name}
+          data={accountDomainDetails}
         />
+      ) : (
+        <ModalPurchase open={open} onClose={() => setOpen(false)} name={name} />
       )}
     </div>
   );
