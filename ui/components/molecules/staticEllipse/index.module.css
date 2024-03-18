@@ -1,0 +1,40 @@
+.wrapper {
+    display: flex;
+    align-items: center;
+    color: var(--link-inactive-color);
+}
+
+.active {
+    color: var(--link-active-color);
+    cursor: pointer;
+}
+
+.active:hover {
+    color: #587efc;
+}
+
+.active:hover .dot {
+    background-color: #587efc;
+}
+
+.dots {
+    width: 20px;
+    min-width: 20px;
+    height: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-right: 1px;
+    padding-left: 1px;
+}
+
+.dot {
+    width: 4px;
+    height: 4px;
+    border-radius: 50%;
+    background-color: var(--link-inactive-color);
+}
+
+.active .dot {
+    background-color: var(--link-active-color);
+}

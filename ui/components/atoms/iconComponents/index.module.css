@@ -1,0 +1,7 @@
+.account {
+  transition: all 0.2s;
+}
+
+.active {
+  fill: #3963FFCC;
+}

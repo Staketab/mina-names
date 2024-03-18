@@ -1,0 +1,47 @@
+body {
+  --col--dark: rgba(0, 0, 0, 0.87);
+  --col--link: #3963ff;
+  --col--light: #ffffff;
+  --link-active-color: #7e9bfc;
+  --link-inactive-color: #636465;
+  --col--dark2: rgba(0, 0, 0, 0.8);
+  --col--gray1: rgba(0, 0, 0, 0.6);
+  /* rgba(249, 249, 249, 1) */
+  --col--gray3: #f9f9f9;
+  --col--gray4: rgba(0, 0, 0, 0.3);
+  --col--gray8: rgba(0, 0, 0, 0.05);
+  --col--secondary8: rgba(57, 99, 255, 0.5);
+  --col--border: #dde0eb;
+
+  /* BUTTON */
+  /* rgba(52, 89, 231, 1) */
+  --col--button2: #3459e7;
+  /* rgba(56, 97, 251, 0.30) */
+  --col--button3: #3861fb4d;
+  /* #3963FF4D */
+  --col--button4: rgba(57, 99, 255, 0.3);
+  /* rgba(232, 236, 250, 1) */
+  --col--button5: #e8ecfa;
+  /* #D7DFFA */
+  --col--button6: rgba(215, 223, 250, 1);
+  /* #F0F3FF */
+  --col--button7: rgba(240, 243, 255, 1);
+  /* rgba(251, 226, 227, 1) */
+  --col--button8: #fbe2e3;
+  /* #EA3943 */
+  --col--button9: rgba(234, 57, 67, 1);
+  /* rgba(245, 215, 217, 1) */
+  --col--button10: #f5d7d9;
+  /* #F0CDCF */
+  --col--button11: rgba(240, 205, 207, 1);
+  /* rgba(251, 215, 217, 1) */
+  --col--button12: #fbd7d9;
+  /* rgba(234, 57, 67, 0.3) */
+  --col--button13: #ea39434d;
+  /* rgba(221, 224, 235, 1) */
+  --col--button14: #dde0eb;
+  /* rgba(237, 241, 245, 1) */
+  --col--button16: #edf1f5;
+  /* #5E62714D */
+  --col--button17: rgba(94, 98, 113, 0.3);
+}

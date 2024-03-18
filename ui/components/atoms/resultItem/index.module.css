@@ -1,0 +1,32 @@
+.wrapper {
+  border-radius: 12px;
+  background: var(--col--light);
+  padding: 18px 18px 18px 23px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  font-size: 28px;
+}
+
+.wrapper > div {
+  display: flex;
+}
+
+.wrapper span {
+  color: #9c9ea6;
+}
+
+.wrapper .status {
+  margin-left: 8px;
+  padding: 2px 8px;
+  background-color: #E0F9EB;
+  color: #3CA568;
+  border-radius: 5.5px;
+  font-size: 16px;
+}
+
+.wrapper .unavailable {
+  color: #CD4B83;
+  background-color: #FFDAEA;
+}

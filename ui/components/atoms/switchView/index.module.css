@@ -1,0 +1,27 @@
+.wrapper {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.wrapper > div {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: #f0f1f5;
+  padding: 4px;
+  border-radius: 7px;
+  width: fit-content;
+  gap: 4px;
+}
+
+.wrapper span {
+  padding: 6px;
+  height: 28px;
+  cursor: pointer;
+}
+
+.activeCard,
+.activeList {
+  background-color: var(--col--light);
+  border-radius: 5px;
+}

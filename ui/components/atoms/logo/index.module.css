@@ -1,0 +1,9 @@
+.logo a{
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.logo img {
+  margin-right: 5px;
+}
