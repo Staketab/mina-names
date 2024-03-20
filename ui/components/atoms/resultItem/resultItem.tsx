@@ -27,8 +27,6 @@ const ResultItem = ({
   const handleInfo = async () => {
     if (id) {
       const response = await getAccountDomainDetails(id);
-      console.log(response);
-      
       setAccountDomainDetails(response);
     }
 

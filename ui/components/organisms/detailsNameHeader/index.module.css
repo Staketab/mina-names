@@ -6,23 +6,44 @@
 }
 
 .rightSide {
-    display: flex;
-    align-items: center;
-    gap: 20px;
+  display: flex;
+  align-items: center;
+  gap: 20px;
 }
 
 .leftSide {
-    display: flex;
-    align-items: center;
+  display: flex;
+  align-items: center;
+}
+
+.imgWrapper {
+  margin-right: 28px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  font-size: 16px;
+  color: #a6a6a6;
+}
+
+.imgWrapper span {
+    bottom: -16px;
+    transition: all .2s;
+    color: #a6a6a6;
+    opacity: 0;
+    cursor: pointer;
+}
+
+.imgWrapper:hover span {
+    opacity: 1;
 }
 
 .address {
-    display: flex;
-    flex-wrap: nowrap;
-    gap: 10px;
-    margin-top: 8px;
+  display: flex;
+  flex-wrap: nowrap;
+  gap: 10px;
+  margin-top: 8px;
 }
 
 .switcher p {
-    color: #597FFF;
+  color: #597fff;
 }

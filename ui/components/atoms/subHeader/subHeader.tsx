@@ -11,7 +11,13 @@ const SubHeader = ({
   className?: string;
 }): JSX.Element => {
   return (
-    <div className={classNames(interSemiBold.className, style.subHeader,className)}>
+    <div
+      className={classNames(
+        interSemiBold.className,
+        style.subHeader,
+        className
+      )}
+    >
       {header}
     </div>
   );

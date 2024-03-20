@@ -2,6 +2,7 @@ import { Navigation } from "@/components/organisms/navigation";
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import style from "./index.module.css";
+import OverlayWrapper from "@/components/molecules/popupOverlay/overlayWrapper";
 
 const inter = Inter({
   weight: ["400"],
@@ -23,6 +24,7 @@ export default function RootLayout({
       <meta name="viewport" content="width=device-width, initial-scale=1" />
       <body className={inter.className}>
         <div className={style.wrapper}>
+          <OverlayWrapper />
           <Navigation />
           <div className={style.content}>{children}</div>
         </div>

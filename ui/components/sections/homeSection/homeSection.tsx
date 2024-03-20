@@ -7,10 +7,10 @@ import { ConnectWalletButton } from "@/components/molecules/connectWalletButton"
 import { interMedium, interSemiBold } from "@/app/fonts";
 import { Input } from "@/components/atoms/input";
 import { ResultItem } from "@/components/atoms/resultItem";
-import { InputVariant } from "@/components/atoms/input/input";
 import { useState } from "react";
 import { useKeyPress } from "@/hooks/useKeyPress";
 import { checkReservedName } from "@/app/actions/clientActions";
+import { InputVariant } from "@/components/atoms/input/types";
 
 const HomeSection = () => {
   const [statusName, setStatusName] = useState<{

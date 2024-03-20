@@ -1,24 +1,10 @@
 import classNames from "classnames";
 import SearchIcon from "../../../assets/search.svg";
-import style from "./index.module.css";
 import Image from "next/image";
 import { interMedium } from "@/app/fonts";
+import { InputProps, InputVariant } from "./types";
 
-export enum InputVariant {
-  search = "search",
-}
-
-type InputProps = {
-  onChange?: (
-    event: React.ChangeEvent<HTMLTextAreaElement | HTMLInputElement>
-  ) => void;
-  placeholder: string;
-  value: string | number;
-  className?: string;
-  type?: string;
-  disabled?: boolean;
-  variant?: InputVariant;
-};
+import style from "./index.module.css";
 
 const Input = ({
   onChange,
@@ -39,7 +25,9 @@ const Input = ({
         type={type}
         disabled={disabled}
       />
-      {variant === InputVariant.search && <Image src={SearchIcon} alt="search" className={style.searchIcon}/>}
+      {variant === InputVariant.search && (
+        <Image src={SearchIcon} alt="search" className={style.searchIcon} />
+      )}
     </div>
   );
 };
