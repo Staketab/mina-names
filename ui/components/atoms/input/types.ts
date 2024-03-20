@@ -9,6 +9,7 @@ export type InputProps = {
   disabled?: boolean;
   variant?: InputVariant;
   fileTypes?: string[];
+  maxLength?: number;
 };
 
 export enum InputVariant {

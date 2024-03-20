@@ -24,7 +24,8 @@ const DetailsNameHeader = ({
   const handleEdit = () => {
     setOpen(true);
   };
-  const { domainImg, domainName } = accountDomainDetails;
+  const { domainImg, domainName, isDefault, ownerAddress } =
+    accountDomainDetails;
 
   return (
     <div className={style.wrapper}>
@@ -36,11 +37,24 @@ const DetailsNameHeader = ({
           </span>
         </div>
         <div>
-          <Name name={domainName} />
+          <div className={style.name}>
+            <Name name={domainName} />
+            {isDefault && (
+              <span
+                className={classNames(
+                  style.defaultLabel,
+                  interMedium.className
+                )}
+              >
+                Default Name
+              </span>
+            )}
+          </div>
+
           <div className={classNames(interMedium.className, style.address)}>
             Owned by
             <StaticEllipse
-              text={accountDomainDetails.ownerAddress}
+              text={ownerAddress}
               view={{ sm: 10, md: 10, lg: 10 }}
               isActive
             />
@@ -51,7 +65,7 @@ const DetailsNameHeader = ({
         <Switcher
           text="Set as default name"
           className={style.switcher}
-          initialState={accountDomainDetails.isDefault}
+          initialState={isDefault}
         />
       </div>
       <ConfirmationModal

@@ -13,3 +13,10 @@
 .dropArea > p:last-child {
   margin-top: 8px;
 }
+
+.loading {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 126px;
+}

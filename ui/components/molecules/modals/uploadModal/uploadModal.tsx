@@ -7,6 +7,7 @@ import { Variant } from "@/components/atoms/button/types";
 import { pinFile } from "@/app/actions/actions";
 import { UploadFile } from "../../uploadFile";
 import { FileInput } from "@/components/atoms/input/fileInput";
+import { useState } from "react";
 
 const fileTypes = [
   ".jpg",
@@ -30,12 +31,32 @@ const UploadModal = ({
   onClose: () => void;
   editImg: (value: string) => Promise<void>;
 }): JSX.Element => {
+  const [file, setFile] = useState<File>(null);
+  const [loading, setLoading] = useState<boolean>(false);
+  const [isSupported, setIsSupported] = useState<boolean>(null);
   const handleChange = async (file: File): Promise<void> => {
-    const formData = new FormData();
-    formData.append("file", file);
-    const ipfsHash = await pinFile(formData);
-    editImg(ipfsHash);
+    setFile(file);
+    setIsSupported(true);
   };
+
+  const submit = async () => {
+    try {
+      setLoading(true);
+      const formData = new FormData();
+      formData.append("file", file);
+      const ipfsHash = await pinFile(formData);
+      await editImg(ipfsHash);
+    } catch (error) {
+      console.log(error);
+    }
+    setLoading(false);
+    onClose();
+  };
+
+  const onTypeError = () => {
+    setIsSupported(false);
+  };
+
   return (
     <PopupOverlay
       position="center"
@@ -47,13 +68,24 @@ const UploadModal = ({
         <div>Upload Source Code</div>
         <FileInput
           onChange={handleChange}
-          placeholder="Choose .zip File"
+          placeholder={file?.name || "Choose File"}
           fileTypes={fileTypes}
+          isSupported={isSupported}
+          loading={loading}
         />
-        <UploadFile fileTypes={fileTypes} onChange={handleChange} />
+        <UploadFile
+          fileTypes={fileTypes}
+          onChange={handleChange}
+          onTypeError={onTypeError}
+        />
         <div className={style.buttonsBlock}>
           <Button text="Cancel" variant={Variant.cancel} onClick={onClose} />
-          <Button text="Update" variant={Variant.blue} disabled />
+          <Button
+            text="Update"
+            variant={Variant.blue}
+            disabled={!file}
+            onClick={submit}
+          />
         </div>
       </div>
     </PopupOverlay>

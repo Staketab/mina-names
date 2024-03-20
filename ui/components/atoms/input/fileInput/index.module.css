@@ -11,6 +11,7 @@
   border-radius: 7px;
   border: 1px solid #7191fc;
   background: #fff;
+  height: 40px;
 }
 
 .inputFile input[type="file"] {
@@ -23,9 +24,17 @@
 }
 
 .inputFileBtn {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  justify-content: center;
   position: absolute;
   right: 13px;
-  top: 12px;
+  top: 10px;
   color: #597fff;
   font-size: 14px;
+}
+
+.notSupported {
+  border-color: red;
 }
