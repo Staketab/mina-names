@@ -24,15 +24,6 @@ export default function Page() {
       });
       setAccountDomains(response);
     })();
-    (async () => {
-      const response = await getDomains({
-        page: 0,
-        size: 20,
-        sortBy: SORT_BY.RESERVATION_TIMESTAMP,
-        orderBy: ORDER_BY.DESC,
-      });
-      setDomains(response);
-    })();
   }, []);
 
   const handleDomainsMetadata = async () => {

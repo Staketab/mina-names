@@ -1,0 +1,31 @@
+.inputFile {
+  position: relative;
+  width: 100%;
+  cursor: pointer;
+}
+
+.inputFileText {
+  display: block;
+  width: 100%;
+  padding: 10px 12px;
+  border-radius: 7px;
+  border: 1px solid #7191fc;
+  background: #fff;
+}
+
+.inputFile input[type="file"] {
+  position: absolute;
+  z-index: -1;
+  opacity: 0;
+  display: block;
+  width: 0;
+  height: 0;
+}
+
+.inputFileBtn {
+  position: absolute;
+  right: 13px;
+  top: 12px;
+  color: #597fff;
+  font-size: 14px;
+}
