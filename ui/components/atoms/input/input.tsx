@@ -14,6 +14,7 @@ const Input = ({
   type,
   disabled,
   variant,
+  maxLength,
 }: InputProps): JSX.Element => {
   return (
     <div className={style.wrapper}>
@@ -24,6 +25,7 @@ const Input = ({
         value={value}
         type={type}
         disabled={disabled}
+        maxLength={maxLength}
       />
       {variant === InputVariant.search && (
         <Image src={SearchIcon} alt="search" className={style.searchIcon} />

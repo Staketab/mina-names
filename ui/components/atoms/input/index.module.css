@@ -14,14 +14,12 @@
   font-size: 28px;
 }
 
+.input:focus-visible,
+.input:focus,
 .input:hover {
-  outline: 3px solid #ced9ff;
-  transition: outline-width 0.1s ease;
-}
-
-.input:focus {
-  border: 1px solid #597fff;
-  outline: 3px solid #ced9ff;
+  box-shadow: inset 0 0 0 3px #b4c7f2;
+  border: none;
+  outline: none;
 }
 
 .searchIcon {

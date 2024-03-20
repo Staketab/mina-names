@@ -28,6 +28,10 @@ const HomeSection = () => {
   };
 
   useKeyPress("Enter", handleInput);
+  const handleChange = (value) => {
+    const cleanInput = value.replace(/[^a-z0-9- ]/g, "");
+    setValue(cleanInput);
+  };
 
   return (
     <div className={classNames(style.wrapper, "container")}>
@@ -44,8 +48,9 @@ const HomeSection = () => {
           placeholder="Search .mina Names"
           value={value}
           className={style.input}
-          onChange={(e) => setValue(e.target.value)}
+          onChange={(e) => handleChange(e.target.value)}
           variant={InputVariant.search}
+          maxLength={30}
         />
         {statusName?.name && (
           <ResultItem statusName={statusName} className={style.resultItem} />

@@ -26,15 +26,15 @@
 }
 
 .imgWrapper span {
-    bottom: -16px;
-    transition: all .2s;
-    color: #a6a6a6;
-    opacity: 0;
-    cursor: pointer;
+  bottom: -16px;
+  transition: all 0.2s;
+  color: #a6a6a6;
+  opacity: 0;
+  cursor: pointer;
 }
 
 .imgWrapper:hover span {
-    opacity: 1;
+  opacity: 1;
 }
 
 .address {
@@ -46,4 +46,17 @@
 
 .switcher p {
   color: #597fff;
+}
+
+.name {
+  display: flex;
+  align-items: center;
+}
+
+.defaultLabel {
+  padding: 1px 6px;
+  border-radius: 30px;
+  background-color: rgba(125, 211, 161, 0.2);
+  color: #7DD3A1;
+  margin-left: 27px;
 }
