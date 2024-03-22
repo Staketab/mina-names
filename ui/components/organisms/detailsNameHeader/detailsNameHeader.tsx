@@ -12,6 +12,7 @@ import { interMedium } from "@/app/fonts";
 import { Name } from "@/components/atoms/name";
 import { useState } from "react";
 import { ConfirmationModal } from "@/components/molecules/modals/confirmationModal";
+import { setDefaultImg } from "@/app/actions/actions";
 
 const DetailsNameHeader = ({
   accountDomainDetails,
@@ -21,11 +22,16 @@ const DetailsNameHeader = ({
   editImg: (value: string) => Promise<void>;
 }): JSX.Element => {
   const [open, setOpen] = useState<boolean>(false);
+  const [isDefault, setIsDefault] = useState(accountDomainDetails.isDefault);
   const handleEdit = () => {
     setOpen(true);
   };
-  const { domainImg, domainName, isDefault, ownerAddress } =
-    accountDomainDetails;
+  const { domainImg, domainName, ownerAddress } = accountDomainDetails;
+
+  const handleDefaultImg = async () => {
+    const response = await setDefaultImg(accountDomainDetails.id);
+    setIsDefault(response);
+  };
 
   return (
     <div className={style.wrapper}>
@@ -66,6 +72,7 @@ const DetailsNameHeader = ({
           text="Set as default name"
           className={style.switcher}
           initialState={isDefault}
+          onClick={handleDefaultImg}
         />
       </div>
       <ConfirmationModal

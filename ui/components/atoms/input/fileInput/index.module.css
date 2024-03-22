@@ -12,6 +12,7 @@
   border: 1px solid #7191fc;
   background: #fff;
   height: 40px;
+  color: #9c9ea6;
 }
 
 .inputFile input[type="file"] {
@@ -36,5 +37,10 @@
 }
 
 .notSupported {
-  border-color: red;
+  border-color: #e56767;
+}
+
+.fileText {
+  color: rgba(0, 0, 0, 0.8);
+  border: 1px solid #7DD3A1;
 }
