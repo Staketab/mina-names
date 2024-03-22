@@ -7,6 +7,7 @@ import successIcon from "../../../../assets/success.svg";
 import style from "./index.module.css";
 import Image from "next/image";
 import { Loader, LoaderVariant } from "../../loader";
+import Tooltip from "@/components/molecules/tooltip";
 
 const FileInput = ({
   fileTypes,
@@ -14,12 +15,14 @@ const FileInput = ({
   placeholder,
   isSupported,
   loading,
+  tooltipText
 }: {
   fileTypes: string[];
   onChange: (value: File) => void;
   placeholder: string;
   isSupported?: boolean;
   loading?: boolean;
+  tooltipText: string;
 }): JSX.Element => {
   const handleChangeFile = (event) => {
     const file = event?.target?.files?.[0];
@@ -47,7 +50,9 @@ const FileInput = ({
         />
         <span className={style.inputFileBtn}>
           {!loading && !isSupported && typeof isSupported === "boolean" && (
-            <Image src={errorIcon} alt="" width={20} height={20} />
+            <Tooltip text={tooltipText}>
+              <Image src={errorIcon} alt="" width={20} height={20} />
+            </Tooltip>
           )}
           {!loading && isSupported && typeof isSupported === "boolean" && (
             <Image src={successIcon} alt="" width={20} height={20} />

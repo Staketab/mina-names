@@ -72,6 +72,7 @@ const UploadModal = ({
           fileTypes={fileTypes}
           isSupported={isSupported}
           loading={loading}
+          tooltipText="Error message"
         />
         <UploadFile
           fileTypes={fileTypes}
