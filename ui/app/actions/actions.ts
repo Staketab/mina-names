@@ -131,7 +131,10 @@ export async function pinFile(formData): Promise<string> {
   }
 }
 
-export async function editDomainImg(payload: { id: string; img: string }): Promise<AccountDomainDetailsResponse>  {
+export async function editDomainImg(payload: {
+  id: string;
+  img: string;
+}): Promise<AccountDomainDetailsResponse> {
   const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/domains/edit`, {
     method: "PUT",
     headers: {
@@ -142,3 +145,17 @@ export async function editDomainImg(payload: { id: string; img: string }): Promi
   });
   return await res.json();
 }
+
+export const setDefaultImg = async (id: string): Promise<boolean> => {
+  const res = await fetch(
+    `${process.env.NEXT_PUBLIC_API_URL}/domains/${id}/default`,
+    {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+        "x-api-key": process.env.NEXT_PUBLIC_API_KEY,
+      },
+    }
+  );
+  return await res.json();
+};

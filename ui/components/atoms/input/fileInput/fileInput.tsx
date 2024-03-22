@@ -15,7 +15,7 @@ const FileInput = ({
   placeholder,
   isSupported,
   loading,
-  tooltipText
+  tooltipText,
 }: {
   fileTypes: string[];
   onChange: (value: File) => void;
@@ -38,6 +38,7 @@ const FileInput = ({
           className={classNames(style.inputFileText, {
             [style.notSupported]:
               !isSupported && typeof isSupported === "boolean",
+            [style.fileText]: isSupported,
           })}
         >
           {placeholder}

@@ -54,14 +54,21 @@ const UploadModal = ({
   };
 
   const onTypeError = () => {
+    setFile(null)
     setIsSupported(false);
+  };
+
+  const handleClose = () => {
+    onClose?.();
+    setFile(null);
+    setIsSupported(null);
   };
 
   return (
     <PopupOverlay
       position="center"
       animation="appear"
-      onClose={onClose}
+      onClose={handleClose}
       show={open}
     >
       <div className={style.wrapper}>
@@ -80,7 +87,11 @@ const UploadModal = ({
           onTypeError={onTypeError}
         />
         <div className={style.buttonsBlock}>
-          <Button text="Cancel" variant={Variant.cancel} onClick={onClose} />
+          <Button
+            text="Cancel"
+            variant={Variant.cancel}
+            onClick={handleClose}
+          />
           <Button
             text="Update"
             variant={Variant.blue}
