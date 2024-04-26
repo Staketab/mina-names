@@ -1,0 +1,15 @@
+.wrapper {
+  position: relative;
+}
+
+.tabs > div:first-child {
+  justify-content: flex-start;
+  padding: 0 24px;
+}
+
+
+.switchView {
+  position: absolute;
+  top: 3px;
+  right: 24px;
+}

@@ -1,6 +1,8 @@
 import { useEffect, useState } from "react";
 import { useLocalStorage } from "./useLocalStorage";
 import useAddressBalance, { Balance } from "./useAddressBalance";
+import { useStoreContext } from "@/store";
+import { Modals } from "@/components/molecules/modals/modals.types";
 export type SendPaymentresponse = {
   hash?: string;
   message?: string;
@@ -42,13 +44,17 @@ interface IUseGlobal {
       to: string;
       fee: number;
       meme?: string;
-    }) => Promise<void>;
+    }) => Promise<{
+      hash: string;
+    } | undefined>;
   };
 }
 
 export default function useWallet(): IUseGlobal {
   const [account, setAccount] = useLocalStorage("account");
-
+  const {
+    actions: { openModal },
+  } = useStoreContext();
   const [walletData, setWalletData] = useState(null);
   const [, setIsConnectedAuro] = useLocalStorage(isConnectedAuro);
   const [sendResultMessage, setSendResultMessage] =
@@ -103,19 +109,26 @@ export default function useWallet(): IUseGlobal {
   };
 
   const onSendClick = async ({ amount, to, fee, memo }) => {
-    let sendResult = await minaAdapter
-      .sendPayment({
-        amount,
-        to,
-        fee,
-        memo,
-      })
-      .catch((err) => err);
-    setSendResultMessage({
-      hash: sendResult.hash,
-      message: sendResult.message,
-      result: !!sendResult.hash,
-    });
+    try {
+      let sendResult = await minaAdapter
+        .sendPayment({
+          amount,
+          to,
+          fee,
+          memo,
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+      setSendResultMessage({
+        hash: sendResult?.hash,
+        message: sendResult?.message,
+        result: !!sendResult?.hash,
+      });
+      return sendResult;
+    } catch (error) {
+      console.log("tttt", error);
+    }
   };
 
   return {

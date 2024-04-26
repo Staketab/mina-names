@@ -1,0 +1,5 @@
+.contentWrapper {
+  background-color: var(--col--light);
+  border-radius: 12px;
+  overflow: hidden;
+}

@@ -1,138 +1,166 @@
 .apiButton {
-    background-color: var(--col--link);
-    color: var(--col--light);
-    border: none;
-    padding: 8px 16px;
-    border-radius: 7px;
-    cursor: pointer;
-    transition: all ease 200ms;
-    position: relative;
-    display: flex;
-    justify-content: center;
-    align-items: center;
+  background-color: var(--col--button);
+  color: var(--col--light);
+  border: none;
+  padding: 10px 16px;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all ease 200ms;
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 16px;
 }
 
 .apiButton svg {
-    margin-right: 4px;
+  margin-right: 4px;
 }
 
 .apiButton:hover {
-    background-color: var(--col--button2);
+  background-color: #b6ec1c;
 }
 
 .apiButton:active {
-    box-shadow: 0px 0px 0px 3px var(--col--button3);
+  background-color: var(--col--button--pressed);
 }
 
 .apiButton:disabled {
-    background-color: var(--col--button4);
-    cursor: default;
-    box-shadow: none;
+  background-color: var(--col-button--disable);
+  cursor: default;
+  box-shadow: none;
+  pointer-events: none;
 }
 
 .light {
-    color: var(--col--link);
-    background-color: transparent
+  color: var(--col--link);
+  background-color: transparent;
 }
 
-
 .light:hover {
-    background-color: transparent;
+  background-color: transparent;
 }
 
 .light:active {
-    background-color: var(--col--button6);
-    box-shadow: none;
+  background-color: var(--col--button6);
+  box-shadow: none;
 }
 
 .light:disabled {
-    color: var(--col--button4);
-    background-color: transparent
+  color: var(--col--button4);
+  background-color: transparent;
 }
 
 .red {
-    background-color: var(--col--button8);
-    color: var(--col--button9);
+  background-color: var(--col--button8);
+  color: var(--col--button9);
 }
 
 .red svg {
-    fill: var(--col--button9);
+  fill: var(--col--button9);
 }
 
 .red:hover {
-    background-color: var(--col--button10);
+  background-color: var(--col--button10);
 }
 
 .red:active {
-    background-color: var(--col--button11);
-    box-shadow: none;
+  background-color: var(--col--button11);
+  box-shadow: none;
 }
 
 .red:disabled {
-    color: var(--col--button13);
-    background-color: var(--col--button12);
+  color: var(--col--button13);
+  background-color: var(--col--button12);
 }
 
 .grey {
-    border-radius: 6px;
-    background-color: #F0F1F5;
-    color: var(--col--dark2);
-    border: none;
+  border-radius: 6px;
+  background-color: #f0f1f5;
+  color: var(--col--dark2);
+  border: none;
 }
 
 .grey svg {
-    fill: var(--col--dark2);
+  fill: var(--col--dark2);
 }
 
 .grey:hover {
-    background-color: var(--col--light);
-    box-shadow: 0px 0px 0px 1px var(--col--button14);
+  background-color: var(--col--light);
+  box-shadow: 0px 0px 0px 1px var(--col--button14);
 }
 
 .grey:active {
-    background-color: var(--col--button16);
-    box-shadow: 0px 0px 0px 1px var(--col--button14);
+  background-color: var(--col--button16);
+  box-shadow: 0px 0px 0px 1px var(--col--button14);
 }
 
 .grey:disabled {
-    background-color: transparent;
-    color: var(--col--button17);
+  background-color: transparent;
+  color: var(--col--button17);
 }
 
 .blue {
-    box-shadow: 0px 0px 0px 2px var(--col--secondary8);
-    background-color: var(--col--button7);
-    color: var(--col--link);
+  box-shadow: 0px 0px 0px 2px var(--col--secondary8);
+  background-color: var(--col--button7);
+  color: var(--col--link);
 }
 
 .blue svg {
-    fill: var(--col--link);
+  fill: var(--col--link);
 }
 
 .blue:hover {
-    background-color: var(--col--button5);
+  background-color: var(--col--button5);
 }
 
 .blue:active {
-    background-color: var(--col--button4);
-    box-shadow: 0px 0px 0px 2px var(--col--secondary8);
+  background-color: var(--col--button4);
+  box-shadow: 0px 0px 0px 2px var(--col--secondary8);
 }
 
 .blue:disabled {
-    color: var(--col--button4);
-    background-color: var(--col--button7);
-    box-shadow: 0px 0px 0px 2px var(--col--secondary8);
+  color: var(--col--button4);
+  background-color: var(--col--button7);
+  box-shadow: 0px 0px 0px 2px var(--col--secondary8);
 }
 
 .cancel {
-    border-color: transparent;
-    background-color: transparent;
-    color: var(--col--gray1);
+  border-color: transparent;
+  background-color: transparent;
+  color: var(--col--gray1);
 }
 
-.cancel:hover, .cancel:active {
-    border-color: transparent;
-    background-color: transparent;
-    color: var(--col--gray1);
-    box-shadow: none;
+.cancel:hover,
+.cancel:active {
+  border-color: transparent;
+  background-color: transparent;
+  color: var(--col--gray1);
+  box-shadow: none;
 }
+
+.black {
+  background-color: #1a1a1b;
+}
+
+.black:hover {
+  background-color: #f2f2f5;
+  color: #1a1a1b;
+}
+
+.black:disabled {
+  background-color: rgba(26, 26, 27, 0.3);
+}
+
+.lightTab {
+  border-radius: 0;
+  color: #1a1a1b;
+  background-color: transparent;
+  padding: 8px 0;
+  height: 56px;
+  border-bottom: 2px solid #1a1a1b;
+}
+
+.lightTab:hover {
+  background-color: transparent;
+} 

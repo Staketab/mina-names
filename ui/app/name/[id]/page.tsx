@@ -3,7 +3,7 @@
 import { editDomainImg, getAccountDomainDetails } from "@/app/actions/actions";
 import { useEffect, useState } from "react";
 
-import DetailsNameHeader from "@/components/organisms/detailsNameHeader/detailsNameHeader";
+import DetailsNameInfo from "@/components/organisms/detailsNameInfo/detailsNameInfo";
 import DetailsNameTable from "@/components/organisms/detailsNameTable/detailsNameTable";
 import { AccountDomainDetailsResponse } from "@/app/actions/types";
 
@@ -33,8 +33,8 @@ export default function Page({ params }: { params: { id: string } }) {
   if (!accountDomainDetails) return null;
 
   return (
-    <div>
-      <DetailsNameHeader
+    <div className="container">
+      <DetailsNameInfo
         accountDomainDetails={accountDomainDetails}
         editImg={editImg}
       />

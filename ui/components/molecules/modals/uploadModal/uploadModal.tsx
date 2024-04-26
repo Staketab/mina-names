@@ -1,13 +1,13 @@
 "use client";
 
 import style from "./index.module.css";
-import PopupOverlay from "../../popupOverlay";
 import { Button } from "@/components/atoms/button";
 import { Variant } from "@/components/atoms/button/types";
 import { pinFile } from "@/app/actions/actions";
 import { UploadFile } from "../../uploadFile";
 import { FileInput } from "@/components/atoms/input/fileInput";
-import { useState } from "react";
+import React, { useState } from "react";
+import { useStoreContext } from "@/store";
 
 const fileTypes = [
   ".jpg",
@@ -23,14 +23,14 @@ const fileTypes = [
 ];
 
 const UploadModal = ({
-  open,
-  onClose,
   editImg,
 }: {
-  open: boolean;
-  onClose: () => void;
   editImg: (value: string) => Promise<void>;
 }): JSX.Element => {
+  const {
+    actions: { closeModal },
+  } = useStoreContext();
+
   const [file, setFile] = useState<File>(null);
   const [loading, setLoading] = useState<boolean>(false);
   const [isSupported, setIsSupported] = useState<boolean>(null);
@@ -50,58 +50,45 @@ const UploadModal = ({
       console.log(error);
     }
     setLoading(false);
-    onClose();
+    closeModal();
   };
 
   const onTypeError = () => {
-    setFile(null)
+    setFile(null);
     setIsSupported(false);
   };
 
   const handleClose = () => {
-    onClose?.();
-    setFile(null);
-    setIsSupported(null);
+    closeModal();
   };
 
   return (
-    <PopupOverlay
-      position="center"
-      animation="appear"
-      onClose={handleClose}
-      show={open}
-    >
-      <div className={style.wrapper}>
-        <div>Upload Source Code</div>
-        <FileInput
-          onChange={handleChange}
-          placeholder={file?.name || "Choose File"}
-          fileTypes={fileTypes}
-          isSupported={isSupported}
-          loading={loading}
-          tooltipText="Error message"
+    <div className={style.wrapper}>
+      <div>Upload Source Code</div>
+      <FileInput
+        onChange={handleChange}
+        placeholder={file?.name || "Choose File"}
+        fileTypes={fileTypes}
+        isSupported={isSupported}
+        loading={loading}
+        tooltipText="Error message"
+      />
+      <UploadFile
+        fileTypes={fileTypes}
+        onChange={handleChange}
+        onTypeError={onTypeError}
+      />
+      <div className={style.buttonsBlock}>
+        <Button text="Cancel" variant={Variant.cancel} onClick={handleClose} />
+        <Button
+          text="Update"
+          variant={Variant.blue}
+          disabled={!file}
+          onClick={submit}
         />
-        <UploadFile
-          fileTypes={fileTypes}
-          onChange={handleChange}
-          onTypeError={onTypeError}
-        />
-        <div className={style.buttonsBlock}>
-          <Button
-            text="Cancel"
-            variant={Variant.cancel}
-            onClick={handleClose}
-          />
-          <Button
-            text="Update"
-            variant={Variant.blue}
-            disabled={!file}
-            onClick={submit}
-          />
-        </div>
       </div>
-    </PopupOverlay>
+    </div>
   );
 };
 
-export default UploadModal;
+export default React.memo(UploadModal);

@@ -3,7 +3,7 @@ import pendingIcon from "../../../assets/pending.svg";
 
 import style from "./index.module.css";
 import classNames from "classnames";
-import { interMedium } from "@/app/fonts";
+import { manropeSemiBold } from "@/app/fonts";
 import Image from "next/image";
 
 const Status = ({
@@ -15,12 +15,23 @@ const Status = ({
 }): JSX.Element => {
   return (
     <div
-      className={classNames(style.status, interMedium.className, className, {
-        [style.pending]: status === DOMAIN_STATUS.PENDING,
-      })}
+      className={classNames(
+        style.status,
+        manropeSemiBold.className,
+        className,
+        {
+          [style.pending]: status === DOMAIN_STATUS.PENDING,
+        }
+      )}
     >
       {status === DOMAIN_STATUS.PENDING && (
-        <Image src={pendingIcon} alt="" width={20} height={20} className={style.icon} />
+        <Image
+          src={pendingIcon}
+          alt=""
+          width={20}
+          height={20}
+          className={style.icon}
+        />
       )}
       <span>{status}</span>
     </div>

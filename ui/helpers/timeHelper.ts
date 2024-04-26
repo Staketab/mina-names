@@ -1,7 +1,7 @@
 import dayjs from "dayjs";
-import dayjsPluginUTC from 'dayjs-plugin-utc'
+import dayjsPluginUTC from "dayjs-plugin-utc";
 
-dayjs.extend(dayjsPluginUTC)
+dayjs.extend(dayjsPluginUTC);
 
 export const getTimeFromMillisecondsDynamic = (
   millis,
@@ -89,13 +89,21 @@ export const getTimeFromMilliseconds = (millis) => {
   return "< " + Math.ceil(minutes) + "m" + ago;
 };
 
-
 export const dateTimeFromTimestamp = (timestamp) => {
-	const date = dayjs(new Date(timestamp)).format('DD.MM.YYYY HH:mm')
-	return date
-}
+  const date = dayjs(new Date(timestamp)).format("DD.MM.YYYY HH:mm");
+  return date;
+};
 
+// April 25, 2025 11:52 AM UTC
 export const monthDayYearTimeFormat = (timestamp) => {
-	const date = dayjs(new Date(timestamp)).format('MMMM D, YYYY h:mm A UTC')
-	return date
-}
+  if (!timestamp) return;
+  const date = dayjs(new Date(timestamp)).format("MMMM D, YYYY h:mm A UTC");
+  return date;
+};
+
+// 01.05.2021 UTC 11:34
+export const dayMonthYearTimeFormat = (timestamp) => {
+  if (!timestamp) return;
+  const date = dayjs(new Date(timestamp)).format("DD.MM.YYYY UTC h:mm");
+  return date;
+};

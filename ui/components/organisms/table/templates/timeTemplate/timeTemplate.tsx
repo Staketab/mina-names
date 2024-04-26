@@ -6,7 +6,7 @@ import {
   dateTimeFromTimestamp,
   getTimeFromMillisecondsDynamic,
 } from "@/helpers/timeHelper";
-import { interMedium } from "@/app/fonts";
+import { manropeMedium, manropeSemiBold } from "@/app/fonts";
 
 type TimeTemplateProps = {
   data: any;
@@ -31,9 +31,11 @@ const TimeTemplate = ({ data, config }: TimeTemplateProps) => {
   }, []);
 
   return (
-    <div className={classNames(style.timeTemplate, interMedium.className)}>
+    <div className={classNames(style.timeTemplate, manropeSemiBold.className)}>
       <span>{getTimeFromMillisecondsDynamic(date - value, false, true)}</span>
-      <span>{dateTimeFromTimestamp(value)}</span>
+      <span className={manropeMedium.className}>
+        {dateTimeFromTimestamp(value)}
+      </span>
     </div>
   );
 };

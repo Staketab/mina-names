@@ -1,13 +1,17 @@
 import classNames from "classnames";
-import SearchIcon from "../../../assets/search.svg";
+import searchIcon from "../../../assets/search.svg";
+import clearIcon from "../../../assets/close.svg";
+
 import Image from "next/image";
-import { interMedium } from "@/app/fonts";
+import { manropeSemiBold } from "@/app/fonts";
 import { InputProps, InputVariant } from "./types";
 
 import style from "./index.module.css";
 
 const Input = ({
   onChange,
+  onClear,
+  onSubmit,
   placeholder,
   value,
   className,
@@ -15,11 +19,26 @@ const Input = ({
   disabled,
   variant,
   maxLength,
+  enableClear,
 }: InputProps): JSX.Element => {
+  const handleClearField = (): void => {
+    onClear?.();
+    const value = {
+      target: {
+        value: "",
+      },
+    } as React.ChangeEvent<HTMLTextAreaElement | HTMLInputElement>;
+    onChange(value);
+  };
+
   return (
     <div className={style.wrapper}>
       <input
-        className={classNames(style.input, className, interMedium.className)}
+        className={classNames(
+          style.input,
+          className,
+          manropeSemiBold.className
+        )}
         onChange={onChange}
         placeholder={placeholder}
         value={value}
@@ -27,9 +46,16 @@ const Input = ({
         disabled={disabled}
         maxLength={maxLength}
       />
-      {variant === InputVariant.search && (
-        <Image src={SearchIcon} alt="search" className={style.searchIcon} />
-      )}
+      <div className={style.actions}>
+        {enableClear && value && (
+          <Image src={clearIcon} alt="search" onClick={handleClearField} />
+        )}
+        {variant === InputVariant.search && (
+          <div className={style.searchIcon}>
+            <Image src={searchIcon} alt="search" onClick={onSubmit} />
+          </div>
+        )}
+      </div>
     </div>
   );
 };
