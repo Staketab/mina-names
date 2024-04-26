@@ -2,8 +2,8 @@ import { useEffect } from "react";
 import { createPortal } from "react-dom";
 import "./index.css";
 
-let elem = document.createElement("div");
-elem.classList.add("portal");
+let elem = typeof window !== 'undefined' && window.document.createElement("div");
+elem.classList?.add("portal");
 
 const Portal = ({ children, onClick }) => {
   useEffect(() => {
