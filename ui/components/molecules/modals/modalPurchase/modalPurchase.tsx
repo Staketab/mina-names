@@ -62,6 +62,15 @@ const ModalPurchase = ({ name }: ModalPurchaseProps): JSX.Element => {
             seeDomains: () => console.log("seeDomains"),
             seeTransaction: () => console.log("seeTransaction"),
           });
+          (async () => {
+            await saveName({
+              name,
+              amount,
+              ownerAddress: accountId[0],
+              txHash: sendResultMessage.hash,
+              expirationTime: selectedPeriod,
+            });
+          })();
         } else {
           openModal(Modals.transactionFailed, {
             tryAgain: handlePurchase,
@@ -72,20 +81,6 @@ const ModalPurchase = ({ name }: ModalPurchaseProps): JSX.Element => {
         console.log(error);
       });
   };
-
-  useEffect(() => {
-    if (sendResultMessage?.hash) {
-      (async () => {
-        await saveName({
-          name,
-          amount,
-          ownerAddress: accountId[0],
-          txHash: sendResultMessage.hash,
-          expirationTime: selectedPeriod,
-        });
-      })();
-    }
-  }, [sendResultMessage?.hash]);
 
   return (
     <div className={style.wrapper}>
