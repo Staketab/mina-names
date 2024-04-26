@@ -58,19 +58,19 @@ const ModalPurchase = ({ name }: ModalPurchaseProps): JSX.Element => {
       .then((data) => {
         closeModal();
         if (data?.hash) {
-          openModal(Modals.transactionApplied, {
-            seeDomains: () => console.log("seeDomains"),
-            seeTransaction: () => console.log("seeTransaction"),
-          });
           (async () => {
             await saveName({
               name,
               amount,
               ownerAddress: accountId[0],
-              txHash: sendResultMessage.hash,
+              txHash: data?.hash,
               expirationTime: selectedPeriod,
             });
           })();
+          openModal(Modals.transactionApplied, {
+            seeDomains: () => console.log("seeDomains"),
+            seeTransaction: () => console.log("seeTransaction"),
+          });
         } else {
           openModal(Modals.transactionFailed, {
             tryAgain: handlePurchase,
