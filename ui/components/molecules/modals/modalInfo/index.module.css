@@ -1,5 +1,5 @@
 .content {
-  padding: 48px 45px 24px 45px;
+  width: 412px;
   background-color: var(--col--light);
   border-radius: 12px;
   position: relative;
@@ -7,36 +7,32 @@
   flex-direction: column;
   justify-content: center;
   align-items: center;
+  overflow: hidden;
 }
 
-.content .closeIcon {
-  width: 24px;
-  height: 24px;
-  position: absolute;
-  top: 24px;
-  right: 24px;
-  cursor: pointer;
-  transition: all 0.2s;
+.topContent {
+  width: 100%;
+  padding: 32px 0 16px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background-color: #f2f2f5;
 }
 
-.closeIcon:hover {
-  opacity: 0.5;
+.topContent img {
+  width: 144px;
+  height: 120px;
+  margin-bottom: 16px;
 }
 
-.content img {
-  width: 234px;
-  height: 234px;
+.bottomContent {
+  width: 100%;
+  padding: 16px 24px 24px 24px;
 }
 
 .content button {
   margin-top: 25px;
-}
-
-.infoWrapper {
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-  width: 100%;
 }
 
 .header {
@@ -44,15 +40,35 @@
   font-size: 16px;
 }
 
-.infoItem > span {
-  color: rgba(0, 0, 0, 0.3);
-  font-size: 13px;
+.infoItem {
+  display: flex;
+  justify-content: space-between;
+  padding: 8px 0;
 }
 
-.infoItem div {
-  color: var(--col--dark);
+.bottomContentLeftSide {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
 }
 
-.infoItem div span {
-  background-color: var(--col--dark);
+.bottomContentRightSide {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 8px;
+  border-radius: 8px;
+  background-color: #f2f2f5;
+}
+
+.bottomContentLeftSide > div {
+  color: #949499;
+}
+
+.bottomContentLeftSide > div span {
+  background-color: #949499;
+}
+
+.bottomContent button {
+  width: 100%;
 }

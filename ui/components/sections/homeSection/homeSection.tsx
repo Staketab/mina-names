@@ -1,10 +1,6 @@
 "use client";
-import { Logo } from "@/components/atoms/logo";
 import classNames from "classnames";
-
-import style from "./index.module.css";
-import { ConnectWalletButton } from "@/components/molecules/connectWalletButton";
-import { interMedium, interSemiBold } from "@/app/fonts";
+import { manropeSemiBold, wixMadeforDisplayExtraBold } from "@/app/fonts";
 import { Input } from "@/components/atoms/input";
 import { ResultItem } from "@/components/atoms/resultItem";
 import { useState } from "react";
@@ -12,14 +8,21 @@ import { useKeyPress } from "@/hooks/useKeyPress";
 import { checkReservedName } from "@/app/actions/clientActions";
 import { InputVariant } from "@/components/atoms/input/types";
 
+import style from "./index.module.css";
+import { useStoreContext } from "@/store";
+import { Modals } from "@/components/molecules/modals/modals.types";
+
 const HomeSection = () => {
   const [statusName, setStatusName] = useState<{
     id: string | null;
     name: string;
   }>(null);
   const [value, setValue] = useState("");
+  const {
+    actions: { openModal },
+  } = useStoreContext();
 
-  const handleInput = async () => {
+  const handleInput = async (): Promise<void> => {
     const response = await checkReservedName(value);
     setStatusName({
       id: response.id,
@@ -31,28 +34,32 @@ const HomeSection = () => {
   const handleChange = (value) => {
     const cleanInput = value.replace(/[^a-z0-9- ]/g, "");
     setValue(cleanInput);
+    setStatusName({
+      id: null,
+      name: "",
+    });
   };
 
   return (
     <div className={classNames(style.wrapper, "container")}>
-      <div className={style.header}>
-        <Logo />
-        <ConnectWalletButton />
-      </div>
       <div className={style.content}>
-        <h1 className={interSemiBold.className}>Reveal Your True Self</h1>
-        <p className={interMedium.className}>
+        <h1 className={wixMadeforDisplayExtraBold.className}>
+          Reveal your true self
+        </h1>
+        <p className={manropeSemiBold.className}>
           A creative ID that showcases your personality
         </p>
         <Input
-          placeholder="Search .mina Names"
+          placeholder="Search Names.mina"
           value={value}
           className={style.input}
           onChange={(e) => handleChange(e.target.value)}
+          onSubmit={handleInput}
           variant={InputVariant.search}
           maxLength={30}
+          enableClear
         />
-        {statusName?.name && (
+        {statusName?.name && value && (
           <ResultItem statusName={statusName} className={style.resultItem} />
         )}
       </div>

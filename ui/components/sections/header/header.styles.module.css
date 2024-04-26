@@ -1,0 +1,12 @@
+.header {
+  padding: 14px 50px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.rightSide {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}

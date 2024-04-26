@@ -1,0 +1,12 @@
+.icon {
+    transition: all .2s;
+    cursor: pointer;
+}
+
+.icon:hover {
+  fill: #626266;
+}
+
+/* .icon:active {
+  fill: #9775f3;
+} */

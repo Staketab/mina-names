@@ -1,4 +1,4 @@
-import { interSemiBold } from "@/app/fonts";
+import { interSemiBold, manropeBold } from "@/app/fonts";
 import classNames from "classnames";
 
 import style from "./index.module.css";
@@ -13,7 +13,7 @@ const SubHeader = ({
   return (
     <div
       className={classNames(
-        interSemiBold.className,
+        manropeBold.className,
         style.subHeader,
         className
       )}

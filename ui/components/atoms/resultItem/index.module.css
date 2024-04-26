@@ -1,32 +1,81 @@
 .wrapper {
   border-radius: 12px;
   background: var(--col--light);
-  padding: 18px 18px 18px 23px;
+  padding: 16px;
   display: flex;
   justify-content: space-between;
   align-items: center;
   width: 100%;
-  font-size: 28px;
+  font-size: 18px;
+  color: #1a1a1b;
 }
 
 .wrapper > div {
   display: flex;
-}
-
-.wrapper span {
-  color: #9c9ea6;
+  align-items: center;
+  line-height: 26px;
 }
 
 .wrapper .status {
-  margin-left: 8px;
-  padding: 2px 8px;
-  background-color: #E0F9EB;
-  color: #3CA568;
-  border-radius: 5.5px;
-  font-size: 16px;
+  padding: 0px 8px;
+  margin-left: 16px;
+  font-size: 11px;
+  line-height: 20px;
+  color: var(--col--light);
+  border-radius: 24px;
+  display: flex;
+  align-items: center;
+  background-color: #57ce2e;
+  text-transform: uppercase;
 }
 
+.wrapper .status img {
+  margin-right: 4px;
+}
 .wrapper .unavailable {
-  color: #CD4B83;
-  background-color: #FFDAEA;
+  background-color: #b8b8bf;
+}
+
+.actionIcon {
+  border-radius: 8px;
+  width: 44px;
+  height: 44px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: #f2f2f5;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.actionIcon:hover {
+  background-color: #e4e4eb;
+}
+
+.actionIcon:active {
+  background-color: #cfcfd9;
+}
+
+.actionIcon:disabled {
+  opacity: 0.3;
+}
+
+.actionIcon[aria-disabled="true"] {
+  opacity: 0.5;
+  pointer-events: none;
+}
+
+.rightSide {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 16px;
+}
+
+.starIcon {
+  cursor: pointer;
+}
+
+.starIcon:hover {
+  filter: opacity();
 }

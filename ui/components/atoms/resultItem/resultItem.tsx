@@ -1,13 +1,20 @@
 import classNames from "classnames";
-import { Button } from "../button";
-import { Variant } from "../button/types";
 import style from "./index.module.css";
-import { interMedium } from "@/app/fonts";
-import { useState } from "react";
-import { ModalInfo } from "@/components/molecules/modals/modalInfo";
-import { ModalPurchase } from "@/components/molecules/modals/modalPurchase";
+import { manropeMedium, manropeSemiBold } from "@/app/fonts";
+
 import { getAccountDomainDetails } from "@/app/actions/actions";
-import { AccountDomainDetailsResponse } from "@/app/actions/types";
+import infoIcon from "../../../assets/info.svg";
+
+import Image from "next/image";
+import { Star } from "../star";
+import Bag from "../bag/bag";
+import { useStoreContext } from "@/store";
+import { Modals } from "@/components/molecules/modals/modals.types";
+
+enum NAME_STATUS {
+  AVAILABLE = "available",
+  TAKEN = "taken",
+}
 
 const ResultItem = ({
   statusName,
@@ -19,49 +26,57 @@ const ResultItem = ({
   };
   className: string;
 }) => {
-  const [open, setOpen] = useState<boolean>(false);
-  const [accountDomainDetails, setAccountDomainDetails] =
-    useState<AccountDomainDetailsResponse>(null);
   const { id, name } = statusName;
-
+  const {
+    actions: { openModal },
+  } = useStoreContext();
   const handleInfo = async () => {
-    if (id) {
-      const response = await getAccountDomainDetails(id);
-      setAccountDomainDetails(response);
-    }
-
-    setOpen(true);
+    const response = await getAccountDomainDetails(id);
+    openModal(Modals.info, {
+      data: response,
+    });
   };
+
+  const actionIconsList = {
+    [NAME_STATUS.AVAILABLE]: (
+      <Bag
+        onClick={() =>
+          openModal(Modals.purchase, {
+            name: name,
+          })
+        }
+      />
+    ),
+    [NAME_STATUS.TAKEN]: <Image src={infoIcon} alt="" onClick={handleInfo} />,
+  };
+
+  const status = id ? NAME_STATUS.TAKEN : NAME_STATUS.AVAILABLE;
+  const disabled = false;
 
   return (
     <div
-      className={classNames(style.wrapper, className, interMedium.className)}
+      className={classNames(
+        style.wrapper,
+        className,
+        manropeSemiBold.className
+      )}
     >
       <div>
-        {name}
-        <span>.mina</span>
+        {name}.mina
         <span
-          className={classNames(style.status, interMedium.className, {
+          className={classNames(style.status, manropeMedium.className, {
             [style.unavailable]: id,
           })}
         >
           {id ? "Taken" : "available"}
         </span>
       </div>
-      <Button
-        text={id ? "Info" : "Purchase"}
-        variant={Variant.blue}
-        onClick={handleInfo}
-      />
-      {id ? (
-        <ModalInfo
-          open={open}
-          onClose={() => setOpen(false)}
-          data={accountDomainDetails}
-        />
-      ) : (
-        <ModalPurchase open={open} onClose={() => setOpen(false)} name={name} />
-      )}
+      <div className={style.rightSide}>
+        <Star />
+        <span className={style.actionIcon} aria-disabled={disabled}>
+          {actionIconsList[status]}
+        </span>
+      </div>
     </div>
   );
 };

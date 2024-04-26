@@ -2,7 +2,7 @@ import { LimitOptions, ORDER_BY, SORT_BY, TableConfig } from "@/comman/types";
 import { TypeView } from "@/components/atoms/switchView/switchView";
 
 export interface TableProps {
-  data: { content: any[] };
+  data: { content?: any[] };
   config: TableConfig[];
   isLoading: boolean;
   currentPage?: number;
@@ -18,4 +18,6 @@ export interface TableProps {
   onChangeOrder?: (value: ORDER_BY) => void;
   typeView: TypeView;
   isHiddenPagination?: boolean;
+  isHiddenTopPagination?: boolean;
+  isHiddenBottomPagination?: boolean;
 }

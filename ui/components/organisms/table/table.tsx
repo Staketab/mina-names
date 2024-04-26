@@ -25,8 +25,9 @@ const Table = ({
   onChangeOrder,
   typeView,
   isHiddenPagination,
+  isHiddenTopPagination,
+  isHiddenBottomPagination,
 }: TableProps): JSX.Element => {
-  
   const handleSort = (sort?: SORT_BY): void => {
     if (!sort) return;
     if (sort === sortBy) {
@@ -57,7 +58,7 @@ const Table = ({
 
   return (
     <>
-      {renderPagination()}
+      {!isHiddenTopPagination && renderPagination()}
       <div className={style.wrapper}>
         {typeView === TypeView.LIST ? (
           <ListTableContent
@@ -79,7 +80,7 @@ const Table = ({
           <Loader variant={LoaderVariant.CIRCLE} />
         </div>
       ) : (
-        <> {renderPagination()}</>
+        <> {!isHiddenBottomPagination && renderPagination()}</>
       )}
     </>
   );

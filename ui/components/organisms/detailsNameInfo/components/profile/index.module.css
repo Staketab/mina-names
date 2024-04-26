@@ -1,0 +1,28 @@
+.wrapper {
+  border-radius: 10px;
+  background-color: #f7f7fa;
+  padding: 4px 16px;
+}
+
+.item {
+  display: flex;
+  color: #1a1a1b;
+  padding: 13px 0;
+}
+
+.item > div:first-child {
+  width: 200px;
+  color: #949499;
+}
+
+.item > div:last-child {
+  color: #1a1a1b;
+}
+
+.item .copyIcon {
+  margin-left: 4px;
+}
+
+.staticEllipse {
+  color: #1a1a1b;
+}

@@ -2,6 +2,8 @@ export type InputProps = {
   onChange?: (
     event: React.ChangeEvent<HTMLTextAreaElement | HTMLInputElement>
   ) => void;
+  onClear?:  () => void;
+  onSubmit?: () => void
   placeholder: string;
   value?: string | number;
   className?: string;
@@ -10,6 +12,7 @@ export type InputProps = {
   variant?: InputVariant;
   fileTypes?: string[];
   maxLength?: number;
+  enableClear?: boolean;
 };
 
 export enum InputVariant {

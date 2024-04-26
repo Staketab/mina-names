@@ -1,97 +1,92 @@
 import Image from "next/image";
-import PopupOverlay from "../../popupOverlay";
-import icon from "../../../../assets/logo.svg";
-import closeIcon from "../../../../assets/close.svg";
+import defaultIcon from "../../../../assets/default.svg";
 import { Button } from "@/components/atoms/button";
 import { Variant } from "@/components/atoms/button/types";
 import classNames from "classnames";
-import { interMedium, interSemiBold } from "@/app/fonts";
+import { interSemiBold, manropeSemiBold } from "@/app/fonts";
 import { StaticEllipse } from "../../staticEllipse";
 import { monthDayYearTimeFormat } from "@/helpers/timeHelper";
 
 import style from "./index.module.css";
 import Link from "next/link";
 import { Routs } from "@/comman/types";
+import React from "react";
 
 type ModalInfoProps = {
-  open: boolean;
-  onClose: () => void;
   data: {
+    domainImg: string | null;
+    amount: number;
+    domainName: string;
+    domainStatus: string;
+    expirationTime: number;
+    isDefault: boolean;
+    isSendToCloudWorker: boolean;
     id: string;
     ownerAddress: string;
-    transaction: string;
-    domainName: string;
-    domainImg: string;
-    amount: number;
     reservationTimestamp: number;
-    expirationTime: number;
-    startTimestamp: number;
-    domainStatus: string;
-    isSendToCloudWorker: boolean;
-    isDefault: boolean;
+    startTimestamp: number | null;
+    transaction: string | null;
   };
 };
 
-const ModalInfo = ({ open, onClose, data }: ModalInfoProps): JSX.Element => {
+const ModalInfo = ({ data }: ModalInfoProps): JSX.Element => {
   if (!data) return null;
 
-  const {
-    id,
-    ownerAddress,
-    domainName,
-    reservationTimestamp,
-    domainImg,
-    transaction,
-  } = data;
+  const { id, ownerAddress, domainName, reservationTimestamp, domainImg } =
+    data;
 
   return (
-    <PopupOverlay
-      position="center"
-      animation="appear"
-      onClose={onClose}
-      show={open}
-    >
-      <div className={classNames(style.content, interSemiBold.className)}>
-        <Image
-          src={closeIcon}
-          alt=""
-          className={style.closeIcon}
-          onClick={onClose}
-          width={240}
-          height={240}
-        />
-        <Image src={domainImg || icon} alt="" width={100} height={100} />
+    <div className={classNames(style.content, interSemiBold.className)}>
+      <div className={style.topContent}>
+        <Image src={domainImg || defaultIcon} alt="" width={100} height={100} />
         <div className={style.header}>{domainName}</div>
-        <div className={style.infoWrapper}>
-          <div className={classNames(style.infoItem, interMedium.className)}>
+      </div>
+      <div className={style.bottomContent}>
+        <div className={classNames(style.infoItem, manropeSemiBold.className)}>
+          <div className={style.bottomContentLeftSide}>
             <span>Domain Owner</span>
             <StaticEllipse
-              className={interSemiBold.className}
+              className={manropeSemiBold.className}
               text={ownerAddress}
               view={{ sm: 10, md: 14, lg: 18 }}
             />
           </div>
-          <div className={classNames(style.infoItem, interMedium.className)}>
+          <span className={style.bottomContentRightSide}>
+            <Image src={defaultIcon} alt="" width={24} height={20} />
+          </span>
+        </div>
+        <div className={classNames(style.infoItem, manropeSemiBold.className)}>
+          <div className={style.bottomContentLeftSide}>
             <span>Creation Time</span>
-            <div className={interSemiBold.className}>
+            <div className={manropeSemiBold.className}>
               {monthDayYearTimeFormat(reservationTimestamp)}
             </div>
           </div>
-          <div className={classNames(style.infoItem, interMedium.className)}>
-            <span>Creation Transaction</span>
-            <StaticEllipse
-              className={interSemiBold.className}
-              text={transaction}
-              view={{ sm: 10, md: 14, lg: 18 }}
-            />
+          <span className={style.bottomContentRightSide}>
+            <Image src={defaultIcon} alt="" width={24} height={20} />
+          </span>
+        </div>
+        <div className={classNames(style.infoItem, manropeSemiBold.className)}>
+          <div className={style.bottomContentLeftSide}>
+            <span>Domain ID</span>
+            {id && (
+              <StaticEllipse
+                className={manropeSemiBold.className}
+                text={id}
+                view={{ sm: 10, md: 14, lg: 18 }}
+              />
+            )}
           </div>
+          <span className={style.bottomContentRightSide}>
+            <Image src={defaultIcon} alt="" width={24} height={20} />
+          </span>
         </div>
         <Link href={`${Routs.NAME}/${id}`}>
-          <Button text="View Details" variant={Variant.blue} />
+          <Button text="View Details" variant={Variant.black} />
         </Link>
       </div>
-    </PopupOverlay>
+    </div>
   );
 };
 
-export default ModalInfo;
+export default React.memo(ModalInfo);

@@ -14,11 +14,11 @@ body {
   --col--border: #dde0eb;
 
   /* BUTTON */
-  /* rgba(52, 89, 231, 1) */
-  --col--button2: #3459e7;
-  /* rgba(56, 97, 251, 0.30) */
-  --col--button3: #3861fb4d;
-  /* #3963FF4D */
+  --col--button: #51CC26;
+  --col--button--pressed: #42AE1D;
+  --col--button--disable: rgba(81, 204, 38, 0.30);
+  --col-button--disable: rgba(81, 204, 38, 0.30);
+  
   --col--button4: rgba(57, 99, 255, 0.3);
   /* rgba(232, 236, 250, 1) */
   --col--button5: #e8ecfa;

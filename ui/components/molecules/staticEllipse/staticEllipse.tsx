@@ -66,11 +66,13 @@ const StaticEllipse = ({
         <div className={style.string}>{string}</div>
       ) : (
         <>
-          <div className={style.string}>{firstString}</div>
-          <div className={style.dots}>
-            <span className={style.dot} />
-            <span className={style.dot} />
-            <span className={style.dot} />
+          <div className={classNames(style.string, style.stringWithDots)}>
+            {firstString}
+            <div className={style.dots}>
+              <span className={style.dot} />
+              <span className={style.dot} />
+              <span className={style.dot} />
+            </div>
           </div>
           <div className={style.string}>{secondString}</div>
         </>

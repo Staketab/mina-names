@@ -1,7 +1,7 @@
 .wrapper {
   border-radius: 12px;
   background: var(--col--light);
-  padding: 24px 24px 34px 24px;
+  padding: 32px;
   width: 654px;
   display: flex;
   flex-direction: column;
@@ -9,28 +9,24 @@
 }
 
 .header {
-  font-size: 28px;
-}
-
-.header span {
-  color: #9c9ea6;
+  width: 100%;
+  font-size: 24px;
 }
 
 .periodWrapper {
   border-radius: 35px;
-  border: 1px solid rgba(0, 0, 0, 0.4);
+  border: 1px solid #e5e5e5;
   padding: 10px;
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin: 22px 0;
+  margin: 25px 0 32px;
   width: 100%;
 }
 
 .periodWrapper > div {
-  color: #88d6a9;
-  font-size: 28px;
-  font-weight: 500;
+  color: #9775f3;
+  font-size: 24px;
 }
 
 .minus,
@@ -41,41 +37,26 @@
   justify-content: center;
   align-items: center;
   border-radius: 50%;
-  border: 1px solid #597fff;
   font-size: 20px;
   color: #597fff;
   cursor: pointer;
-  background-color: #EEF1FF;
+  background-color: #1a1a1b;
 }
 
 .disableActionIcon {
   cursor: default;
-  border-color: var(--col--border);
-  color: rgba(0, 0, 0, 0.3);
-  background-color: inherit;
-}
-
-.costInformation {
-  display: flex;
-  flex-direction: column;
-  width: 100%;
-  padding: 16px 12px;
-  gap: 8px;
-  border-radius: 9px;
-  background: #f7f8fa;
-  margin-bottom: 32px;
-}
-
-.costInformation > div {
-  display: flex;
-  justify-content: space-between;
-  color: rgba(0, 0, 0, 0.6);
-}
-
-.totalText {
-  color: rgba(0, 0, 0, 0.6);
+  opacity: 0.3;
 }
 
 .costInformation > div span:last-child {
-  color: var(--col--dark)
+  color: var(--col--dark);
+}
+
+
+.tabs {
+  align-items: flex-start;
+}
+
+.wrapper > button {
+  width: 100%;
 }

@@ -8,6 +8,8 @@ body {
   line-height: 133%;
   color: var(--col--dark);
   min-height: 100vh;
+  background: #F3F2F3
+
 }
 
 * {
@@ -30,15 +32,7 @@ a:hover {
 #main {
   margin: auto;
   min-height: 100vh;
-  background: linear-gradient(
-    97deg,
-    #efeff8 8.46%,
-    #ffe1e5 47.23%,
-    #fefcff 60.11%,
-    #fffaef 67.04%,
-    #d7d9ff 74.27%,
-    #efeff8 100.19%
-  );
+  background: #F3F2F3
 }
 
 #main footer {
