@@ -2,7 +2,7 @@ import { TABS_VARIANT, Tabs } from "@/components/molecules/tabs";
 
 import style from "./index.module.css";
 import AllContent from "./allContent";
-import { DATA_STATUS, DOMAIN_STATUS, DataTable } from "@/comman/types";
+import { DOMAIN_STATUS, DataTable } from "@/comman/types";
 import { SwitchView } from "@/components/atoms/switchView";
 import { useState } from "react";
 import { TypeView } from "@/components/atoms/switchView/switchView";
@@ -55,8 +55,6 @@ const NamesContent = ({
                   ...accountDomains,
                   content: accountDomains.content?.filter(
                     ({ domainStatus }) => {
-                      console.log(domainStatus);
-
                       return DOMAIN_STATUS.ACTIVE === domainStatus;
                     }
                   ),
