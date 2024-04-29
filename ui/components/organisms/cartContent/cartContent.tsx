@@ -56,7 +56,7 @@ const CartContent = (): JSX.Element => {
   }, 0);
 
   const handlePurchase = async (): Promise<void> => {
-    await await onSendClick({
+    await onSendClick({
       amount: totalAmount,
       to: accountAddress,
       fee: fees.default,
@@ -72,8 +72,10 @@ const CartContent = (): JSX.Element => {
                 amount: Number(amount) * rate,
               };
             }),
+          }).then(() => {
+            openModal(Modals.transactionApplied);
+            domains.forEach(({ id }) => deleteFromBag(id));
           });
-          openModal(Modals.transactionApplied);
         } else {
           openModal(Modals.transactionFailed, {
             tryAgain: handlePurchase,
