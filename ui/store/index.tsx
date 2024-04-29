@@ -21,6 +21,11 @@ export type OPEN_MODAL = {
 };
 export type CLOSE_MODAL = { type: "CLOSE_MODAL"; payload: Modals };
 
+export type INIT_STOR_FROM_LOCAL_STORAGE = {
+  type: "INIT_STOR_FROM_LOCAL_STORAGE";
+  payload: IState;
+};
+
 export type ADD_TO_BAG = {
   type: "ADD_TO_BAG";
   payload: Domain;
@@ -44,8 +49,10 @@ type StoreActions =
   | CLOSE_MODAL
   | ADD_TO_BAG
   | DELETE_FROM_BAG
-  | ADD_PERIOD;
+  | ADD_PERIOD
+  | INIT_STOR_FROM_LOCAL_STORAGE;
 
+type initStore = (value: IState) => void;
 type OpenModal = (modal: Modals, data?: unknown) => void;
 type CloseModal = (modal?: Modals) => void;
 type addToBag = (data: Domain) => void;
@@ -60,6 +67,7 @@ type IStore = {
     addToBag: addToBag;
     deleteFromBag: deleteFromBag;
     addPeriod: addPeriod;
+    initStore: initStore;
   };
 };
 
@@ -73,17 +81,16 @@ export interface IState {
 
 export const initialState: IState = {
   modals: [],
-  bag:
-    typeof window !== undefined && window.localStorage.getItem(bag)
-      ? JSON.parse(window.localStorage.getItem(bag))
-      : {
-          reservationTime: null,
-          domains: [],
-        },
+  bag: {
+    reservationTime: null,
+    domains: [],
+  },
 };
 
 export const reducer = (state: IState, action: StoreActions): IState => {
   switch (action.type) {
+    case "INIT_STOR_FROM_LOCAL_STORAGE":
+      return action.payload;
     case "OPEN_MODAL":
       return {
         ...state,
@@ -157,6 +164,7 @@ export const StoreContext: React.Context<IStore> = React.createContext({
     addToBag: noop,
     deleteFromBag: noop,
     addPeriod: noop,
+    initStore: noop,
   },
 });
 
@@ -188,6 +196,9 @@ const Store = ({
       },
     });
 
+  const initStore = (value: IState) =>
+    dispatch({ type: "INIT_STOR_FROM_LOCAL_STORAGE", payload: value });
+
   return (
     <StoreContext.Provider
       value={{
@@ -198,6 +209,7 @@ const Store = ({
           addToBag,
           deleteFromBag,
           addPeriod,
+          initStore,
         },
       }}
     >
