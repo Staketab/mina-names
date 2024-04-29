@@ -2,7 +2,7 @@ import classNames from "classnames";
 import style from "./index.module.css";
 import { manropeMedium, manropeSemiBold } from "@/app/fonts";
 
-import { getAccountDomainDetails } from "@/app/actions/actions";
+import { getAccountDomainDetails, reserveName } from "@/app/actions/actions";
 import infoIcon from "../../../assets/info.svg";
 
 import Image from "next/image";
@@ -10,6 +10,8 @@ import { Star } from "../star";
 import Bag from "../bag/bag";
 import { useStoreContext } from "@/store";
 import { Modals } from "@/components/molecules/modals/modals.types";
+import { amount, bag } from "@/comman/constants";
+import useWallet from "@/hooks/useWallet";
 
 enum NAME_STATUS {
   AVAILABLE = "available",
@@ -28,8 +30,10 @@ const ResultItem = ({
 }) => {
   const { id, name } = statusName;
   const {
-    actions: { openModal },
+    actions: { openModal, addToBag },
   } = useStoreContext();
+  const { accountId } = useWallet();
+
   const handleInfo = async () => {
     const response = await getAccountDomainDetails(id);
     openModal(Modals.info, {
@@ -37,16 +41,37 @@ const ResultItem = ({
     });
   };
 
+  const handleBag = async (): Promise<void> => {
+    console.log({
+      ownerAddress: accountId[0],
+      domainName: name,
+      expirationTime: 1,
+      amount: amount,
+    });
+
+    try {
+      const response = await reserveName({
+        ownerAddress: accountId[0],
+        domainName: name,
+        expirationTime: 1,
+        amount: amount,
+      });
+
+      if (response.id) {
+        addToBag({
+          name: response.domainName,
+          years: response.expirationTime,
+          amount: response.amount,
+          id: response.id,
+        });
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   const actionIconsList = {
-    [NAME_STATUS.AVAILABLE]: (
-      <Bag
-        onClick={() =>
-          openModal(Modals.purchase, {
-            name: name,
-          })
-        }
-      />
-    ),
+    [NAME_STATUS.AVAILABLE]: <Bag onClick={handleBag} />,
     [NAME_STATUS.TAKEN]: <Image src={infoIcon} alt="" onClick={handleInfo} />,
   };
 

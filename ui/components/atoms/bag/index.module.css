@@ -17,6 +17,7 @@
   padding: 8px;
   border-radius: 50%;
   cursor: pointer;
+  position: relative;
 }
 
 .icon:hover {
@@ -37,4 +38,20 @@
   font-size: 14px;
   margin-left: 4px;
   color: #1a1a1b;
+}
+
+.domainsAmount {
+  display: flex;
+  width: 18px;
+  height: 18px;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid var(--col--light);
+  border-radius: 50%;
+  background-color: #9775f3;
+  color: var(--col--light);
+  font-size: 11px;
+  position: absolute;
+  top: -4px;
+  right: -4px;
 }

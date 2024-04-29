@@ -4,16 +4,11 @@ import { Variant } from "@/components/atoms/button/types";
 import { manropeBold, manropeMedium } from "@/app/fonts";
 import appliedIcon from "../../../../assets/applied.svg";
 import Image from "next/image";
+import { useRouter } from "next/navigation";
+import { Routs } from "@/comman/types";
 
-type TransactionAppliedModalProps = {
-  seeTransaction: () => void;
-  seeDomains: () => void;
-};
-
-const TransactionAppliedModal = ({
-  seeDomains,
-  seeTransaction,
-}: TransactionAppliedModalProps): JSX.Element => {
+const TransactionAppliedModal = (): JSX.Element => {
+  const router = useRouter();
   return (
     <div className={style.wrapper}>
       <div className={style.topContent}>
@@ -25,10 +20,10 @@ const TransactionAppliedModal = ({
           The Domain was successfully purchased!
         </div>
         <div className={style.buttonsBlock}>
-          <Button variant={Variant.cancel} onClick={seeDomains}>
-            See Transaction
-          </Button>
-          <Button variant={Variant.black} onClick={seeTransaction}>
+          <Button
+            variant={Variant.black}
+            onClick={() => router.push(Routs.NAMES)}
+          >
             See Domain
           </Button>
         </div>

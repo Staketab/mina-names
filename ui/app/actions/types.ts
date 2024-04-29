@@ -15,3 +15,35 @@ export type AccountDomainDetailsResponse = {
   isDefault: boolean;
   endTimestamp: number;
 };
+
+export type ReserveNameProps = {
+  ownerAddress: string;
+  domainName: string;
+  expirationTime: number;
+  amount: number;
+};
+
+export type ReserveNameResponse = {
+  id: string;
+  ownerAddress: string;
+  transaction: string;
+  domainName: string;
+  domainImg?: string;
+  amount: number;
+  reservationTimestamp: number;
+  expirationTime: number;
+  startTimestamp: number;
+  endTimestamp: number;
+  domainStatus: string;
+  isSendToCloudWorker: boolean;
+  isDefault: boolean;
+};
+
+export type reserveApplyNameProps = {
+  txHash: string;
+  ownerAddress: string;
+  domains: {
+    domainName: string;
+    amount: number;
+  }[];
+};

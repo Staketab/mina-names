@@ -1,9 +1,16 @@
-import { manropeSemiBold } from "@/app/fonts";
+"use client";
+import { manropeBold, manropeSemiBold } from "@/app/fonts";
 import style from "./index.module.css";
 import classNames from "classnames";
 import { BAG_VARIANTS, BagProps } from "./bag.type";
 
-const Bag = ({ onClick, disabled, text, variant }: BagProps): JSX.Element => {
+const Bag = ({
+  onClick,
+  disabled,
+  text,
+  variant,
+  size,
+}: BagProps): JSX.Element => {
   if (variant === BAG_VARIANTS.GRADIENT) {
     return (
       <span className={style.gradientIcon}>
@@ -33,6 +40,13 @@ const Bag = ({ onClick, disabled, text, variant }: BagProps): JSX.Element => {
             </linearGradient>
           </defs>
         </svg>
+        {!!size && (
+          <span
+            className={classNames(style.domainsAmount, manropeBold.className)}
+          >
+            {size}
+          </span>
+        )}
       </span>
     );
   }

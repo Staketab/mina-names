@@ -56,7 +56,7 @@ const DetailsNameInfo = ({
           <div className={style.imgWrapper} onClick={handleEdit}>
             <span className={style.domainImg}>
               <Image
-                src={domainImg || icon}
+                src={icon}
                 alt="icon"
                 width={120}
                 height={120}

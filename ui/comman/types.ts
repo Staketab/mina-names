@@ -53,6 +53,8 @@ export type TableConfig = {
     additionValue?: string;
     parentPage?: string;
     status?: string;
+    icon?: string | React.ReactElement;
+    onClick?: string;
   };
   sortBy?: SORT_BY;
   style?: {
@@ -88,5 +90,5 @@ export enum Routs {
   HOME = "/",
   NAMES = "/names",
   NAME = "/name",
+  CART = "/cart",
 }
-
