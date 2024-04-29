@@ -122,7 +122,7 @@ const CartContent = (): JSX.Element => {
           text={isInsufficientBalance ? "Insufficient Balance" : "Next"}
           variant={Variant.black}
           onClick={handlePurchase}
-          disabled={isInsufficientBalance}
+          disabled={isInsufficientBalance || !newDomains.length}
         />
       </div>
     </div>
