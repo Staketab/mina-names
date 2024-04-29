@@ -42,13 +42,6 @@ const ResultItem = ({
   };
 
   const handleBag = async (): Promise<void> => {
-    console.log({
-      ownerAddress: accountId[0],
-      domainName: name,
-      expirationTime: 1,
-      amount: amount,
-    });
-
     try {
       const response = await reserveName({
         ownerAddress: accountId[0],

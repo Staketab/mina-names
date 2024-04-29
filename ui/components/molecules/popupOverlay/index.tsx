@@ -121,9 +121,6 @@ const PopupOverlay = ({
 
   const handleClose = () => {
     if (active && !isTextSelected) {
-      // closePopup();
-      // console.log("sadfdsfds");
-
       closeModal();
     } else {
       setIsTextSelected(false);

@@ -184,16 +184,18 @@ export async function reserveName(
   return await res.json();
 }
 
-export async function reserveApplyName(
-  payload: reserveApplyNameProps
-): Promise<ReserveNameResponse> {
-  if (!payload) return;
+export async function reserveApplyName({
+  txHash,
+  domains,
+  ownerAddress,
+}: reserveApplyNameProps): Promise<ReserveNameResponse> {
+  if (!txHash) return;
 
   const res = await fetch(
     `${process.env.NEXT_PUBLIC_API_URL}/domains/reserve/apply`,
     {
       method: "POST",
-      body: JSON.stringify(payload),
+      body: JSON.stringify({ txHash, domains, ownerAddress }),
       headers: {
         "Content-Type": "application/json",
         "x-api-key": process.env.NEXT_PUBLIC_API_KEY,

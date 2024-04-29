@@ -41,11 +41,7 @@ const DetailsNameInfo = ({
   const { domainImg, domainName, ownerAddress } = accountDomainDetails;
 
   const handleDefaultImg = async () => {
-    console.log("start");
-
     const response = await setDefaultImg(accountDomainDetails.id);
-    console.log(response);
-
     setIsDefault(response);
   };
 
@@ -99,6 +95,7 @@ const DetailsNameInfo = ({
             className={style.switcher}
             initialState={isDefault}
             onClick={handleDefaultImg}
+            disabled={isDefault}
           />
           <Button variant={Variant.grey}>Set Reminder</Button>
           <Button variant={Variant.black}>Extend</Button>
