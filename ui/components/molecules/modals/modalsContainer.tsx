@@ -11,7 +11,6 @@ const ModalContainer = (): JSX.Element => {
   const {
     state: { modals },
   } = useStoreContext();
-  console.log(modals);
 
   return (
     <>

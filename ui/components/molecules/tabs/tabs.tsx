@@ -27,32 +27,37 @@ const Tabs = ({
   const [value, setValue] = useState<string | number>(
     initValue || items?.[0]?.value
   );
-console.log(variant);
 
   return (
     <div className={classNames(style.wrapper, className)}>
-      <div className={classNames(style.buttonGroup, 
-        style[variant]
-      )}>
+      <div className={classNames(style.buttonGroup, style[variant])}>
         {items.map((item) => {
           if (variant === TABS_VARIANT.blackButton) {
             return (
-              <Button
-                key={item.value}
-                variant={value === item?.value ? Variant.black : Variant.cancel}
-                onClick={(): void => {
-                  onTabChange?.(item?.value);
-                  setValue(item?.value);
-                }}
-              >
-                {item.title}
-              </Button>
+              <>
+                {item.title && (
+                  <Button
+                    key={item.value}
+                    variant={
+                      value === item?.value ? Variant.black : Variant.cancel
+                    }
+                    onClick={(): void => {
+                      onTabChange?.(item?.value);
+                      setValue(item?.value);
+                    }}
+                  >
+                    {item.title}
+                  </Button>
+                )}
+              </>
             );
           }
           return (
             <Button
               key={item.value}
-              variant={value === item?.value ? Variant.lightTab : Variant.cancel}
+              variant={
+                value === item?.value ? Variant.lightTab : Variant.cancel
+              }
               onClick={(): void => {
                 onTabChange?.(item?.value);
                 setValue(item?.value);

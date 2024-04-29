@@ -56,35 +56,31 @@ const CartContent = (): JSX.Element => {
   }, 0);
 
   const handlePurchase = async (): Promise<void> => {
-    await onSendClick({
-      amount: totalAmount,
-      to: accountAddress,
-      fee: fees.default,
-    })
-      .then((data) => {
-        if (data?.hash) {
-          reserveApplyName({
-            txHash: data?.hash,
-            ownerAddress: accountId[0],
-            domains: domains.map(({ name, amount }) => {
-              return {
-                domainName: name,
-                amount: Number(amount) * rate,
-              };
-            }),
-          }).then(() => {
-            openModal(Modals.transactionApplied);
-            domains.forEach(({ id }) => deleteFromBag(id));
-          });
-        } else {
-          openModal(Modals.transactionFailed, {
-            tryAgain: handlePurchase,
-          });
-        }
-      })
-      .catch((error) => {
-        console.log(error);
+    try {
+      const response = await onSendClick({
+        amount: totalAmount,
+        to: accountAddress,
+        fee: fees.default,
       });
+      if (response?.hash) {
+        openModal(Modals.transactionApplied);
+        const data = await reserveApplyName({
+          txHash: response?.hash,
+          ownerAddress: accountId[0],
+          domains: domains.map(({ name, amount }) => {
+            return {
+              domainName: name,
+              amount: Number(amount) * rate,
+            };
+          }),
+        });
+        domains.forEach(({ id }) => deleteFromBag(id));
+      } else {
+        openModal(Modals.transactionFailed, {
+          tryAgain: handlePurchase,
+        });
+      }
+    } catch (error) {}
   };
 
   return (
@@ -116,7 +112,7 @@ const CartContent = (): JSX.Element => {
                   }, 0)}
                 />
               ),
-              title: "MINA",
+              title: "",
               value: 1,
             },
           ]}
