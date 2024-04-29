@@ -87,15 +87,17 @@ const CartContent = (): JSX.Element => {
 
   return (
     <div className={style.wrapper}>
-      <Table
-        data={{
-          content: newDomains,
-        }}
-        config={tableConfig}
-        isLoading={false}
-        typeView={TypeView.LIST}
-        isHiddenPagination
-      />
+      <div>
+        <Table
+          data={{
+            content: newDomains,
+          }}
+          config={tableConfig}
+          isLoading={false}
+          typeView={TypeView.LIST}
+          isHiddenPagination
+        />
+      </div>
       <div className={style.summary}>
         <div className={classNames(style.summaryHeader, manropeBold.className)}>
           Order Summary
