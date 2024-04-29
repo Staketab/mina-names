@@ -8,4 +8,5 @@ export type BagProps = {
   disabled?: boolean;
   text?: string;
   variant?: BAG_VARIANTS;
+  size?: number;
 };

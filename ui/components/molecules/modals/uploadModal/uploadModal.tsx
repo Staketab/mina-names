@@ -35,6 +35,8 @@ const UploadModal = ({
   const [loading, setLoading] = useState<boolean>(false);
   const [isSupported, setIsSupported] = useState<boolean>(null);
   const handleChange = async (file: File): Promise<void> => {
+    console.log(file);
+    
     setFile(file);
     setIsSupported(true);
   };
@@ -43,6 +45,8 @@ const UploadModal = ({
     try {
       setLoading(true);
       const formData = new FormData();
+      console.log(formData);
+      
       formData.append("file", file);
       const ipfsHash = await pinFile(formData);
       await editImg(ipfsHash);

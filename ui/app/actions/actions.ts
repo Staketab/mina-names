@@ -1,6 +1,11 @@
 "use server";
 import { ORDER_BY, SORT_BY } from "@/comman/types";
-import { AccountDomainDetailsResponse } from "./types";
+import {
+  AccountDomainDetailsResponse,
+  ReserveNameResponse,
+  ReserveNameProps,
+  reserveApplyNameProps,
+} from "./types";
 import axios from "axios";
 
 export async function saveName({
@@ -18,8 +23,6 @@ export async function saveName({
     domainName: name,
     expirationTime: expirationTime,
   };
-
-  console.log(payload);
 
   const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/domains/save`, {
     method: "POST",
@@ -161,3 +164,60 @@ export const setDefaultImg = async (id: string): Promise<boolean> => {
   );
   return await res.json();
 };
+
+export async function reserveName(
+  payload: ReserveNameProps
+): Promise<ReserveNameResponse> {
+  if (!payload) return;
+
+  const res = await fetch(
+    `${process.env.NEXT_PUBLIC_API_URL}/domains/reserve`,
+    {
+      method: "POST",
+      body: JSON.stringify(payload),
+      headers: {
+        "Content-Type": "application/json",
+        "x-api-key": process.env.NEXT_PUBLIC_API_KEY,
+      },
+    }
+  );
+  return await res.json();
+}
+
+export async function reserveApplyName(
+  payload: reserveApplyNameProps
+): Promise<ReserveNameResponse> {
+  if (!payload) return;
+
+  const res = await fetch(
+    `${process.env.NEXT_PUBLIC_API_URL}/domains/reserve/apply`,
+    {
+      method: "POST",
+      body: JSON.stringify(payload),
+      headers: {
+        "Content-Type": "application/json",
+        "x-api-key": process.env.NEXT_PUBLIC_API_KEY,
+      },
+    }
+  );
+  return await res.json();
+}
+export async function deleteName({
+  id,
+}: {
+  id: string;
+}): Promise<ReserveNameResponse> {
+  if (!id) return;
+
+  const res = await fetch(
+    `${process.env.NEXT_PUBLIC_API_URL}/domains/reserve/${id}`,
+    {
+      method: "DELETE",
+      headers: {
+        "Content-Type": "application/json",
+        "x-api-key": process.env.NEXT_PUBLIC_API_KEY,
+      },
+    }
+  );
+  return await res.json();
+}

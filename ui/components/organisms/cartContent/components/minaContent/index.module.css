@@ -1,0 +1,26 @@
+.wrapper {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  padding: 12px;
+  gap: 8px;
+  border-radius: 10px;
+  background: #f7f7fa;
+  margin-bottom: 32px;
+}
+
+.wrapper > div {
+  display: flex;
+  justify-content: space-between;
+  color: #57575a;
+}
+
+.totalSection {
+  padding: 12px 0 0;
+  margin-top: 4px;
+  border-top: 1px dashed #e5e5e5;
+}
+
+.totalSection span {
+  color: #1a1a1b;
+}

@@ -1,0 +1,1 @@
+export { IconTemplate } from "./iconTemplate";

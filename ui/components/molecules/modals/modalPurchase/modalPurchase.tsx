@@ -67,10 +67,7 @@ const ModalPurchase = ({ name }: ModalPurchaseProps): JSX.Element => {
               expirationTime: selectedPeriod,
             });
           })();
-          openModal(Modals.transactionApplied, {
-            seeDomains: () => console.log("seeDomains"),
-            seeTransaction: () => console.log("seeTransaction"),
-          });
+          openModal(Modals.transactionApplied);
         } else {
           openModal(Modals.transactionFailed, {
             tryAgain: handlePurchase,
