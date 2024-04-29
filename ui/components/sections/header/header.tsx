@@ -8,8 +8,10 @@ import { BAG_VARIANTS } from "@/components/atoms/bag/bag.type";
 import Link from "next/link";
 import { Routs } from "@/comman/types";
 import { useStoreContext } from "@/store";
+import { useLocalStorage } from "@/hooks/useLocalStorage";
 
 const Header = (): JSX.Element => {
+  useLocalStorage();
   const {
     state: {
       bag: { domains },
