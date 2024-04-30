@@ -14,11 +14,12 @@
   margin: 0 3px 0 0;
 }
 
-.status span::first-letter {
+.status span {
+  margin: 0;
   text-transform: uppercase;
 }
 
 .pending {
-  color: #FFAC5D;
-  background-color:  rgba(255, 172, 94, 0.15);
+  color: #ffac5d;
+  background-color: rgba(255, 172, 94, 0.15);
 }

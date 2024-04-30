@@ -1,11 +1,15 @@
 "use client";
-import { accountAddress, amount, bag, fees, rate } from "@/comman/constants";
+import { accountAddress, amount, fees, rate } from "@/comman/constants";
 import { Table } from "../table";
 import { tableConfig } from "./constants";
 import { TypeView } from "@/components/atoms/switchView/switchView";
 import style from "./index.module.css";
 import { useStoreContext } from "@/store";
-import { deleteName, reserveApplyName } from "@/app/actions/actions";
+import {
+  changeExpirationTime,
+  deleteName,
+  reserveApplyName,
+} from "@/app/actions/actions";
 import { TABS_VARIANT, Tabs } from "@/components/molecules/tabs";
 import { MinaContent } from "./components/minaContent";
 import classNames from "classnames";
@@ -15,6 +19,7 @@ import useWallet from "@/hooks/useWallet";
 import { Variant } from "@/components/atoms/button/types";
 import { Modals } from "@/components/molecules/modals/modals.types";
 import { DATA_STATUS } from "@/comman/types";
+import { DomainForTable, DomainsForTable } from "./cartContent.types";
 
 const CartContent = (): JSX.Element => {
   const {
@@ -32,18 +37,30 @@ const CartContent = (): JSX.Element => {
     actions: { deleteFromBag, addPeriod, openModal },
   } = useStoreContext();
 
-  const handleIcon = async (value) => {
+  const handleIcon = async (value: DomainForTable): Promise<void> => {
     try {
-      await deleteName(value?.id);
+      await deleteName({ id: value.id });
       deleteFromBag(value?.id);
     } catch (error) {}
   };
 
-  const onCount = (value, count) => {
-    addPeriod(value?.id, count);
+  const onCount = async (
+    value: DomainForTable,
+    count: number
+  ): Promise<void> => {
+    try {
+      const response = await changeExpirationTime({
+        id: value.id,
+        expirationTime: count,
+        amount: count * amount,
+      });
+      if (response.status === DATA_STATUS.SUCCESS) {
+        addPeriod(value.id, count);
+      }
+    } catch (error) {}
   };
 
-  const newDomains = domains.map((item) => {
+  const newDomains: DomainsForTable = domains.map((item) => {
     return {
       ...item,
       amount: Number(item.amount) * item.years * rate + " MINA",

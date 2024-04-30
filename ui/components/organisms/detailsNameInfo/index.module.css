@@ -12,6 +12,7 @@
   display: flex;
   justify-content: space-between;
   border-bottom: 1px solid #f2f2f3;
+  padding-bottom: 16px;
 }
 
 .rightSide {
@@ -32,6 +33,7 @@
   align-items: center;
   font-size: 16px;
   color: #a6a6a6;
+  position: relative;
 }
 
 .domainImg {
@@ -62,8 +64,8 @@
   transition: all 0.2s;
   opacity: 0;
   cursor: pointer;
-  position: relative;
-  top: -15px;
+  position: absolute;
+  top: 50px;
 }
 
 .imgWrapper:hover .editIcon {
