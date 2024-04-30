@@ -237,3 +237,27 @@ export async function deleteName({
   );
   return await res.json();
 }
+
+export async function changeExpirationTime(payload: {
+  id: string;
+  expirationTime: number;
+  amount: number;
+}): Promise<{ status: DATA_STATUS.SUCCESS }> {
+  try {
+    const res = await fetch(
+      `${process.env.NEXT_PUBLIC_API_URL}/domains/reserve`,
+      {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+          "x-api-key": process.env.NEXT_PUBLIC_API_KEY,
+        },
+        body: JSON.stringify(payload),
+      }
+    );
+    if (!res.ok) {
+      throw new Error(`HTTP error! Status: ${res.status}`);
+    }
+    return { status: DATA_STATUS.SUCCESS };
+  } catch (error) {}
+}
