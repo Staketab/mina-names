@@ -20,7 +20,7 @@ const MinaContent = ({ amount }: { amount: number }): JSX.Element => {
       </div>
       <div className={classNames(manropeBold.className, style.totalSection)}>
         <span className={style.totalText}>Estimated Total</span>
-        <span>{amount} MINA</span>
+        <span>{amount + fees.default} MINA</span>
       </div>
     </div>
   );
