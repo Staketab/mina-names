@@ -14,6 +14,7 @@ import { Button } from "@/components/atoms/button";
 import useWallet from "@/hooks/useWallet";
 import { Variant } from "@/components/atoms/button/types";
 import { Modals } from "@/components/molecules/modals/modals.types";
+import { DATA_STATUS } from "@/comman/types";
 
 const CartContent = (): JSX.Element => {
   const {
@@ -70,11 +71,13 @@ const CartContent = (): JSX.Element => {
           domains: domains.map(({ name, amount }) => {
             return {
               domainName: name,
-              amount: (Number(amount) * rate) * 0.5,
+              amount: Number(amount) * rate,
             };
           }),
         });
-        domains.forEach(({ id }) => deleteFromBag(id));
+        if (data.status === DATA_STATUS.SUCCESS) {
+          domains.forEach(({ id }) => deleteFromBag(id));
+        }
       } else {
         openModal(Modals.transactionFailed, {
           tryAgain: handlePurchase,

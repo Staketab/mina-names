@@ -1,5 +1,5 @@
 "use server";
-import { ORDER_BY, SORT_BY } from "@/comman/types";
+import { DATA_STATUS, ORDER_BY, SORT_BY } from "@/comman/types";
 import {
   AccountDomainDetailsResponse,
   ReserveNameResponse,
@@ -170,40 +170,54 @@ export async function reserveName(
 ): Promise<ReserveNameResponse> {
   if (!payload) return;
 
-  const res = await fetch(
-    `${process.env.NEXT_PUBLIC_API_URL}/domains/reserve`,
-    {
-      method: "POST",
-      body: JSON.stringify(payload),
-      headers: {
-        "Content-Type": "application/json",
-        "x-api-key": process.env.NEXT_PUBLIC_API_KEY,
-      },
+  try {
+    const res = await fetch(
+      `${process.env.NEXT_PUBLIC_API_URL}/domains/reserve`,
+      {
+        method: "POST",
+        body: JSON.stringify(payload),
+        headers: {
+          "Content-Type": "application/json",
+          "x-api-key": process.env.NEXT_PUBLIC_API_KEY,
+        },
+      }
+    );
+    if (!res.ok) {
+      throw new Error(`HTTP error! Status: ${res.status}`);
     }
-  );
-  return await res.json();
+    const responseData = await res.json();
+    return responseData;
+  } catch (error) {}
 }
 
 export async function reserveApplyName({
   txHash,
   domains,
   ownerAddress,
-}: reserveApplyNameProps): Promise<ReserveNameResponse> {
+}: reserveApplyNameProps): Promise<{ status: DATA_STATUS }> {
   if (!txHash) return;
 
-  const res = await fetch(
-    `${process.env.NEXT_PUBLIC_API_URL}/domains/reserve/apply`,
-    {
-      method: "POST",
-      body: JSON.stringify({ txHash, domains, ownerAddress }),
-      headers: {
-        "Content-Type": "application/json",
-        "x-api-key": process.env.NEXT_PUBLIC_API_KEY,
-      },
+  try {
+    const res = await fetch(
+      `${process.env.NEXT_PUBLIC_API_URL}/domains/reserve/apply`,
+      {
+        method: "POST",
+        body: JSON.stringify({ txHash, domains, ownerAddress }),
+        headers: {
+          "Content-Type": "application/json",
+          "x-api-key": process.env.NEXT_PUBLIC_API_KEY,
+        },
+      }
+    );
+    if (!res.ok) {
+      throw new Error(`HTTP error! Status: ${res.status}`);
     }
-  );
-  return await res.json();
+    return {
+      status: DATA_STATUS.SUCCESS,
+    };
+  } catch (error) {}
 }
+
 export async function deleteName({
   id,
 }: {
