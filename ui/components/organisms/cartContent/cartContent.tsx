@@ -70,7 +70,7 @@ const CartContent = (): JSX.Element => {
           domains: domains.map(({ name, amount }) => {
             return {
               domainName: name,
-              amount: Number(amount) * rate,
+              amount: (Number(amount) * rate) * 0.5,
             };
           }),
         });
