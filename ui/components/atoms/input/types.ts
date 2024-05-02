@@ -2,8 +2,8 @@ export type InputProps = {
   onChange?: (
     event: React.ChangeEvent<HTMLTextAreaElement | HTMLInputElement>
   ) => void;
-  onClear?:  () => void;
-  onSubmit?: () => void
+  onClear?: () => void;
+  onSubmit?: (value?: unknown) => void | Promise<void>;
   placeholder: string;
   value?: string | number;
   className?: string;

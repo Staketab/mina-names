@@ -3,8 +3,7 @@ import classNames from "classnames";
 import { manropeSemiBold, wixMadeforDisplayExtraBold } from "@/app/fonts";
 import { Input } from "@/components/atoms/input";
 import { ResultItem } from "@/components/atoms/resultItem";
-import { useState } from "react";
-import { useKeyPress } from "@/hooks/useKeyPress";
+import { useMemo, useState } from "react";
 import { checkReservedName } from "@/app/actions/clientActions";
 import { InputVariant } from "@/components/atoms/input/types";
 
@@ -12,6 +11,7 @@ import style from "./index.module.css";
 import { useStoreContext } from "@/store";
 import { Modals } from "@/components/molecules/modals/modals.types";
 import { DOMAIN_STATUS } from "@/comman/types";
+import { debounceAsync } from "@/helpers/debounce.helper";
 
 const HomeSection = () => {
   const [statusName, setStatusName] = useState<{
@@ -21,28 +21,50 @@ const HomeSection = () => {
   }>(null);
   const [value, setValue] = useState("");
 
-  const handleInput = async (): Promise<void> => {
-    const response = await checkReservedName(value);
+  const handleInput = async (asyncValue: string): Promise<any> => {
+    const currentValue = typeof asyncValue === "string" ? asyncValue : value;
+    const response = await checkReservedName(currentValue);
     setStatusName({
       id: response.id,
       name: value,
       status: response.status,
     });
+    return response;
   };
+  const debouncedServerFetch = useMemo(
+    () => debounceAsync(handleInput, 1000),
+    []
+  );
 
-  useKeyPress("Enter", handleInput);
   const clearInput = (): void => {
     setValue("");
   };
 
-  const handleChange = (value) => {
+  const handleChange = async (value) => {
     const cleanInput = value.replace(/[^a-z0-9- ]/g, "");
     setValue(cleanInput);
+
     setStatusName({
       id: null,
       name: "",
       status: null,
     });
+
+    try {
+      const result = await debouncedServerFetch(value);
+
+      if (result === "skipped") {
+        return;
+      }
+
+      if (result) {
+        setStatusName({
+          id: result.id,
+          name: value,
+          status: result.status,
+        });
+      }
+    } catch (error) {}
   };
 
   return (
