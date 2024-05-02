@@ -16,7 +16,7 @@ const CartSection = () => {
       <div className={classNames(manropeBold.className, style.header)}>
         My Cart
         <span className={manropeSemiBold.className}>
-          Domain reservation {domainReservationTime}:00
+          Domain reservation 30:00
         </span>
       </div>
       <CartContent />
