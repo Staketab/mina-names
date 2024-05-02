@@ -10,7 +10,7 @@ const Star = ({
   className?: string;
 }): JSX.Element => {
   const [active, setActive] = useState(false);
-
+  return null;
   return (
     <svg
       width="28"
