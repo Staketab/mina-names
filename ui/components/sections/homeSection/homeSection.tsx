@@ -31,6 +31,10 @@ const HomeSection = () => {
   };
 
   useKeyPress("Enter", handleInput);
+  const clearInput = (): void => {
+    setValue("");
+  };
+
   const handleChange = (value) => {
     const cleanInput = value.replace(/[^a-z0-9- ]/g, "");
     setValue(cleanInput);
@@ -61,7 +65,11 @@ const HomeSection = () => {
           enableClear
         />
         {statusName?.name && value && (
-          <ResultItem statusName={statusName} className={style.resultItem} />
+          <ResultItem
+            statusName={statusName}
+            className={style.resultItem}
+            clearInput={clearInput}
+          />
         )}
       </div>
     </div>

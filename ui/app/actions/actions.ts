@@ -222,20 +222,26 @@ export async function deleteName({
   id,
 }: {
   id: string;
-}): Promise<ReserveNameResponse> {
+}): Promise<{ status: DATA_STATUS }> {
   if (!id) return;
-
-  const res = await fetch(
-    `${process.env.NEXT_PUBLIC_API_URL}/domains/reserve/${id}`,
-    {
-      method: "DELETE",
-      headers: {
-        "Content-Type": "application/json",
-        "x-api-key": process.env.NEXT_PUBLIC_API_KEY,
-      },
+  try {
+    const res = await fetch(
+      `${process.env.NEXT_PUBLIC_API_URL}/domains/reserve/${id}`,
+      {
+        method: "DELETE",
+        headers: {
+          "Content-Type": "application/json",
+          "x-api-key": process.env.NEXT_PUBLIC_API_KEY,
+        },
+      }
+    );
+    if (!res.ok) {
+      throw new Error(`HTTP error! Status: ${res.status}`);
     }
-  );
-  return await res.json();
+    return {
+      status: DATA_STATUS.SUCCESS,
+    };
+  } catch (error) {}
 }
 
 export async function changeExpirationTime(payload: {
