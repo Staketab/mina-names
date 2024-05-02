@@ -11,22 +11,22 @@ import { InputVariant } from "@/components/atoms/input/types";
 import style from "./index.module.css";
 import { useStoreContext } from "@/store";
 import { Modals } from "@/components/molecules/modals/modals.types";
+import { DOMAIN_STATUS } from "@/comman/types";
 
 const HomeSection = () => {
   const [statusName, setStatusName] = useState<{
     id: string | null;
     name: string;
+    status: DOMAIN_STATUS;
   }>(null);
   const [value, setValue] = useState("");
-  const {
-    actions: { openModal },
-  } = useStoreContext();
 
   const handleInput = async (): Promise<void> => {
     const response = await checkReservedName(value);
     setStatusName({
       id: response.id,
       name: value,
+      status: response.status,
     });
   };
 
@@ -37,6 +37,7 @@ const HomeSection = () => {
     setStatusName({
       id: null,
       name: "",
+      status: null,
     });
   };
 
