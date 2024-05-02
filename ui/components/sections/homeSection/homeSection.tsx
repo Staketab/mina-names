@@ -24,11 +24,7 @@ const HomeSection = () => {
   const handleInput = async (asyncValue: string): Promise<any> => {
     const currentValue = typeof asyncValue === "string" ? asyncValue : value;
     const response = await checkReservedName(currentValue);
-    setStatusName({
-      id: response.id,
-      name: value,
-      status: response.status,
-    });
+
     return response;
   };
   const debouncedServerFetch = useMemo(
@@ -44,14 +40,9 @@ const HomeSection = () => {
     const cleanInput = value.replace(/[^a-z0-9- ]/g, "");
     setValue(cleanInput);
 
-    setStatusName({
-      id: null,
-      name: "",
-      status: null,
-    });
-
     try {
-      const result = await debouncedServerFetch(value);
+      if (!cleanInput) return;
+      const result = await debouncedServerFetch(cleanInput);
 
       if (result === "skipped") {
         return;
