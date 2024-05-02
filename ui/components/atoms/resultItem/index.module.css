@@ -25,8 +25,15 @@
   border-radius: 24px;
   display: flex;
   align-items: center;
-  background-color: #57ce2e;
   text-transform: uppercase;
+}
+
+.activeStatus, .pendingStatus {
+  background-color: #b8b8bf;
+}
+
+.availableStatus {
+  background-color: #57ce2e;
 }
 
 .wrapper .status img {

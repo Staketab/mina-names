@@ -10,13 +10,9 @@ import { Star } from "../star";
 import Bag from "../bag/bag";
 import { useStoreContext } from "@/store";
 import { Modals } from "@/components/molecules/modals/modals.types";
-import { amount, bag } from "@/comman/constants";
+import { amount } from "@/comman/constants";
 import useWallet from "@/hooks/useWallet";
-
-enum NAME_STATUS {
-  AVAILABLE = "available",
-  TAKEN = "taken",
-}
+import { DOMAIN_STATUS } from "@/comman/types";
 
 const ResultItem = ({
   statusName,
@@ -25,10 +21,11 @@ const ResultItem = ({
   statusName: {
     id: string;
     name: string;
+    status: DOMAIN_STATUS;
   };
   className: string;
 }) => {
-  const { id, name } = statusName;
+  const { id, name, status } = statusName;
   const {
     actions: { openModal, addToBag },
   } = useStoreContext();
@@ -64,11 +61,28 @@ const ResultItem = ({
   };
 
   const actionIconsList = {
-    [NAME_STATUS.AVAILABLE]: <Bag onClick={handleBag} />,
-    [NAME_STATUS.TAKEN]: <Image src={infoIcon} alt="" onClick={handleInfo} />,
+    bag: <Bag onClick={handleBag} />,
+    info: <Image src={infoIcon} alt="" onClick={handleInfo} />,
   };
 
-  const status = id ? NAME_STATUS.TAKEN : NAME_STATUS.AVAILABLE;
+  const nameStatusText = {
+    [DOMAIN_STATUS.ACTIVE]: (
+      <span className={classNames(style.status, style.activeStatus)}>
+        TAKEN
+      </span>
+    ),
+    [DOMAIN_STATUS.PENDING]: (
+      <span className={classNames(style.status, style.pendingStatus)}>
+        PENDING
+      </span>
+    ),
+    default: (
+      <span className={classNames(style.status, style.availableStatus)}>
+        AVAILABLE
+      </span>
+    ),
+  };
+
   const disabled = false;
 
   return (
@@ -81,18 +95,12 @@ const ResultItem = ({
     >
       <div>
         {name}.mina
-        <span
-          className={classNames(style.status, manropeMedium.className, {
-            [style.unavailable]: id,
-          })}
-        >
-          {id ? "Taken" : "available"}
-        </span>
+        {nameStatusText[status] || nameStatusText.default}
       </div>
       <div className={style.rightSide}>
         <Star />
         <span className={style.actionIcon} aria-disabled={disabled}>
-          {actionIconsList[status]}
+          {!status ? actionIconsList.bag : actionIconsList.info}
         </span>
       </div>
     </div>
