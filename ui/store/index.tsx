@@ -11,7 +11,7 @@ type Domain = {
   id: string;
 };
 type Bag = {
-  reservationTime: number;
+  reservationTime: Date;
   domains: Domain[];
 };
 
@@ -108,7 +108,7 @@ export const reducer = (state: IState, action: StoreActions): IState => {
       };
     case "ADD_TO_BAG":
       const dataBag = {
-        reservationTime: initReservationTime,
+        reservationTime: new Date(),
         domains: [...state.bag.domains, action.payload],
       };
       localStorage.setItem(bag, JSON.stringify(dataBag));
