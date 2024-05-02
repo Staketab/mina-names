@@ -97,7 +97,7 @@ const DetailsNameInfo = ({
             onClick={handleDefaultImg}
             disabled={isDefault}
           />
-          <Button variant={Variant.grey}>Set Reminder</Button>
+          {/* <Button variant={Variant.grey}>Set Reminder</Button> */}
           <Button variant={Variant.black}>Extend</Button>
         </div>
       </div>
