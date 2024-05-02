@@ -17,12 +17,15 @@ import { DOMAIN_STATUS } from "@/comman/types";
 const ResultItem = ({
   statusName,
   className,
+  clearInput,
 }: {
   statusName: {
     id: string;
     name: string;
     status: DOMAIN_STATUS;
   };
+  clearInput: () => void;
+
   className: string;
 }) => {
   const { id, name, status } = statusName;
@@ -54,6 +57,7 @@ const ResultItem = ({
           amount: response.amount,
           id: response.id,
         });
+        clearInput();
       }
     } catch (error) {
       console.log(error);

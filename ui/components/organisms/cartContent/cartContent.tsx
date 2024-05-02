@@ -37,10 +37,12 @@ const CartContent = (): JSX.Element => {
     actions: { deleteFromBag, addPeriod, openModal },
   } = useStoreContext();
 
-  const handleIcon = async (value: DomainForTable): Promise<void> => {
+  const deleteReservedName = async (value: DomainForTable): Promise<void> => {
     try {
-      await deleteName({ id: value.id });
-      deleteFromBag(value?.id);
+      const response = await deleteName({ id: value.id });
+      if (response.status === DATA_STATUS.SUCCESS) {
+        deleteFromBag(value?.id);
+      }
     } catch (error) {}
   };
 
@@ -64,7 +66,7 @@ const CartContent = (): JSX.Element => {
     return {
       ...item,
       amount: Number(item.amount) * item.years * rate + " MINA",
-      onClick: handleIcon,
+      onClick: deleteReservedName,
       onCount: onCount,
     };
   });
