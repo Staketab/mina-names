@@ -19,17 +19,24 @@ const CartSection = () => {
   } = useStoreContext();
 
   const [time, setTime] = useState<string>("");
+  console.log(reservationTime);
 
   useEffect(() => {
-    if (reservationTime) {
-      setInterval(() => {
-        const result = getTimeDifference(Number(reservationTime));
-        if (!result) {
-          domains.forEach(({ id }) => deleteFromBag(id));
-        }
-        setTime(result);
-      }, 1000);
+    if (!reservationTime) {
+      setTime("");
+      return;
     }
+    const interval = setInterval(() => {
+      const result = getTimeDifference(Number(reservationTime));
+      if (!result) {
+        domains.forEach(({ id }) => deleteFromBag(id));
+      }
+      setTime(result);
+    }, 1000);
+
+    return () => {
+      clearInterval(interval);
+    };
   }, [reservationTime]);
 
   return (
