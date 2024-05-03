@@ -4,29 +4,36 @@ import { Variant } from "@/components/atoms/button/types";
 import { manropeBold, manropeMedium } from "@/app/fonts";
 import appliedIcon from "../../../../assets/applied.svg";
 import Image from "next/image";
-import { useRouter } from "next/navigation";
-import { Routs } from "@/comman/types";
 
-const TransactionAppliedModal = (): JSX.Element => {
-  const router = useRouter();
+const TransactionAppliedModal = ({
+  header,
+  text,
+  button,
+}: {
+  header: string;
+  text?: string;
+  button?: {
+    action: () => void;
+    text: string;
+  };
+}): JSX.Element => {
   return (
     <div className={style.wrapper}>
       <div className={style.topContent}>
         <Image src={appliedIcon} alt="applied" />
       </div>
       <div className={style.bottomContent}>
-        <div className={manropeBold.className}>Transaction applied</div>
-        <div className={manropeMedium.className}>
-          The Domain was successfully purchased!
+        <div className={manropeBold.className}>
+          {header || "Transaction applied"}
         </div>
-        <div className={style.buttonsBlock}>
-          <Button
-            variant={Variant.black}
-            onClick={() => router.push(Routs.NAMES)}
-          >
-            See Domain
-          </Button>
-        </div>
+        {text && <div className={manropeMedium.className}>{text}</div>}
+        {button && (
+          <div className={style.buttonsBlock}>
+            <Button variant={Variant.black} onClick={button.action}>
+              {button.text}
+            </Button>
+          </div>
+        )}
       </div>
     </div>
   );

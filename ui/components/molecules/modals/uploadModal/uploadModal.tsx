@@ -1,13 +1,40 @@
 "use client";
-
 import style from "./index.module.css";
 import { Button } from "@/components/atoms/button";
 import { Variant } from "@/components/atoms/button/types";
-import { pinFile } from "@/app/actions/actions";
+import { pinFile, zkCloudWorkerRequest } from "@/app/actions/actions";
 import { UploadFile } from "../../uploadFile";
 import { FileInput } from "@/components/atoms/input/fileInput";
 import React, { useState } from "react";
 import { useStoreContext } from "@/store";
+import CryptoJS from "crypto-js";
+import { AccountDomainDetailsResponse } from "@/app/actions/types";
+import { contractAddress } from "@/comman/constants";
+import { Modals } from "../modals.types";
+import { useRouter } from "next/navigation";
+import { Routs } from "@/comman/types";
+
+interface ImageData {
+  size: number;
+  sha3_512: string;
+  mimeType: string;
+  filename: string;
+  ipfsHash: string;
+}
+type DomainTransactionType = "add" | "extend" | "update" | "remove";
+
+interface Transaction {
+  operation: DomainTransactionType;
+  name: string;
+  address: string;
+  expiry: number;
+  metadata?: string;
+  storage?: string;
+  oldDomain?: string;
+  signature?: string;
+}
+
+const transactions: string[] = [];
 
 const fileTypes = [
   ".jpg",
@@ -23,20 +50,20 @@ const fileTypes = [
 ];
 
 const UploadModal = ({
-  editImg,
+  accountDomainDetails,
 }: {
-  editImg: (value: string) => Promise<void>;
+  accountDomainDetails: AccountDomainDetailsResponse;
 }): JSX.Element => {
+  const router = useRouter();
+
   const {
-    actions: { closeModal },
+    actions: { closeModal, openModal },
   } = useStoreContext();
 
   const [file, setFile] = useState<File>(null);
   const [loading, setLoading] = useState<boolean>(false);
   const [isSupported, setIsSupported] = useState<boolean>(null);
   const handleChange = async (file: File): Promise<void> => {
-    console.log(file);
-    
     setFile(file);
     setIsSupported(true);
   };
@@ -45,16 +72,120 @@ const UploadModal = ({
     try {
       setLoading(true);
       const formData = new FormData();
-      console.log(formData);
-      
+
       formData.append("file", file);
       const ipfsHash = await pinFile(formData);
-      await editImg(ipfsHash);
+
+      function readFileAsync(file) {
+        return new Promise((resolve, reject) => {
+          let reader = new FileReader();
+
+          reader.onload = () => {
+            resolve(reader.result);
+          };
+
+          reader.onerror = reject;
+
+          reader.readAsArrayBuffer(file);
+        });
+      }
+
+      const binary = await readFileAsync(file);
+      const binaryWA = CryptoJS.lib.WordArray.create(binary);
+      var sha3_512 = CryptoJS.SHA3(binaryWA, { outputLength: 512 }).toString(
+        CryptoJS.enc.Base64
+      );
+
+      const image: ImageData = {
+        filename: file.name,
+        ipfsHash: ipfsHash,
+        size: file.size,
+        mimeType: file.type,
+        sha3_512: sha3_512,
+      };
+
+      const tx: Transaction = {
+        operation: "update",
+        name: accountDomainDetails.domainName,
+        address: accountDomainDetails.ownerAddress,
+        oldDomain: accountDomainDetails.oldMetadata.domainMetadata,
+        expiry: accountDomainDetails.expirationTime,
+        metadata: JSON.stringify({
+          image,
+          contractAddress: contractAddress,
+        }),
+      };
+
+      let args: string = JSON.stringify({
+        contractAddress,
+        tx,
+      });
+
+      let answer = await zkCloudWorkerRequest({
+        command: "execute",
+        task: "prepareSignTransactionData",
+        args,
+        metadata: `command sign`,
+        mode: "async",
+      });
+
+      const jobId = answer.jobId;
+      let result: string | undefined = undefined;
+
+      const request = async () => {
+        while (result === undefined) {
+          const answer = await zkCloudWorkerRequest({
+            command: "jobResult",
+            jobId,
+          });
+
+          result = answer.result;
+
+          if (result !== undefined) {
+            break;
+          }
+
+          await new Promise((resolve) => setTimeout(resolve, 5000));
+        }
+      };
+
+      await request();
+
+      const tx2 = JSON.parse(result);
+      const signatureData = JSON.parse(tx2.signature).signatureData;
+
+      const result2 = await window["mina"]
+        ?.signFields({ message: signatureData })
+        .catch((err: any) => err);
+
+      const signature = result2.signature;
+      tx2.signature = signature;
+      transactions.push(JSON.stringify(tx2, null, 2));
+
+      const answer2 = await zkCloudWorkerRequest({
+        command: "sendTransactions",
+        transactions,
+        metadata: "backend txs",
+      });
+
+      closeModal();
+      if (answer2[0]) {
+        openModal(Modals.transactionApplied, {
+          header: "Updating is in progress.",
+          button: {
+            text: "See Domain",
+            action: () => router.push(Routs.NAMES),
+          },
+        });
+      } else {
+        openModal(Modals.transactionFailed, {
+          header: "Updating has failed.",
+        });
+      }
     } catch (error) {
-      console.log(error);
+      closeModal();
     }
     setLoading(false);
-    closeModal();
   };
 
   const onTypeError = () => {
@@ -86,7 +217,7 @@ const UploadModal = ({
         <Button text="Cancel" variant={Variant.cancel} onClick={handleClose} />
         <Button
           text="Update"
-          variant={Variant.blue}
+          variant={Variant.black}
           disabled={!file}
           onClick={submit}
         />

@@ -6,15 +6,16 @@ import { Button } from "@/components/atoms/button";
 import { Variant } from "@/components/atoms/button/types";
 import { useStoreContext } from "@/store";
 import { Modals } from "../modals.types";
+import { AccountDomainDetailsResponse } from "@/app/actions/types";
 
 const ConfirmationModal = ({
   icon,
   text,
-  editImg,
+  accountDomainDetails,
 }: {
   icon?: string;
   text?: string;
-  editImg: (value: string) => Promise<void>;
+  accountDomainDetails: AccountDomainDetailsResponse;
 }): JSX.Element => {
   const {
     actions: { openModal, closeModal },
@@ -22,7 +23,7 @@ const ConfirmationModal = ({
   const handleNext = () => {
     closeModal();
     openModal(Modals.upload, {
-      editImg,
+      accountDomainDetails,
     });
   };
 
@@ -39,7 +40,7 @@ const ConfirmationModal = ({
         </div>
         <div className={style.buttonsBlock}>
           <Button text="Cancel" onClick={onClose} variant={Variant.cancel} />
-          <Button text="Next" variant={Variant.blue} onClick={handleNext} />
+          <Button text="Next" variant={Variant.black} onClick={handleNext} />
         </div>
       </div>
     </>

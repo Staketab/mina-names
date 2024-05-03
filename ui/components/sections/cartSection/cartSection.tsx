@@ -7,8 +7,8 @@ import { CartContent } from "@/components/organisms/cartContent";
 import { useStoreContext } from "@/store";
 import { useEffect, useState } from "react";
 import { getTimeDifference } from "@/helpers/timeHelper";
-import { deleteName } from "@/app/actions/actions";
-import { DATA_STATUS } from "@/comman/types";
+import timeIcon from "../../../assets/time.svg";
+import Image from "next/image";
 
 const CartSection = () => {
   const {
@@ -34,10 +34,11 @@ const CartSection = () => {
 
   return (
     <div className={classNames(style.wrapper, "container")}>
-      <div className={classNames(manropeBold.className, style.header)}>
-        My Cart
-        <span className={manropeSemiBold.className}>
-          Domain reservation {time}
+      <div className={manropeBold.className}>
+        <div className={style.header}>My Cart</div>
+        <span className={classNames(manropeSemiBold.className, style.time)}>
+          <Image src={timeIcon} alt="" />
+          <span> Domain reservation {time}</span>
         </span>
       </div>
       <CartContent />

@@ -7,19 +7,30 @@ type NameCardsProps = {
     domainName: string;
     domainImg: string;
     id: string;
-    domainStatus: DOMAIN_STATUS
+    domainStatus: DOMAIN_STATUS;
+    endTimestamp: number;
   }[];
 };
 
 const NameCards = ({ data }: NameCardsProps): JSX.Element => {
+  if (!data) return null;
 
-  if(!data) return null
-  
   return (
     <div className={style.nameCards}>
-      {data.map(({ domainName, domainImg, id, domainStatus }, index) => {
-        return <NameCard name={domainName} img={domainImg} key={index} id={id} domainStatus={domainStatus}/>;
-      })}
+      {data.map(
+        ({ domainName, domainImg, id, domainStatus, endTimestamp }, index) => {
+          return (
+            <NameCard
+              name={domainName}
+              img={domainImg}
+              key={index}
+              id={id}
+              domainStatus={domainStatus}
+              endTimestamp={endTimestamp}
+            />
+          );
+        }
+      )}
     </div>
   );
 };

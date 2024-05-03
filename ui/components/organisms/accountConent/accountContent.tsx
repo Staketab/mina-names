@@ -2,9 +2,9 @@
 
 import style from "./index.module.css";
 import { TABS_VARIANT, Tabs } from "@/components/molecules/tabs";
-import { NamesContent, OffersContent } from "./components";
+import { NamesContent } from "./components";
 import avatarIcon from "../../../assets/avatar.svg";
-import { DataTable } from "@/comman/types";
+import { DOMAIN_STATUS, DataTable } from "@/comman/types";
 import useWallet from "@/hooks/useWallet";
 import { manropeBold } from "@/app/fonts";
 import Image from "next/image";
@@ -15,6 +15,11 @@ const AccountContent = ({ accountDomains }: { accountDomains: DataTable }) => {
 
   if (!accountDomains) return null;
 
+  const data = accountDomains.content.filter(
+    ({ domainStatus }) =>
+      domainStatus === DOMAIN_STATUS.ACTIVE ||
+      domainStatus === DOMAIN_STATUS.PENDING
+  );
   return (
     <div className={style.wrapper}>
       <div className={classNames(manropeBold.className, style.header)}>
@@ -26,7 +31,11 @@ const AccountContent = ({ accountDomains }: { accountDomains: DataTable }) => {
         variant={TABS_VARIANT.light}
         items={[
           {
-            content: <NamesContent accountDomains={accountDomains} />,
+            content: (
+              <NamesContent
+                accountDomains={{ ...accountDomains, content: data }}
+              />
+            ),
             title: "Names",
             value: 1,
           },

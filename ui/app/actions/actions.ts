@@ -123,7 +123,6 @@ export async function pinFile(formData): Promise<string> {
         },
       }
     );
-    console.log("pinFile result:", response.data);
     if (response && response.data && response.data.IpfsHash) {
       return response.data.IpfsHash;
     } else {
@@ -266,4 +265,38 @@ export async function changeExpirationTime(payload: {
     }
     return { status: DATA_STATUS.SUCCESS };
   } catch (error) {}
+}
+
+export async function zkCloudWorkerRequest(params: {
+  command: string;
+  task?: string;
+  transactions?: string[];
+  args?: string;
+  metadata?: string;
+  mode?: string;
+  jobId?: string;
+}) {
+  const { command, task, transactions, args, metadata, mode, jobId } = params;
+  const apiData = {
+    auth: "M6t4jtbBAFFXhLERHQWyEB9JA9xi4cWqmYduaCXtbrFjb7yaY7TyaXDunKDJNiUTBEcyUomNXJgC",
+    command: command,
+    jwtToken:
+      "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY0NTkwMzQ5NDYiLCJpYXQiOjE3MDEzNTY5NzEsImV4cCI6MTczMjg5Mjk3MX0.r94tKntDvLpPJT2zzEe7HMUcOAQYQu3zWNuyFFiChD0",
+    data: {
+      task,
+      transactions: transactions ?? [],
+      args,
+      repo: "nameservice",
+      developer: "@staketab",
+      metadata,
+      mode: mode ?? "sync",
+      jobId,
+    },
+    chain: `devnet`,
+  };
+  const endpoint =
+    "https://cuq99yahhi.execute-api.eu-west-1.amazonaws.com/dev/zkcloudworker";
+
+  const response = await axios.post(endpoint, apiData);
+  return response.data;
 }

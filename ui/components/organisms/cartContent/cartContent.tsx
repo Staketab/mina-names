@@ -18,8 +18,9 @@ import { Button } from "@/components/atoms/button";
 import useWallet from "@/hooks/useWallet";
 import { Variant } from "@/components/atoms/button/types";
 import { Modals } from "@/components/molecules/modals/modals.types";
-import { DATA_STATUS } from "@/comman/types";
+import { DATA_STATUS, Routs } from "@/comman/types";
 import { DomainForTable, DomainsForTable } from "./cartContent.types";
+import { useRouter } from "next/navigation";
 
 const CartContent = (): JSX.Element => {
   const {
@@ -27,6 +28,7 @@ const CartContent = (): JSX.Element => {
     accountId,
     actions: { onSendClick },
   } = useWallet();
+  const router = useRouter();
 
   const isInsufficientBalance = balance.balance < amount;
 
@@ -83,7 +85,14 @@ const CartContent = (): JSX.Element => {
         fee: fees.default,
       });
       if (response?.hash) {
-        openModal(Modals.transactionApplied);
+        openModal(Modals.transactionApplied, {
+          header: "Transaction applied",
+          text: "The Domain was successfully purchased!",
+          button: {
+            text: "See Domain",
+            action: () => router.push(Routs.NAMES),
+          },
+        });
         const data = await reserveApplyName({
           txHash: response?.hash,
           ownerAddress: accountId[0],
@@ -99,7 +108,12 @@ const CartContent = (): JSX.Element => {
         }
       } else {
         openModal(Modals.transactionFailed, {
-          tryAgain: handlePurchase,
+          header: "Transaction failed",
+          text: "The Domain has not been purchased!",
+          button: {
+            text: "Try Again",
+            action: handlePurchase,
+          },
         });
       }
     } catch (error) {}

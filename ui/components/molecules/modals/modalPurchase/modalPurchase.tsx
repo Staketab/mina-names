@@ -5,7 +5,7 @@ import style from "./index.module.css";
 import { interSemiBold, manropeBold } from "@/app/fonts";
 import { Button } from "@/components/atoms/button";
 import { Variant } from "@/components/atoms/button/types";
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import useWallet from "@/hooks/useWallet";
 import { saveName } from "@/app/actions/actions";
 import { accountAddress, fees } from "@/comman/constants";
@@ -17,6 +17,9 @@ import { useStoreContext } from "@/store";
 import { Modals } from "../modals.types";
 import { TABS_VARIANT, Tabs } from "../../tabs";
 
+import { useRouter } from "next/navigation";
+import { Routs } from "@/comman/types";
+
 type ModalPurchaseProps = {
   name: string;
 };
@@ -26,6 +29,8 @@ const ModalPurchase = ({ name }: ModalPurchaseProps): JSX.Element => {
   const {
     actions: { openModal, closeModal },
   } = useStoreContext();
+  const router = useRouter();
+
   const maxPeriod = 3;
   const minPeriod = 1;
   const amount = 1;
@@ -67,10 +72,22 @@ const ModalPurchase = ({ name }: ModalPurchaseProps): JSX.Element => {
               expirationTime: selectedPeriod,
             });
           })();
-          openModal(Modals.transactionApplied);
+          openModal(Modals.transactionApplied, {
+            header: "Transaction applied",
+            text: "The Domain was successfully purchased!",
+            button: {
+              text: "See Domain",
+              action: () => router.push(Routs.NAMES),
+            },
+          });
         } else {
           openModal(Modals.transactionFailed, {
-            tryAgain: handlePurchase,
+            header: "Transaction failed",
+            text: "The Domain has not been purchased!",
+            button: {
+              text: "Try Again",
+              action: handlePurchase,
+            },
           });
         }
       })
