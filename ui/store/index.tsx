@@ -1,6 +1,5 @@
 "use client";
-import { bag, initReservationTime } from "@/comman/constants";
-import { Bag } from "@/components/atoms/bag";
+import { bag } from "@/comman/constants";
 import { Modals } from "@/components/molecules/modals/modals.types";
 import React, { useContext, useReducer } from "react";
 
@@ -11,7 +10,7 @@ type Domain = {
   id: string;
 };
 type Bag = {
-  reservationTime: Date;
+  reservationTime: Date | number;
   domains: Domain[];
 };
 
@@ -108,7 +107,7 @@ export const reducer = (state: IState, action: StoreActions): IState => {
       };
     case "ADD_TO_BAG":
       const dataBag = {
-        reservationTime: new Date(),
+        reservationTime: Date.now(),
         domains: [...state.bag.domains, action.payload],
       };
       localStorage.setItem(bag, JSON.stringify(dataBag));

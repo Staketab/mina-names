@@ -3,11 +3,10 @@ import dayjsPluginUTC from "dayjs-plugin-utc";
 
 dayjs.extend(dayjsPluginUTC);
 
-export const getTimeFromMillisecondsDynamic = (
-  millis,
-  fullMeasureNames,
-  isAgo
-) => {
+export const getTimeFromMillisecondsDynamic = (millis, fullMeasureNames) => {
+  console.log(millis);
+  console.log(fullMeasureNames);
+
   const SECONDSMS = 1000;
   const MINUTESMS = SECONDSMS * 60;
   const HOURSMS = MINUTESMS * 60;
@@ -19,7 +18,7 @@ export const getTimeFromMillisecondsDynamic = (
   const hoursSymbol = fullMeasureNames ? "hour" : "h";
   const minutesSymbol = fullMeasureNames ? "minute" : "m";
   const secondsSymbol = fullMeasureNames ? "second" : "s";
-  const ago = isAgo ? " ago" : "";
+  const ago = "";
 
   let years, days, hours, minutes, seconds;
 
@@ -106,4 +105,22 @@ export const dayMonthYearTimeFormat = (timestamp) => {
   if (!timestamp) return;
   const date = dayjs(new Date(timestamp)).format("DD.MM.YYYY UTC h:mm");
   return date;
+};
+
+export const getTimeDifference = (timelocalstorage: number): string => {
+  const currentTime = Date.now();
+  const timeDifference = timelocalstorage + 30 * 60000 - currentTime;
+
+  if (timeDifference > 0) {
+    const minutes = Math.floor(timeDifference / 60000);
+    const seconds = Math.floor((timeDifference % 60000) / 1000);
+
+    if (minutes > 0) {
+      return `${minutes}m ${seconds}s`;
+    } else {
+      return `${seconds}s`;
+    }
+  } else {
+    return;
+  }
 };
