@@ -26,7 +26,7 @@ const CartContent = (): JSX.Element => {
   const {
     balance,
     accountId,
-    actions: { onSendClick },
+    actions: { onSendClick, onConnectWallet },
   } = useWallet();
   const router = useRouter();
 
@@ -79,6 +79,7 @@ const CartContent = (): JSX.Element => {
 
   const handlePurchase = async (): Promise<void> => {
     try {
+      await onConnectWallet();
       const response = await onSendClick({
         amount: totalAmount,
         to: accountAddress,
