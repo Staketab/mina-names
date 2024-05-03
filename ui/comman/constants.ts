@@ -16,3 +16,5 @@ export const amount = 1;
 export const bag = "bag";
 
 export const initReservationTime = 30;
+export const contractAddress =
+  "B62qrjWrAaXV65CZgpfhLdFynbFdyj851cWZPCPvF92mF3ohGDbNAME";

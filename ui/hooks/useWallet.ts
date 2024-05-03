@@ -1,8 +1,7 @@
 import { useEffect, useState } from "react";
 import { useLocalStorage } from "./useLocalStorage";
 import useAddressBalance, { Balance } from "./useAddressBalance";
-import { useStoreContext } from "@/store";
-import { Modals } from "@/components/molecules/modals/modals.types";
+
 export type SendPaymentresponse = {
   hash?: string;
   message?: string;
@@ -44,17 +43,35 @@ interface IUseGlobal {
       to: string;
       fee: number;
       meme?: string;
-    }) => Promise<{
-      hash: string;
-    } | undefined>;
+    }) => Promise<
+      | {
+          hash: string;
+        }
+      | undefined
+    >;
   };
+}
+
+enum ChainId {
+  devnet = "devnet",
+  berkeley = "berkeley",
+  mainnet = "mainnet",
+}
+
+type ChainInfoArgs = {
+  chainId: ChainId;
+  name: "Devnet" | "Berkeley" | "Mainnet";
+};
+
+interface ProviderError extends Error {
+  message: string;
+  code: number;
+  data?: unknown;
 }
 
 export default function useWallet(): IUseGlobal {
   const [account, setAccount] = useLocalStorage("account");
-  const {
-    actions: { openModal },
-  } = useStoreContext();
+
   const [walletData, setWalletData] = useState(null);
   const [, setIsConnectedAuro] = useLocalStorage(isConnectedAuro);
   const [sendResultMessage, setSendResultMessage] =
@@ -70,6 +87,21 @@ export default function useWallet(): IUseGlobal {
     setWalletData({ ...walletData, connectMessage: connectMessage });
 
   const minaAdapter = typeof window !== "undefined" && window["mina"];
+
+  const requestNetwork = async () => {
+    const network: ChainInfoArgs | ProviderError = await minaAdapter
+      ?.requestNetwork()
+      .catch((err: any) => err);
+
+    // if ("chainId" in network && network.chainId !== ChainId.devnet) {
+    //   const switchResult: ChainInfoArgs | ProviderError = await minaAdapter
+    //     ?.switchChain({
+    //       chainId: ChainId.devnet,
+    //     })
+    //     .catch((err: any) => err);
+    //   console.log(switchResult);
+    // }
+  };
 
   const onConnectWallet = async (): Promise<void> => {
     if (!minaAdapter) {
@@ -127,9 +159,13 @@ export default function useWallet(): IUseGlobal {
       });
       return sendResult;
     } catch (error) {
-      console.log("tttt", error);
+      console.log(error);
     }
   };
+
+  useEffect(() => {
+    requestNetwork();
+  }, []);
 
   return {
     ...walletData,

@@ -6,11 +6,18 @@ import failedIcon from "../../../../assets/failed.svg";
 import Image from "next/image";
 
 type TransactionAppliedModalProps = {
-  tryAgain?: () => void;
+  header: string;
+  text?: string;
+  button?: {
+    text: string;
+    action: () => void;
+  };
 };
 
 const TransactionFailedModal = ({
-  tryAgain,
+  header,
+  text,
+  button,
 }: TransactionAppliedModalProps): JSX.Element => {
   return (
     <div className={style.wrapper}>
@@ -18,14 +25,12 @@ const TransactionFailedModal = ({
         <Image src={failedIcon} alt="applied" />
       </div>
       <div className={style.bottomContent}>
-        <div className={manropeBold.className}>Transaction failed</div>
-        <div className={manropeMedium.className}>
-          The Domain has not been purchased!
-        </div>
+        <div className={manropeBold.className}>{header}</div>
+        {text && <div className={manropeMedium.className}>{text}</div>}
         <div className={style.buttonsBlock}>
-          {tryAgain && (
-            <Button variant={Variant.black} onClick={tryAgain}>
-              Try Again
+          {button && (
+            <Button variant={Variant.black} onClick={button.action}>
+              {button.text}
             </Button>
           )}
         </div>

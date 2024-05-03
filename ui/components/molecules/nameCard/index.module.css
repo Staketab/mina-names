@@ -33,3 +33,10 @@
 .wrapper span {
   margin-bottom: 2px;
 }
+
+
+.expiration {
+  color: #949499;
+  font-size: 13px;
+  margin: 2px 0 0 0;
+}

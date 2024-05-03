@@ -104,6 +104,12 @@ export const dayMonthYearTimeFormat = (timestamp) => {
   return date;
 };
 
+export const dayMonthYearFormat = (timestamp) => {
+  if (!timestamp) return;
+  const date = dayjs(new Date(timestamp)).format("DD.MM.YYYY");
+  return date;
+};
+
 export const getTimeDifference = (timelocalstorage: number): string => {
   const currentTime = Date.now();
   const timeDifference = timelocalstorage + 30 * 60000 - currentTime;

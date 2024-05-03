@@ -14,6 +14,17 @@ export type AccountDomainDetailsResponse = {
   isSendToCloudWorker: boolean;
   isDefault: boolean;
   endTimestamp: number;
+  oldMetadata: {
+    description?: string;
+    discord?: string;
+    domainMetadata: string;
+    email?: string;
+    github?: string;
+    ipfsImg?: string;
+    telegram?: string;
+    website?: string;
+    xtwitter?: string;
+  };
 };
 
 export type ReserveNameProps = {

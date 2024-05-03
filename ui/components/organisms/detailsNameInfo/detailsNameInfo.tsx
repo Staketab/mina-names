@@ -36,6 +36,7 @@ const DetailsNameInfo = ({
     true;
     openModal(Modals.confirmation, {
       editImg,
+      accountDomainDetails
     });
   };
   const { domainImg, domainName, ownerAddress } = accountDomainDetails;
@@ -98,7 +99,7 @@ const DetailsNameInfo = ({
             disabled={isDefault}
           />
           {/* <Button variant={Variant.grey}>Set Reminder</Button> */}
-          <Button variant={Variant.black}>Extend</Button>
+          {/* <Button variant={Variant.black}>Extend</Button> */}
         </div>
       </div>
       <Tabs
@@ -117,11 +118,11 @@ const DetailsNameInfo = ({
             title: "Ownership",
             value: 2,
           },
-          {
-            content: <div>Offers</div>,
-            title: "Offers",
-            value: 3,
-          },
+          // {
+          //   content: <div>Offers</div>,
+          //   title: "Offers",
+          //   value: 3,
+          // },
         ]}
         initValue={1}
       />
