@@ -43,13 +43,18 @@ export type ADD_PERIOD = {
   };
 };
 
+export type CLEAR_BAG = {
+  type: "CLEAR_BAG";
+};
+
 type StoreActions =
   | OPEN_MODAL
   | CLOSE_MODAL
   | ADD_TO_BAG
   | DELETE_FROM_BAG
   | ADD_PERIOD
-  | INIT_STOR_FROM_LOCAL_STORAGE;
+  | INIT_STOR_FROM_LOCAL_STORAGE
+  | CLEAR_BAG;
 
 type initStore = (value: IState) => void;
 type OpenModal = (modal: Modals, data?: unknown) => void;
@@ -57,6 +62,7 @@ type CloseModal = (modal?: Modals) => void;
 type addToBag = (data: Domain) => void;
 type deleteFromBag = (id: string) => void;
 type addPeriod = (id: string, value: number) => void;
+type clearBag = () => void;
 
 type IStore = {
   state: IState;
@@ -67,6 +73,7 @@ type IStore = {
     deleteFromBag: deleteFromBag;
     addPeriod: addPeriod;
     initStore: initStore;
+    clearBag: clearBag;
   };
 };
 
@@ -147,6 +154,18 @@ export const reducer = (state: IState, action: StoreActions): IState => {
         ...state,
         bag: editedBag,
       };
+    case "CLEAR_BAG":
+      const clearedBag = {
+        domains: [],
+        reservationTime: null,
+      };
+
+      localStorage.setItem(bag, JSON.stringify(clearedBag));
+
+      return {
+        ...state,
+        bag: clearedBag,
+      };
 
     default:
       return state;
@@ -164,6 +183,7 @@ export const StoreContext: React.Context<IStore> = React.createContext({
     deleteFromBag: noop,
     addPeriod: noop,
     initStore: noop,
+    clearBag: noop,
   },
 });
 
@@ -185,6 +205,8 @@ const Store = ({
 
   const deleteFromBag = (id: string) =>
     dispatch({ type: "DELETE_FROM_BAG", payload: id });
+
+  const clearBag = () => dispatch({ type: "CLEAR_BAG" });
 
   const addPeriod = (id: string, value: number) =>
     dispatch({
@@ -209,6 +231,7 @@ const Store = ({
           deleteFromBag,
           addPeriod,
           initStore,
+          clearBag,
         },
       }}
     >

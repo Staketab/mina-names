@@ -36,7 +36,7 @@ const CartContent = (): JSX.Element => {
     state: {
       bag: { domains },
     },
-    actions: { deleteFromBag, addPeriod, openModal },
+    actions: { deleteFromBag, addPeriod, openModal, clearBag },
   } = useStoreContext();
 
   const deleteReservedName = async (value: DomainForTable): Promise<void> => {
@@ -105,6 +105,7 @@ const CartContent = (): JSX.Element => {
         });
         if (data.status === DATA_STATUS.SUCCESS) {
           domains.forEach(({ id }) => deleteFromBag(id));
+          clearBag();
         }
       } else {
         openModal(Modals.transactionFailed, {
