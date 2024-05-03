@@ -19,7 +19,6 @@ const CartSection = () => {
   } = useStoreContext();
 
   const [time, setTime] = useState<string>("");
-  console.log(reservationTime);
 
   useEffect(() => {
     if (!reservationTime) {
