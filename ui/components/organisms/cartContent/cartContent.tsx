@@ -90,7 +90,7 @@ const CartContent = (): JSX.Element => {
           header: "Transaction applied",
           text: "The Domain was successfully purchased!",
           button: {
-            text: "See Domain",
+            text: "See Domains",
             action: () => router.push(Routs.NAMES),
           },
         });
