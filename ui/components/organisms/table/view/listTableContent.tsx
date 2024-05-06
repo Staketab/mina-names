@@ -5,7 +5,7 @@ import sortIcon from "../img/SortIcon.svg";
 
 import { ORDER_BY, SORT_BY } from "../../../../comman/types";
 import getCell from "../templates";
-import { interSemiBold } from "@/app/fonts";
+import { manropeSemiBold } from "@/app/fonts";
 
 type ListTableContent = {
   data: any[];
@@ -25,7 +25,7 @@ const ListTableContent = ({
   showErrorMessage,
   sortBy,
   orderBy,
-}: ListTableContent): JSX.Element => {  
+}: ListTableContent): JSX.Element => {
   return (
     <table className={style.table}>
       <thead>
@@ -34,7 +34,7 @@ const ListTableContent = ({
             <th
               key={headerText}
               onClick={() => handleSort(configSortBy)}
-              className={classNames(interSemiBold.className, {
+              className={classNames(manropeSemiBold.className, {
                 [style.headerCellHover]: configSortBy,
               })}
             >

@@ -1,3 +1,9 @@
+.wrapper {
+  background-color: var(--col--light);
+  margin-top: 24px;
+  border-radius: 12px;
+}
+
 .subHeader {
-    margin-bottom: 13px;
+  padding: 18px 24px;
 }

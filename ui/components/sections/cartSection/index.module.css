@@ -1,0 +1,25 @@
+.wrapper > div:first-child {
+  display: flex;
+  align-items: center;
+  margin: 40px 0 24px 0;
+}
+
+.header {
+  display: flex;
+  align-items: center;
+  font-size: 32px;
+
+}
+
+.time {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-left: 12px;
+  color: #57575a;
+  font-size: 14px;
+}
+
+.time img {
+  margin-right: 2px;
+}

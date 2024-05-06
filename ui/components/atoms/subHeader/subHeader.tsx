@@ -1,4 +1,4 @@
-import { interSemiBold } from "@/app/fonts";
+import { interSemiBold, manropeBold } from "@/app/fonts";
 import classNames from "classnames";
 
 import style from "./index.module.css";
@@ -11,7 +11,13 @@ const SubHeader = ({
   className?: string;
 }): JSX.Element => {
   return (
-    <div className={classNames(interSemiBold.className, style.subHeader,className)}>
+    <div
+      className={classNames(
+        manropeBold.className,
+        style.subHeader,
+        className
+      )}
+    >
       {header}
     </div>
   );

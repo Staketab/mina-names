@@ -1,31 +1,39 @@
+"use client";
 import classNames from "classnames";
-import PopupOverlay from "../../popupOverlay";
 
 import style from "./index.module.css";
-import { interBold, interMedium, interSemiBold } from "@/app/fonts";
+import { interSemiBold, manropeBold } from "@/app/fonts";
 import { Button } from "@/components/atoms/button";
 import { Variant } from "@/components/atoms/button/types";
-import { useEffect, useState } from "react";
+import React, { useState } from "react";
 import useWallet from "@/hooks/useWallet";
 import { saveName } from "@/app/actions/actions";
 import { accountAddress, fees } from "@/comman/constants";
+import Image from "next/image";
+import plusIcon from "../../../../assets/plus.svg";
+import minusIcon from "../../../../assets/minus.svg";
+import { MinaContent } from "./tabContents";
+import { useStoreContext } from "@/store";
+import { Modals } from "../modals.types";
+import { TABS_VARIANT, Tabs } from "../../tabs";
+
+import { useRouter } from "next/navigation";
+import { Routs } from "@/comman/types";
 
 type ModalPurchaseProps = {
   name: string;
-  open: boolean;
-  onClose: () => void;
 };
 
-const ModalPurchase = ({
-  open,
-  onClose,
-  name,
-}: ModalPurchaseProps): JSX.Element => {
+const ModalPurchase = ({ name }: ModalPurchaseProps): JSX.Element => {
   const [selectedPeriod, setSelectedPeriod] = useState<number>(1);
+  const {
+    actions: { openModal, closeModal },
+  } = useStoreContext();
+  const router = useRouter();
 
   const maxPeriod = 3;
   const minPeriod = 1;
-  const amount = selectedPeriod * 20;
+  const amount = 1;
 
   const {
     balance,
@@ -47,87 +55,91 @@ const ModalPurchase = ({
   };
 
   const handlePurchase = async (): Promise<void> => {
-    await onSendClick({
+    await await onSendClick({
       amount: amount,
       to: accountAddress,
       fee: fees.default,
-    });
+    })
+      .then((data) => {
+        closeModal();
+        if (data?.hash) {
+          (async () => {
+            await saveName({
+              name,
+              amount,
+              ownerAddress: accountId[0],
+              txHash: data?.hash,
+              expirationTime: selectedPeriod,
+            });
+          })();
+          openModal(Modals.transactionApplied, {
+            header: "Transaction applied",
+            text: "The Domain was successfully purchased!",
+            button: {
+              text: "See Domain",
+              action: () => router.push(Routs.NAMES),
+            },
+          });
+        } else {
+          openModal(Modals.transactionFailed, {
+            header: "Transaction failed",
+            text: "The Domain has not been purchased!",
+            button: {
+              text: "Try Again",
+              action: handlePurchase,
+            },
+          });
+        }
+      })
+      .catch((error) => {
+        console.log(error);
+      });
   };
 
-  useEffect(() => {
-    if (sendResultMessage?.hash) {
-      (async () => {
-        await saveName({
-          name,
-          amount,
-          ownerAddress: accountId[0],
-          txHash: sendResultMessage.hash,
-          expirationTime: selectedPeriod,
-        });
-      })();
-    }
-  }, [sendResultMessage?.hash]);
-
   return (
-    <PopupOverlay
-      position="center"
-      animation="appear"
-      onClose={onClose}
-      show={open}
-    >
-      <div className={style.wrapper}>
-        <div className={classNames(style.header, interMedium.className)}>
-          {name}
-          <span>.mina</span>
-        </div>
-        <div
-          className={classNames(style.periodWrapper, interSemiBold.className)}
-        >
-          <span
-            className={classNames(style.minus, {
-              [style.disableActionIcon]: selectedPeriod === minPeriod,
-            })}
-            onClick={decrement}
-          >
-            -
-          </span>
-          <div className={interMedium.className}>{selectedPeriod} year</div>
-          <span
-            className={classNames(style.plus, {
-              [style.disableActionIcon]: selectedPeriod === maxPeriod,
-            })}
-            onClick={increment}
-          >
-            +
-          </span>
-        </div>
-        <div
-          className={classNames(style.costInformation, interMedium.className)}
-        >
-          <div>
-            <span>1 year registration</span>
-            <span className={interSemiBold.className}>{amount} MINA</span>
-          </div>
-          <div>
-            <span>Est. network fee</span>
-            <span className={interSemiBold.className}>0.00000312 MINA</span>
-          </div>
-          <div>
-            <span className={classNames(style.totalText, interBold.className)}>
-              Estimated Total
-            </span>
-            <span className={interSemiBold.className}>10.00000312 MINA</span>
-          </div>
-        </div>
-        <Button
-          text={isInsufficientBalance ? "Insufficient Balance" : "Purchase"}
-          variant={Variant.blue}
-          onClick={handlePurchase}
-          disabled={isInsufficientBalance}
-        />
+    <div className={style.wrapper}>
+      <div className={classNames(style.header, manropeBold.className)}>
+        {name}.mina
       </div>
-    </PopupOverlay>
+      <div className={classNames(style.periodWrapper, interSemiBold.className)}>
+        <span
+          className={classNames(style.minus, {
+            [style.disableActionIcon]: selectedPeriod === minPeriod,
+          })}
+          onClick={decrement}
+        >
+          <Image src={minusIcon} alt="" />
+        </span>
+        <div className={manropeBold.className}>{selectedPeriod} year</div>
+        <span
+          className={classNames(style.plus, {
+            [style.disableActionIcon]: selectedPeriod === maxPeriod,
+          })}
+          onClick={increment}
+        >
+          <Image src={plusIcon} alt="" />
+        </span>
+      </div>
+      <Tabs
+        className={style.tabs}
+        variant={TABS_VARIANT.blackButton}
+        items={[
+          {
+            content: <MinaContent amount={amount} />,
+            title: "MINA",
+            value: 1,
+          },
+        ]}
+        initValue={1}
+      />
+      <Button
+        text={isInsufficientBalance ? "Insufficient Balance" : "Next"}
+        variant={Variant.black}
+        onClick={handlePurchase}
+        disabled={isInsufficientBalance}
+      />
+    </div>
   );
 };
 
-export default ModalPurchase;
+export default React.memo(ModalPurchase);

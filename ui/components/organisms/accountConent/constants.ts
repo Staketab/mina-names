@@ -19,7 +19,8 @@ export const ScoringConfig: TableConfig[] = [
     fields: {
       value: "Manage",
       url: 'id',
-      parentPage: 'names'
+      parentPage: 'names',
+      status: 'domainStatus'
     },
   },
   {

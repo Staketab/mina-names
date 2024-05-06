@@ -1,0 +1,34 @@
+.wrapper {
+  width: 100%;
+  display: flex;
+  gap: 24px;
+}
+
+.wrapper > div:first-child {
+  width: 100%;
+  height: fit-content;
+}
+
+.wrapper > div {
+  background-color: var(--col--light);
+}
+
+.summary {
+  min-width: 345px;
+  padding: 16px;
+  border-radius: 12px;
+  border: 1px solid #f2f2f3;
+}
+
+.summaryHeader {
+  font-size: 20px;
+  margin-bottom: 16px;
+}
+
+.tabs {
+  align-items: flex-start;
+}
+
+.summary > button {
+  width: 100%;
+}

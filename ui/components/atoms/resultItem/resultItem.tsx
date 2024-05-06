@@ -1,59 +1,112 @@
 import classNames from "classnames";
-import { Button } from "../button";
-import { Variant } from "../button/types";
 import style from "./index.module.css";
-import { interMedium } from "@/app/fonts";
-import { useState } from "react";
-import { mockData } from "./response.mock";
-import { ModalInfo } from "@/components/molecules/modals/modalInfo";
-import { ModalPurchase } from "@/components/molecules/modals/modalPurchase";
+import { manropeMedium, manropeSemiBold } from "@/app/fonts";
+
+import { getAccountDomainDetails, reserveName } from "@/app/actions/actions";
+import infoIcon from "../../../assets/info.svg";
+
+import Image from "next/image";
+import { Star } from "../star";
+import Bag from "../bag/bag";
+import { useStoreContext } from "@/store";
+import { Modals } from "@/components/molecules/modals/modals.types";
+import { amount } from "@/comman/constants";
+import useWallet from "@/hooks/useWallet";
+import { DOMAIN_STATUS } from "@/comman/types";
 
 const ResultItem = ({
   statusName,
   className,
+  clearInput,
 }: {
   statusName: {
-    isReserved: boolean;
+    id: string;
     name: string;
+    status: DOMAIN_STATUS;
   };
+  clearInput: () => void;
+
   className: string;
 }) => {
-  const [open, setOpen] = useState<boolean>(false);
-  const { isReserved, name } = statusName;
+  const { id, name, status } = statusName;
+  const {
+    actions: { openModal, addToBag },
+  } = useStoreContext();
+  const { accountId } = useWallet();
 
-  const handleInfo = () => {
-    setOpen(true);
+  const handleInfo = async () => {
+    const response = await getAccountDomainDetails(id);
+    openModal(Modals.info, {
+      data: response,
+    });
   };
+
+  const handleBag = async (): Promise<void> => {
+    try {
+      const response = await reserveName({
+        ownerAddress: accountId[0],
+        domainName: name,
+        expirationTime: 1,
+        amount: amount,
+      });
+
+      if (response.id) {
+        addToBag({
+          name: response.domainName,
+          years: response.expirationTime,
+          amount: response.amount,
+          id: response.id,
+        });
+        clearInput();
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const actionIconsList = {
+    bag: <Bag onClick={handleBag} />,
+    info: <Image src={infoIcon} alt="" onClick={handleInfo} />,
+  };
+
+  const nameStatusText = {
+    [DOMAIN_STATUS.ACTIVE]: (
+      <span className={classNames(style.status, style.activeStatus)}>
+        TAKEN
+      </span>
+    ),
+    [DOMAIN_STATUS.PENDING]: (
+      <span className={classNames(style.status, style.pendingStatus)}>
+        PENDING
+      </span>
+    ),
+    default: (
+      <span className={classNames(style.status, style.availableStatus)}>
+        AVAILABLE
+      </span>
+    ),
+  };
+
+  const disabled = false;
 
   return (
     <div
-      className={classNames(style.wrapper, className, interMedium.className)}
+      className={classNames(
+        style.wrapper,
+        className,
+        manropeSemiBold.className
+      )}
     >
       <div>
-        {name}
-        <span>.mina</span>
-        <span
-          className={classNames(style.status, interMedium.className, {
-            [style.unavailable]: isReserved,
-          })}
-        >
-          {isReserved ? "Taken" : "available"}
+        {name}.mina
+        {nameStatusText[status] || nameStatusText.default}
+      </div>
+      <div className={style.rightSide}>
+        <Star />
+        <span className={style.actionIcon} aria-disabled={disabled}>
+          {!status ? actionIconsList.bag : actionIconsList.info}
         </span>
       </div>
-      <Button
-        text={isReserved ? "Info" : "Purchase"}
-        variant={Variant.blue}
-        onClick={handleInfo}
-      />
-      {isReserved ? (
-        <ModalInfo open={open} onClose={() => setOpen(false)} data={mockData} />
-      ) : (
-        <ModalPurchase
-          open={open}
-          onClose={() => setOpen(false)}
-          name={name}
-        />
-      )}
     </div>
   );
 };

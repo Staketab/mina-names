@@ -1,0 +1,57 @@
+.icon {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 8px;
+  border-radius: 8px;
+  background-color: #f2f2f5;
+  transition: all 0.2s;
+  cursor: pointer;
+}
+
+.gradientIcon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: var(--col--light);
+  padding: 8px;
+  border-radius: 50%;
+  cursor: pointer;
+  position: relative;
+}
+
+.icon:hover {
+  background-color: transparent;
+}
+
+.icon:active {
+  background-color: #cfcfd9;
+  fill: #cfcfd9;
+}
+
+.icon[aria-disabled="true"] {
+  opacity: 0.5;
+  pointer-events: none;
+}
+
+.text {
+  font-size: 14px;
+  margin-left: 4px;
+  color: #1a1a1b;
+}
+
+.domainsAmount {
+  display: flex;
+  width: 18px;
+  height: 18px;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid var(--col--light);
+  border-radius: 50%;
+  background-color: #9775f3;
+  color: var(--col--light);
+  font-size: 11px;
+  position: absolute;
+  top: -4px;
+  right: -4px;
+}

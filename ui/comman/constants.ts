@@ -4,7 +4,17 @@ export const fees = {
   fast: 0.2001,
 };
 
+export const discount = "0%";
+
+export const rate = 1e-9;
+
 export const accountAddress =
   "B62qk1sJumHSS1hPKS2fSAbxkkwGcCiieb1PcM4PB182pa1MKE9H9AV";
 
-export const defaultDomainNameId = "39c828aa-be66-4e15-b779-3a2e6ed109b1";
+export const amount = 1;
+
+export const bag = "bag";
+
+export const initReservationTime = 30;
+export const contractAddress =
+  "B62qrjWrAaXV65CZgpfhLdFynbFdyj851cWZPCPvF92mF3ohGDbNAME";

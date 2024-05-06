@@ -1,54 +1,88 @@
 "use client";
-import { Logo } from "@/components/atoms/logo";
 import classNames from "classnames";
-
-import style from "./index.module.css";
-import { ConnectWalletButton } from "@/components/molecules/connectWalletButton";
-import { interMedium, interSemiBold } from "@/app/fonts";
+import { manropeSemiBold, wixMadeforDisplayExtraBold } from "@/app/fonts";
 import { Input } from "@/components/atoms/input";
 import { ResultItem } from "@/components/atoms/resultItem";
-import { InputVariant } from "@/components/atoms/input/input";
-import { useState } from "react";
-import { useKeyPress } from "@/hooks/useKeyPress";
+import { useMemo, useState } from "react";
 import { checkReservedName } from "@/app/actions/clientActions";
+import { InputVariant } from "@/components/atoms/input/types";
+
+import style from "./index.module.css";
+import { useStoreContext } from "@/store";
+import { Modals } from "@/components/molecules/modals/modals.types";
+import { DOMAIN_STATUS } from "@/comman/types";
+import { debounceAsync } from "@/helpers/debounce.helper";
 
 const HomeSection = () => {
   const [statusName, setStatusName] = useState<{
-    isReserved: boolean;
+    id: string | null;
     name: string;
+    status: DOMAIN_STATUS;
   }>(null);
   const [value, setValue] = useState("");
 
-  const handleInput = async () => {
-    const response = await checkReservedName(value);
-    setStatusName({
-      isReserved: response,
-      name: value,
-    });
+  const handleInput = async (asyncValue: string): Promise<any> => {
+    const currentValue = typeof asyncValue === "string" ? asyncValue : value;
+    const response = await checkReservedName(currentValue);
+
+    return response;
+  };
+  const debouncedServerFetch = useMemo(
+    () => debounceAsync(handleInput, 1000),
+    []
+  );
+
+  const clearInput = (): void => {
+    setValue("");
   };
 
-  useKeyPress("Enter", handleInput);
+  const handleChange = async (value) => {
+    const cleanInput = value.replace(/[^a-z0-9- ]/g, "");
+    setValue(cleanInput);
+
+    try {
+      if (!cleanInput) return;
+      const result = await debouncedServerFetch(cleanInput);
+
+      if (result === "skipped") {
+        return;
+      }
+
+      if (result) {
+        setStatusName({
+          id: result.id,
+          name: value,
+          status: result.status,
+        });
+      }
+    } catch (error) {}
+  };
 
   return (
     <div className={classNames(style.wrapper, "container")}>
-      <div className={style.header}>
-        <Logo />
-        <ConnectWalletButton />
-      </div>
       <div className={style.content}>
-        <h1 className={interSemiBold.className}>Reveal Your True Self</h1>
-        <p className={interMedium.className}>
+        <h1 className={wixMadeforDisplayExtraBold.className}>
+          Reveal your true self
+        </h1>
+        <p className={manropeSemiBold.className}>
           A creative ID that showcases your personality
         </p>
         <Input
-          placeholder="Search .mina Names"
+          placeholder="Search Names.mina"
           value={value}
           className={style.input}
-          onChange={(e) => setValue(e.target.value)}
+          onChange={(e) => handleChange(e.target.value)}
+          onSubmit={handleInput}
           variant={InputVariant.search}
+          maxLength={30}
+          enableClear
         />
-        {statusName?.name && (
-          <ResultItem statusName={statusName} className={style.resultItem} />
+        {statusName?.name && value && (
+          <ResultItem
+            statusName={statusName}
+            className={style.resultItem}
+            clearInput={clearInput}
+          />
         )}
       </div>
     </div>

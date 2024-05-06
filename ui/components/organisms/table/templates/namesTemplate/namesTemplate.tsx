@@ -1,8 +1,9 @@
 import Image from "next/image";
+import defaultIcon from "../../../../../assets/default.svg";
 
 import style from "../index.module.css";
 import classNames from "classnames";
-import { interMedium } from "@/app/fonts";
+import { manropeSemiBold } from "@/app/fonts";
 
 type NamesTemplateProps = {
   data: any;
@@ -19,8 +20,8 @@ const NamesTemplate = ({ data, config }: NamesTemplateProps) => {
   const imgUrl = data[config.fields.url];
 
   return (
-    <div className={classNames(style.namesTemplate, interMedium.className)}>
-      <Image src={imgUrl} alt="" width={32} height={32}/>
+    <div className={classNames(style.namesTemplate, manropeSemiBold.className)}>
+      <Image src={defaultIcon} alt="" width={32} height={32} />
       {value}
     </div>
   );

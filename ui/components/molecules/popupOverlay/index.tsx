@@ -4,6 +4,7 @@ import { createPortal } from "react-dom";
 import style from "./PopupOverlay.module.css";
 import { useMedia } from "../../../hooks/useMedia";
 import { usePathname, useRouter } from "next/navigation";
+import { useStoreContext } from "@/store";
 
 type PopupOverlayProps = {
   children: React.ReactNode;
@@ -43,6 +44,9 @@ const PopupOverlay = ({
   forwardedRef,
   height = "auto",
 }: PopupOverlayProps): JSX.Element | null => {
+  const {
+    actions: { closeModal },
+  } = useStoreContext();
   const pathname = usePathname();
 
   const overlayRef = useRef(null);
@@ -117,7 +121,7 @@ const PopupOverlay = ({
 
   const handleClose = () => {
     if (active && !isTextSelected) {
-      closePopup();
+      closeModal();
     } else {
       setIsTextSelected(false);
     }

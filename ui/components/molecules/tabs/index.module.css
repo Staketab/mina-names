@@ -1,0 +1,27 @@
+.wrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  width: 100%;
+}
+
+.buttonGroup {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+}
+
+.content {
+  width: 100%;
+}
+
+.light {
+  display: flex;
+  gap: 32px;
+}
+
+.light button {
+  padding-left: 0;
+  padding-right: 0;
+}

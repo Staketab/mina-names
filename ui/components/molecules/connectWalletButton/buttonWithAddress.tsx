@@ -1,15 +1,12 @@
 import Image from "next/image";
-import auroIcon from "./img/auro.png";
 import { StaticEllipse } from "../staticEllipse";
 import disconnect from "./img/disconnect.svg";
 import account from "./img/account.svg";
 
 import style from "./index.module.css";
-import { useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import classNames from "classnames";
-import { Button } from "../../atoms/button";
-import { Variant } from "../../atoms/button/types";
-import { useRouter } from "next/navigation";
+
 import DropdownWrapper from "../dropdownWrapper";
 import { interSemiBold } from "@/app/fonts";
 import Link from "next/link";
@@ -23,53 +20,67 @@ const ButtonWithAddress = ({
   onDisconnect: () => void;
 }) => {
   const [isShowDropdown, setIsShowDropdown] = useState<boolean>(false);
-  const router = useRouter();
-  const handleCLick = () => {
-    setIsShowDropdown(!isShowDropdown);
+
+  const wrapperRef = useRef(null);
+
+  useEffect(() => {
+    document.addEventListener("mousedown", handleClickListener);
+
+    return () => {
+      document.removeEventListener("mousedown", handleClickListener);
+    };
+  }, [isShowDropdown]);
+
+  const handleClickListener = (event) => {
+    const clickedInside =
+      wrapperRef?.current && wrapperRef.current?.contains(event.target);
+
+    if (clickedInside) {
+      setIsShowDropdown(!isShowDropdown);
+    } else {
+      setIsShowDropdown(false);
+    }
   };
 
   return (
     <>
-      <Button
+      <div
         className={style.buttonWithAddress}
-        onClick={handleCLick}
-        variant={Variant.blue}
+        ref={wrapperRef}
       >
-        <div>
-          <Image src={auroIcon} alt="" className={style.auroIcon} />
-          <StaticEllipse
-            text={address}
-            view={{ sm: 7, md: 9, lg: 9 }}
-            isActive
-          />
-          <DropdownWrapper
-            className={style.dropdownWrapper}
-            show={isShowDropdown}
-            onClose={() => setIsShowDropdown(false)}
-            minWidth="185px"
+        <Image src={account} alt="" className={style.accountIcon} />
+        <StaticEllipse
+          text={address}
+          view={{ sm: 7, md: 7, lg: 7 }}
+          className={style.staticEllipse}
+        />
+        <DropdownWrapper
+          className={style.dropdownWrapper}
+          show={isShowDropdown}
+          onClose={() => setIsShowDropdown(false)}
+          minWidth="185px"
+        >
+          <Link
+            className={classNames(style.item, interSemiBold.className)}
+            href={Routs.NAMES}
           >
-            <Link
+            <Image src={account} alt="" className={style.icon} />
+            Names
+          </Link>
+          {onDisconnect && (
+            <div
               className={classNames(style.item, interSemiBold.className)}
-              href={Routs.NAMES}
+              onClick={() => {
+                onDisconnect();
+                setIsShowDropdown(false);
+              }}
             >
-              <Image src={account} alt="" className={style.icon} />
-              Names
-            </Link>
-            {onDisconnect && (
-              <div
-                className={classNames(style.item, interSemiBold.className)}
-                onClick={() => {
-                  onDisconnect();
-                  setIsShowDropdown(false);
-                }}
-              >
-                <Image src={disconnect} alt="" className={style.icon} />
-                Disconnect
-              </div>
-            )}
-          </DropdownWrapper>
-        </div>
-      </Button>
+              <Image src={disconnect} alt="" className={style.icon} />
+              Disconnect
+            </div>
+          )}
+        </DropdownWrapper>
+      </div>
     </>
   );
 };

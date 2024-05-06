@@ -33,7 +33,8 @@
   display: flex;
   align-items: center;
   justify-content: flex-start;
-  gap: 4px;
+  gap: 8px;
+  font-size: 16px;
 }
 
 .timeTemplate {
@@ -42,9 +43,10 @@
   align-items: flex-start;
 }
 .timeTemplate span:first-child {
-  color: #4b4b4b;
+  color: #1a1a1b;
 }
 
 .timeTemplate span:last-child {
-  color: #b8b8b8;
+  color: #949499;
+  font-size: 13px;
 }

@@ -1,7 +1,7 @@
 import classNames from "classnames";
 import React, { useEffect, useState } from "react";
 import style from "./index.module.css";
-import { interSemiBold } from "@/app/fonts";
+import { interSemiBold, manropeSemiBold } from "@/app/fonts";
 
 const Switcher = ({
   text,
@@ -34,7 +34,7 @@ const Switcher = ({
       width: size * 2 + padding * 2 + "px",
       height: size + padding * 2 + "px",
       borderRadius: (size + padding * 2) / 2 + "px",
-      backgroundColor: "rgba(123, 152, 252, 1)",
+      backgroundColor: "#1A1A1B",
     },
     disabled: {
       width: size * 2 + padding * 2 + "px",
@@ -89,7 +89,7 @@ const Switcher = ({
 
   return (
     <div
-      className={classNames(style.switcherComponent, className, interSemiBold.className)}
+      className={classNames(style.switcherComponent, className, manropeSemiBold.className)}
       onClick={clickHandler}
     >
       {text && <p className={style.leftText}>{text}</p>}

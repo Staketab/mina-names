@@ -1,0 +1,108 @@
+.wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 16px 24px 28px 16px;
+  border-radius: 12px;
+  background-color: var(--col--light);
+}
+
+.header {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  border-bottom: 1px solid #f2f2f3;
+  padding-bottom: 16px;
+}
+
+.rightSide {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.leftSide {
+  display: flex;
+  align-items: center;
+}
+
+.imgWrapper {
+  margin-right: 28px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  font-size: 16px;
+  color: #a6a6a6;
+  position: relative;
+}
+
+.domainImg {
+  width: 64px;
+  height: 64px;
+  background-color: #f7f7fa;
+  border-radius: 50%;
+  padding: 5px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+}
+
+.domainImg img {
+  width: 80%;
+  height: 80%;
+}
+
+.editIcon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  width: 28px;
+  height: 28px;
+  background-color: var(--col--light);
+  transition: all 0.2s;
+  opacity: 0;
+  cursor: pointer;
+  position: absolute;
+  top: 50px;
+}
+
+.imgWrapper:hover .editIcon {
+  opacity: 1;
+}
+
+.name {
+  font-size: 32px;
+  line-height: 40px;
+}
+
+.switcher p {
+  color: #1a1a1b;
+}
+
+.name {
+  display: flex;
+  align-items: center;
+}
+
+.defaultLabel {
+  display: flex;
+  align-items: center;
+  color: #57ce2e;
+  margin-left: 12px;
+  font-size: 14px;
+  gap: 4px;
+}
+
+.name svg {
+  margin-left: 8px;
+}
+
+.tabs {
+  margin-top: 16px;
+}
+
+.tabs > div{
+  justify-content: flex-start;
+}

@@ -3,7 +3,7 @@ import React, { ReactNode } from "react";
 
 import styles from "./button.module.css";
 import { Variant } from "./types";
-import { interSemiBold } from "@/app/fonts";
+import { manropeSemiBold } from "@/app/fonts";
 
 interface ApiButtonProps {
   /**
@@ -38,7 +38,7 @@ export const Button = ({
       id={id || null}
       className={classNames(
         styles.apiButton,
-        interSemiBold.className,
+        manropeSemiBold.className,
         className,
         {
           [styles[variant]]: variant,

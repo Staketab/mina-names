@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { useLocalStorage } from "./useLocalStorage";
 import useAddressBalance, { Balance } from "./useAddressBalance";
+
 export type SendPaymentresponse = {
   hash?: string;
   message?: string;
@@ -42,8 +43,30 @@ interface IUseGlobal {
       to: string;
       fee: number;
       meme?: string;
-    }) => Promise<void>;
+    }) => Promise<
+      | {
+          hash: string;
+        }
+      | undefined
+    >;
   };
+}
+
+enum ChainId {
+  devnet = "devnet",
+  berkeley = "berkeley",
+  mainnet = "mainnet",
+}
+
+type ChainInfoArgs = {
+  chainId: ChainId;
+  name: "Devnet" | "Berkeley" | "Mainnet";
+};
+
+interface ProviderError extends Error {
+  message: string;
+  code: number;
+  data?: unknown;
 }
 
 export default function useWallet(): IUseGlobal {
@@ -64,6 +87,21 @@ export default function useWallet(): IUseGlobal {
     setWalletData({ ...walletData, connectMessage: connectMessage });
 
   const minaAdapter = typeof window !== "undefined" && window["mina"];
+
+  const requestNetwork = async () => {
+    const network: ChainInfoArgs | ProviderError = await minaAdapter
+      ?.requestNetwork()
+      .catch((err: any) => err);
+
+    // if ("chainId" in network && network.chainId !== ChainId.devnet) {
+    //   const switchResult: ChainInfoArgs | ProviderError = await minaAdapter
+    //     ?.switchChain({
+    //       chainId: ChainId.devnet,
+    //     })
+    //     .catch((err: any) => err);
+    //   console.log(switchResult);
+    // }
+  };
 
   const onConnectWallet = async (): Promise<void> => {
     if (!minaAdapter) {
@@ -103,20 +141,31 @@ export default function useWallet(): IUseGlobal {
   };
 
   const onSendClick = async ({ amount, to, fee, memo }) => {
-    let sendResult = await minaAdapter
-      .sendPayment({
-        amount,
-        to,
-        fee,
-        memo,
-      })
-      .catch((err) => err);
-    setSendResultMessage({
-      hash: sendResult.hash,
-      message: sendResult.message,
-      result: !!sendResult.hash,
-    });
+    try {
+      let sendResult = await minaAdapter
+        .sendPayment({
+          amount,
+          to,
+          fee,
+          memo,
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+      setSendResultMessage({
+        hash: sendResult?.hash,
+        message: sendResult?.message,
+        result: !!sendResult?.hash,
+      });
+      return sendResult;
+    } catch (error) {
+      console.log(error);
+    }
   };
+
+  useEffect(() => {
+    requestNetwork();
+  }, []);
 
   return {
     ...walletData,

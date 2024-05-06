@@ -1,0 +1,40 @@
+.wrapper {
+  /* background-color: var(--col-light);
+  border-radius: 12px; */
+}
+
+.topContent {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-image: url("./failedBg.svg");
+  height: 200px;
+}
+
+.topContent img {
+  position: relative;
+  left: 30px;
+  top: 15px;
+}
+
+.bottomContent {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 24px 58px;
+  color: #57575a;
+}
+
+.bottomContent > div:first-child {
+  font-size: 18px;
+  color: #1a1a1b;
+  margin-bottom: 4px;
+}
+
+.buttonsBlock {
+  width: max-content;
+  display: flex;
+  flex-direction: row;
+  gap: 16px;
+  margin-top: 32px;
+}
