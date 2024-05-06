@@ -173,7 +173,7 @@ const UploadModal = ({
         openModal(Modals.transactionApplied, {
           header: "Updating is in progress.",
           button: {
-            text: "See Domain",
+            text: "See Domains",
             action: () => router.push(Routs.NAMES),
           },
         });
