@@ -1,14 +1,12 @@
 import Image from "next/image";
-import auroIcon from "./img/auro.png";
 import { StaticEllipse } from "../staticEllipse";
 import disconnect from "./img/disconnect.svg";
 import account from "./img/account.svg";
 
 import style from "./index.module.css";
-import { useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import classNames from "classnames";
 
-import { useRouter } from "next/navigation";
 import DropdownWrapper from "../dropdownWrapper";
 import { interSemiBold } from "@/app/fonts";
 import Link from "next/link";
@@ -22,16 +20,40 @@ const ButtonWithAddress = ({
   onDisconnect: () => void;
 }) => {
   const [isShowDropdown, setIsShowDropdown] = useState<boolean>(false);
-  const router = useRouter();
-  const handleCLick = () => {
-    setIsShowDropdown(!isShowDropdown);
+
+  const wrapperRef = useRef(null);
+
+  useEffect(() => {
+    document.addEventListener("mousedown", handleClickListener);
+
+    return () => {
+      document.removeEventListener("mousedown", handleClickListener);
+    };
+  }, [isShowDropdown]);
+
+  const handleClickListener = (event) => {
+    const clickedInside =
+      wrapperRef?.current && wrapperRef.current?.contains(event.target);
+
+    if (clickedInside) {
+      setIsShowDropdown(!isShowDropdown);
+    } else {
+      setIsShowDropdown(false);
+    }
   };
 
   return (
     <>
-      <div className={style.buttonWithAddress} onClick={handleCLick}>
+      <div
+        className={style.buttonWithAddress}
+        ref={wrapperRef}
+      >
         <Image src={account} alt="" className={style.accountIcon} />
-        <StaticEllipse text={address} view={{ sm: 7, md: 7, lg: 7 }} className={style.staticEllipse}/>
+        <StaticEllipse
+          text={address}
+          view={{ sm: 7, md: 7, lg: 7 }}
+          className={style.staticEllipse}
+        />
         <DropdownWrapper
           className={style.dropdownWrapper}
           show={isShowDropdown}
