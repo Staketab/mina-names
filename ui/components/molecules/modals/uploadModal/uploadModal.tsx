@@ -202,7 +202,7 @@ const UploadModal = ({
 
   return (
     <div className={style.wrapper}>
-      <div>Upload Source Code</div>
+      <div>Upload Image</div>
       <FileInput
         onChange={handleChange}
         placeholder={file?.name || "Choose File"}
