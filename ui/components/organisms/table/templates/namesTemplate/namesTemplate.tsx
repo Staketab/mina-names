@@ -21,7 +21,7 @@ const NamesTemplate = ({ data, config }: NamesTemplateProps) => {
 
   return (
     <div className={classNames(style.namesTemplate, manropeSemiBold.className)}>
-      <Image src={defaultIcon} alt="" width={32} height={32} />
+      <Image src={imgUrl || defaultIcon} alt="" width={32} height={32} />
       {value}
     </div>
   );

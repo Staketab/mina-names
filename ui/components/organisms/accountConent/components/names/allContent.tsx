@@ -10,9 +10,22 @@ const AllContent = ({
   accountDomains: DataTable;
   typeView: TypeView;
 }): JSX.Element => {
+  const newAccountDomains = {
+    ...accountDomains,
+    content: accountDomains.content.map((domain) => {
+      const imgHash = domain?.ipfsImg && JSON.parse(domain?.ipfsImg)?.linkedObject?.storage?.slice(
+        2
+      );
+      return {
+        ...domain,
+        domainImg: imgHash && `https://gateway.pinata.cloud/ipfs/${imgHash}` || null,
+      };
+    }),
+  };
+
   return (
     <Table
-      data={accountDomains}
+      data={newAccountDomains}
       config={ScoringConfig}
       isLoading={false}
       currentPage={0}
