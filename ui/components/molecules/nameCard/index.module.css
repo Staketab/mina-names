@@ -12,13 +12,21 @@
 }
 
 .imgWrapper {
-  width: 100%;
+  width: 220px;
   height: 200px;
   display: flex;
   align-items: center;
   justify-content: center;
   background-color: #f7f7fa;
   margin-bottom: 12px;
+}
+
+.imgWrapper img {
+  height: 100%;
+  left: 0;
+  object-fit: cover;
+  top: 0;
+  width: 100%;
 }
 
 .wrapper:hover {

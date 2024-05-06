@@ -49,8 +49,9 @@
 }
 
 .domainImg img {
-  width: 80%;
-  height: 80%;
+  width: 64px;
+  height: 64px;
+  border-radius: 50%;
 }
 
 .editIcon {
@@ -103,6 +104,6 @@
   margin-top: 16px;
 }
 
-.tabs > div{
+.tabs > div {
   justify-content: flex-start;
 }
