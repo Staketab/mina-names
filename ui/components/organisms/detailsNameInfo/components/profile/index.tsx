@@ -5,6 +5,7 @@ import classNames from "classnames";
 import { dayMonthYearTimeFormat } from "@/helpers/timeHelper";
 import { StaticEllipse } from "@/components/molecules/staticEllipse";
 import { CopyIcon } from "@/components/atoms/copyIcon";
+import React, { ReactNode } from "react";
 
 const ProfileContent = ({
   accountDomainDetails,
@@ -17,7 +18,7 @@ const ProfileContent = ({
     isEllipse,
   }: {
     title: string;
-    value?: string;
+    value?: any;
     isEllipse?: boolean;
   }): JSX.Element => {
     return (
@@ -26,7 +27,10 @@ const ProfileContent = ({
         {isEllipse ? (
           <>
             <StaticEllipse
-              className={classNames(robotoSemiBold.className, style.staticEllipse)}
+              className={classNames(
+                robotoSemiBold.className,
+                style.staticEllipse
+              )}
               text={value}
               view={{ sm: 10, md: 14, lg: 18 }}
             />
@@ -50,7 +54,17 @@ const ProfileContent = ({
         value: accountDomainDetails.ownerAddress,
         isEllipse: true,
       })}
-      {itemRender({ title: "IPFS" })}
+      {itemRender({
+        title: "IPFS",
+        value: accountDomainDetails.ipfs && (
+          <a
+            href={`https://gateway.pinata.cloud/ipfs/${accountDomainDetails.ipfs}`}
+            target="_blank"
+          >
+            {`https://gateway.pinata.cloud/ipfs/${accountDomainDetails.ipfs}`}
+          </a>
+        ),
+      })}
       {itemRender({
         title: "Creation Time",
         value: dayMonthYearTimeFormat(accountDomainDetails.startTimestamp),

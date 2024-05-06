@@ -16,8 +16,6 @@ import { setDefaultImg } from "@/app/actions/actions";
 import { useStoreContext } from "@/store";
 import { Modals } from "@/components/molecules/modals/modals.types";
 import { Star } from "@/components/atoms/star";
-import { Button } from "@/components/atoms/button";
-import { Variant } from "@/components/atoms/button/types";
 import { TABS_VARIANT, Tabs } from "@/components/molecules/tabs";
 import { OwnershipContent, ProfileContent } from "./components";
 
@@ -36,7 +34,7 @@ const DetailsNameInfo = ({
     true;
     openModal(Modals.confirmation, {
       editImg,
-      accountDomainDetails
+      accountDomainDetails,
     });
   };
   const { domainImg, domainName, ownerAddress } = accountDomainDetails;
@@ -46,6 +44,12 @@ const DetailsNameInfo = ({
     setIsDefault(response);
   };
 
+  const imgHash =
+    accountDomainDetails?.oldMetadata?.ipfsImg &&
+    JSON.parse(
+      accountDomainDetails?.oldMetadata?.ipfsImg
+    )?.linkedObject?.storage?.slice(2);
+
   return (
     <div className={style.wrapper}>
       <div className={style.header}>
@@ -53,7 +57,10 @@ const DetailsNameInfo = ({
           <div className={style.imgWrapper} onClick={handleEdit}>
             <span className={style.domainImg}>
               <Image
-                src={icon}
+                src={
+                  (imgHash && `https://gateway.pinata.cloud/ipfs/${imgHash}`) ||
+                  icon
+                }
                 alt="icon"
                 width={120}
                 height={120}

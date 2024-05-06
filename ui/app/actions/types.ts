@@ -14,6 +14,7 @@ export type AccountDomainDetailsResponse = {
   isSendToCloudWorker: boolean;
   isDefault: boolean;
   endTimestamp: number;
+  ipfs: string;
   oldMetadata: {
     description?: string;
     discord?: string;

@@ -12,15 +12,21 @@
 
 .item > div:first-child {
   width: 200px;
+  min-width: 200px;
   color: #949499;
 }
 
 .item > div:last-child {
   color: #1a1a1b;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .item .copyIcon {
   margin-left: 4px;
+}
+.item a {
+  color: rgb(113, 145, 252);
 }
 
 .staticEllipse {
