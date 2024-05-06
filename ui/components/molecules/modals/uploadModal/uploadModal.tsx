@@ -154,9 +154,9 @@ const UploadModal = ({
       const tx2 = JSON.parse(result);
       const signatureData = JSON.parse(tx2.signature).signatureData;
 
-      const result2 = await window["mina"]
-        ?.signFields({ message: signatureData })
-        .catch((err: any) => err);
+      const result2 = await window["mina"]?.signFields({
+        message: signatureData,
+      });
 
       const signature = result2.signature;
       tx2.signature = signature;
@@ -168,7 +168,7 @@ const UploadModal = ({
         metadata: "backend txs",
       });
 
-      closeModal();
+      closeModal(Modals.upload);
       if (answer2[0]) {
         openModal(Modals.transactionApplied, {
           header: "Updating is in progress.",
@@ -183,7 +183,10 @@ const UploadModal = ({
         });
       }
     } catch (error) {
-      closeModal();
+      closeModal(Modals.upload);
+      openModal(Modals.transactionFailed, {
+        header: "Updating has failed.",
+      });
     }
     setLoading(false);
   };

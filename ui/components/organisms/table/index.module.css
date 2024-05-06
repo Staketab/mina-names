@@ -72,6 +72,6 @@
 .nameCards {
   display: flex;
   flex-wrap: wrap;
-  gap: 16px;
+  gap: 18px;
   padding: 24px;
 }
