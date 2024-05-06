@@ -21,7 +21,7 @@ const CartSection = () => {
   const [time, setTime] = useState<string>("");
 
   useEffect(() => {
-    if (!reservationTime) {
+    if (!reservationTime || !domains.length) {
       setTime("");
       return;
     }
@@ -36,7 +36,7 @@ const CartSection = () => {
     return () => {
       clearInterval(interval);
     };
-  }, [reservationTime]);
+  }, [reservationTime, domains]);
 
   return (
     <div className={classNames(style.wrapper, "container")}>
