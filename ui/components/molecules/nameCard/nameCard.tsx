@@ -3,9 +3,8 @@ import { Button } from "../../atoms/button";
 
 import style from "./index.module.css";
 import { Variant } from "../../atoms/button/types";
-import { interSemiBold, manropeMedium, manropeSemiBold } from "@/app/fonts";
-import blur from "../../../assets/blur.jpg";
-import defaultImg from "../../../assets/default.svg";
+import { manropeMedium, manropeSemiBold } from "@/app/fonts";
+import defaultImg from "../../../assets/domainImg.svg";
 
 import Link from "next/link";
 import { encode } from "js-base64";
