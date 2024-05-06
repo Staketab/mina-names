@@ -29,14 +29,14 @@ const ButtonWithAddress = ({
     return () => {
       document.removeEventListener("mousedown", handleClickListener);
     };
-  }, [isShowDropdown]);
+  }, []);
 
   const handleClickListener = (event) => {
     const clickedInside =
       wrapperRef?.current && wrapperRef.current?.contains(event.target);
 
     if (clickedInside) {
-      setIsShowDropdown(!isShowDropdown);
+      setIsShowDropdown(true);
     } else {
       setIsShowDropdown(false);
     }
