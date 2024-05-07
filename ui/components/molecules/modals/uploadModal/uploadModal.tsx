@@ -2,7 +2,7 @@
 import style from "./index.module.css";
 import { Button } from "@/components/atoms/button";
 import { Variant } from "@/components/atoms/button/types";
-import { pinFile, zkCloudWorkerRequest } from "@/app/actions/actions";
+import { zkCloudWorkerRequest } from "@/app/actions/actions";
 import { UploadFile } from "../../uploadFile";
 import { FileInput } from "@/components/atoms/input/fileInput";
 import React, { useState } from "react";
@@ -13,6 +13,7 @@ import { contractAddress } from "@/comman/constants";
 import { Modals } from "../modals.types";
 import { useRouter } from "next/navigation";
 import { Routs } from "@/comman/types";
+import { pinFile } from "@/app/actions/clientActions";
 
 interface ImageData {
   size: number;
