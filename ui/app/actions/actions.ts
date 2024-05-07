@@ -129,6 +129,7 @@ export async function getAccountDomainDetails(
 }
 
 export async function pinFile(formData): Promise<string> {
+console.log("IPFS", process.env.Non_NEXT_PUBLIC_IPFS_KEY)
   try {
     const response = await axios.post(
       process.env.Non_NEXT_PUBLIC_IPFS_URL,
