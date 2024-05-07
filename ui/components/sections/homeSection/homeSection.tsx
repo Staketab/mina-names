@@ -4,14 +4,12 @@ import { manropeSemiBold, wixMadeforDisplayExtraBold } from "@/app/fonts";
 import { Input } from "@/components/atoms/input";
 import { ResultItem } from "@/components/atoms/resultItem";
 import { useMemo, useState } from "react";
-import { checkReservedName } from "@/app/actions/clientActions";
 import { InputVariant } from "@/components/atoms/input/types";
 
 import style from "./index.module.css";
-import { useStoreContext } from "@/store";
-import { Modals } from "@/components/molecules/modals/modals.types";
 import { DOMAIN_STATUS } from "@/comman/types";
 import { debounceAsync } from "@/helpers/debounce.helper";
+import { checkReservedName } from "@/app/actions/actions";
 
 const HomeSection = () => {
   const [statusName, setStatusName] = useState<{
