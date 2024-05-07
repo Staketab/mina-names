@@ -278,10 +278,9 @@ export async function zkCloudWorkerRequest(params: {
 }) {
   const { command, task, transactions, args, metadata, mode, jobId } = params;
   const apiData = {
-    auth: "M6t4jtbBAFFXhLERHQWyEB9JA9xi4cWqmYduaCXtbrFjb7yaY7TyaXDunKDJNiUTBEcyUomNXJgC",
+    auth: process.env.NEXT_PUBLIC_ZKCLOUDWORKER_AUTH,
     command: command,
-    jwtToken:
-      "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY0NTkwMzQ5NDYiLCJpYXQiOjE3MDEzNTY5NzEsImV4cCI6MTczMjg5Mjk3MX0.r94tKntDvLpPJT2zzEe7HMUcOAQYQu3zWNuyFFiChD0",
+    jwtToken: process.env.NEXT_PUBLIC_ZKCLOUDWORKER_JWR_TOKEN,
     data: {
       task,
       transactions: transactions ?? [],
@@ -294,8 +293,7 @@ export async function zkCloudWorkerRequest(params: {
     },
     chain: `devnet`,
   };
-  const endpoint =
-    "https://cuq99yahhi.execute-api.eu-west-1.amazonaws.com/dev/zkcloudworker";
+  const endpoint = process.env.NEXT_PUBLIC_ZKCLOUDWORKER_ENDPOINT;
 
   const response = await axios.post(endpoint, apiData);
   return response.data;
