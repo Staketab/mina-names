@@ -280,7 +280,7 @@ export async function zkCloudWorkerRequest(params: {
   const apiData = {
     auth: process.env.NEXT_PUBLIC_ZKCLOUDWORKER_AUTH,
     command: command,
-    jwtToken: process.env.NEXT_PUBLIC_ZKCLOUDWORKER_JWR_TOKEN,
+    jwtToken: process.env.Non_NEXT_PUBLIC_ZKCLOUDWORKER_JWR_TOKEN,
     data: {
       task,
       transactions: transactions ?? [],
