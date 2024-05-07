@@ -1,5 +1,6 @@
 "use server";
 import { DATA_STATUS, ORDER_BY, SORT_BY } from "@/comman/types";
+import { DOMAIN_STATUS } from "@/comman/types";
 import {
   AccountDomainDetailsResponse,
   ReserveNameResponse,
@@ -24,14 +25,17 @@ export async function saveName({
     expirationTime: expirationTime,
   };
 
-  const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/domains/save`, {
-    method: "POST",
-    body: JSON.stringify(payload),
-    headers: {
-      "Content-Type": "application/json",
-      "x-api-key": process.env.NEXT_PUBLIC_API_KEY,
-    },
-  });
+  const res = await fetch(
+    `${process.env.Non_NEXT_PUBLIC_API_URL}/domains/save`,
+    {
+      method: "POST",
+      body: JSON.stringify(payload),
+      headers: {
+        "Content-Type": "application/json",
+        "x-api-key": process.env.Non_NEXT_PUBLIC_API_KEY,
+      },
+    }
+  );
   return await res.json();
 }
 
@@ -51,11 +55,11 @@ export async function getAccountDomains({
   if (!accountAddress) return;
 
   const res = await fetch(
-    `${process.env.NEXT_PUBLIC_API_URL}/domains/accounts/${accountAddress}?page=${page}&size=${size}&orderBy=${orderBy}&sortBy=${sortBy}`,
+    `${process.env.Non_NEXT_PUBLIC_API_URL}/domains/accounts/${accountAddress}?page=${page}&size=${size}&orderBy=${orderBy}&sortBy=${sortBy}`,
     {
       headers: {
         "Content-Type": "application/json",
-        "x-api-key": process.env.NEXT_PUBLIC_API_KEY,
+        "x-api-key": process.env.Non_NEXT_PUBLIC_API_KEY,
       },
     }
   );
@@ -74,11 +78,11 @@ export async function getDomains({
   sortBy: SORT_BY;
 }) {
   const res = await fetch(
-    `${process.env.NEXT_PUBLIC_API_URL}/domains/?page=${page}&size=${size}&orderBy=${orderBy}&sortBy=${sortBy}`,
+    `${process.env.Non_NEXT_PUBLIC_API_URL}/domains/?page=${page}&size=${size}&orderBy=${orderBy}&sortBy=${sortBy}`,
     {
       headers: {
         "Content-Type": "application/json",
-        "x-api-key": process.env.NEXT_PUBLIC_API_KEY,
+        "x-api-key": process.env.Non_NEXT_PUBLIC_API_KEY,
       },
     }
   );
@@ -87,13 +91,24 @@ export async function getDomains({
 
 export async function getDomainsMetadata(id: string) {
   const res = await fetch(
-    `${process.env.NEXT_PUBLIC_API_URL}/domains/${id}/reserved`,
+    `${process.env.Non_NEXT_PUBLIC_API_URL}/domains/${id}/reserved`,
     {
       headers: {
         "Content-Type": "application/json",
-        "x-api-key": process.env.NEXT_PUBLIC_API_KEY,
+        "x-api-key": process.env.Non_NEXT_PUBLIC_API_KEY,
       },
     }
+  );
+  return await res.json();
+}
+
+export async function checkReservedName(
+  domainName: string
+): Promise<{ id: string | null; status: DOMAIN_STATUS | null }> {
+  console.log(process.env.Non_NEXT_PUBLIC_API_URL);
+
+  const res = await fetch(
+    `${process.env.Non_NEXT_PUBLIC_API_URL}/domains/${domainName}/reserved`
   );
   return await res.json();
 }
@@ -101,25 +116,28 @@ export async function getDomainsMetadata(id: string) {
 export async function getAccountDomainDetails(
   id: string
 ): Promise<AccountDomainDetailsResponse> {
-  const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/domains/${id}`, {
-    headers: {
-      "Content-Type": "application/json",
-      "x-api-key": process.env.NEXT_PUBLIC_API_KEY,
-    },
-  });
+  const res = await fetch(
+    `${process.env.Non_NEXT_PUBLIC_API_URL}/domains/${id}`,
+    {
+      headers: {
+        "Content-Type": "application/json",
+        "x-api-key": process.env.Non_NEXT_PUBLIC_API_KEY,
+      },
+    }
+  );
   return await res.json();
 }
 
 export async function pinFile(formData): Promise<string> {
   try {
     const response = await axios.post(
-      process.env.NEXT_PUBLIC_IPFS_URL,
+      process.env.Non_NEXT_PUBLIC_IPFS_URL,
       formData,
       {
         maxBodyLength: Infinity,
         headers: {
           "Content-Type": `multipart/form-data; boundary=${formData._boundary}`,
-          Authorization: "Bearer " + process.env.NEXT_PUBLIC_IPFS_KEY,
+          Authorization: "Bearer " + process.env.Non_NEXT_PUBLIC_IPFS_KEY,
         },
       }
     );
@@ -139,25 +157,28 @@ export async function editDomainImg(payload: {
   id: string;
   img: string;
 }): Promise<AccountDomainDetailsResponse> {
-  const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/domains/edit`, {
-    method: "PUT",
-    headers: {
-      "Content-Type": "application/json",
-      "x-api-key": process.env.NEXT_PUBLIC_API_KEY,
-    },
-    body: JSON.stringify(payload),
-  });
+  const res = await fetch(
+    `${process.env.Non_NEXT_PUBLIC_API_URL}/domains/edit`,
+    {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+        "x-api-key": process.env.Non_NEXT_PUBLIC_API_KEY,
+      },
+      body: JSON.stringify(payload),
+    }
+  );
   return await res.json();
 }
 
 export const setDefaultImg = async (id: string): Promise<boolean> => {
   const res = await fetch(
-    `${process.env.NEXT_PUBLIC_API_URL}/domains/${id}/default`,
+    `${process.env.Non_NEXT_PUBLIC_API_URL}/domains/${id}/default`,
     {
       method: "PUT",
       headers: {
         "Content-Type": "application/json",
-        "x-api-key": process.env.NEXT_PUBLIC_API_KEY,
+        "x-api-key": process.env.Non_NEXT_PUBLIC_API_KEY,
       },
     }
   );
@@ -171,13 +192,13 @@ export async function reserveName(
 
   try {
     const res = await fetch(
-      `${process.env.NEXT_PUBLIC_API_URL}/domains/reserve`,
+      `${process.env.Non_NEXT_PUBLIC_API_URL}/domains/reserve`,
       {
         method: "POST",
         body: JSON.stringify(payload),
         headers: {
           "Content-Type": "application/json",
-          "x-api-key": process.env.NEXT_PUBLIC_API_KEY,
+          "x-api-key": process.env.Non_NEXT_PUBLIC_API_KEY,
         },
       }
     );
@@ -198,13 +219,13 @@ export async function reserveApplyName({
 
   try {
     const res = await fetch(
-      `${process.env.NEXT_PUBLIC_API_URL}/domains/reserve/apply`,
+      `${process.env.Non_NEXT_PUBLIC_API_URL}/domains/reserve/apply`,
       {
         method: "POST",
         body: JSON.stringify({ txHash, domains, ownerAddress }),
         headers: {
           "Content-Type": "application/json",
-          "x-api-key": process.env.NEXT_PUBLIC_API_KEY,
+          "x-api-key": process.env.Non_NEXT_PUBLIC_API_KEY,
         },
       }
     );
@@ -225,12 +246,12 @@ export async function deleteName({
   if (!id) return;
   try {
     const res = await fetch(
-      `${process.env.NEXT_PUBLIC_API_URL}/domains/reserve/${id}`,
+      `${process.env.Non_NEXT_PUBLIC_API_URL}/domains/reserve/${id}`,
       {
         method: "DELETE",
         headers: {
           "Content-Type": "application/json",
-          "x-api-key": process.env.NEXT_PUBLIC_API_KEY,
+          "x-api-key": process.env.Non_NEXT_PUBLIC_API_KEY,
         },
       }
     );
@@ -250,12 +271,12 @@ export async function changeExpirationTime(payload: {
 }): Promise<{ status: DATA_STATUS.SUCCESS }> {
   try {
     const res = await fetch(
-      `${process.env.NEXT_PUBLIC_API_URL}/domains/reserve`,
+      `${process.env.Non_NEXT_PUBLIC_API_URL}/domains/reserve`,
       {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",
-          "x-api-key": process.env.NEXT_PUBLIC_API_KEY,
+          "x-api-key": process.env.Non_NEXT_PUBLIC_API_KEY,
         },
         body: JSON.stringify(payload),
       }
@@ -278,7 +299,7 @@ export async function zkCloudWorkerRequest(params: {
 }) {
   const { command, task, transactions, args, metadata, mode, jobId } = params;
   const apiData = {
-    auth: process.env.NEXT_PUBLIC_ZKCLOUDWORKER_AUTH,
+    auth: process.env.Non_NEXT_PUBLIC_ZKCLOUDWORKER_AUTH,
     command: command,
     jwtToken: process.env.Non_NEXT_PUBLIC_ZKCLOUDWORKER_JWR_TOKEN,
     data: {
@@ -293,7 +314,7 @@ export async function zkCloudWorkerRequest(params: {
     },
     chain: `devnet`,
   };
-  const endpoint = process.env.NEXT_PUBLIC_ZKCLOUDWORKER_ENDPOINT;
+  const endpoint = process.env.Non_NEXT_PUBLIC_ZKCLOUDWORKER_ENDPOINT;
 
   const response = await axios.post(endpoint, apiData);
   return response.data;
