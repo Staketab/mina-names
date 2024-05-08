@@ -23,7 +23,7 @@ type sendResultMessage = {
   result: boolean;
 };
 
-enum ChainId {
+export enum ChainId {
   devnet = "devnet",
   berkeley = "berkeley",
   mainnet = "mainnet",
