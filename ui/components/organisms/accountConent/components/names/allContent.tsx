@@ -6,32 +6,22 @@ import { DataTable, ORDER_BY, SORT_BY } from "@/comman/types";
 const AllContent = ({
   accountDomains,
   typeView,
+  loading,
 }: {
   accountDomains: DataTable;
   typeView: TypeView;
+  loading: boolean;
 }): JSX.Element => {
-  const newAccountDomains = {
-    ...accountDomains,
-    content: accountDomains.content.map((domain) => {
-      const imgHash = domain?.ipfsImg && JSON.parse(domain?.ipfsImg)?.linkedObject?.storage?.slice(
-        2
-      );
-      return {
-        ...domain,
-        domainImg: imgHash && `https://gateway.pinata.cloud/ipfs/${imgHash}` || null,
-      };
-    }),
-  };
-
+  
   return (
     <Table
-      data={newAccountDomains}
+      data={accountDomains}
       config={ScoringConfig}
-      isLoading={false}
+      isLoading={loading}
       currentPage={0}
       pageLimit={50}
-      totalElements={accountDomains.totalElements}
-      pagesCount={accountDomains.totalPages}
+      totalElements={accountDomains?.totalElements}
+      pagesCount={accountDomains?.totalPages}
       typeView={typeView}
       isHiddenTopPagination
       limitOptions={[

@@ -1,2 +1,2 @@
 export { NamesContent } from "./names";
-export { OffersContent } from "./offers";
+export { ActivityContent } from "./activity";

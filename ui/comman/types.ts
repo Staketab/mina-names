@@ -56,10 +56,10 @@ export type TableConfig = {
     icon?: string | React.ReactElement;
     onClick?: string;
   };
+  view?: View;
   sortBy?: SORT_BY;
-  style?: {
-    color?: string;
-  };
+  hiddenImg?: boolean;
+  style?: React.CSSProperties;
 };
 
 export enum SORT_BY {
@@ -67,6 +67,7 @@ export enum SORT_BY {
   STATUS = "status",
   RESERVATION_TIMESTAMP = "RESERVATION_TIMESTAMP",
   IS_SEND_TO_CLOUD_WORKER = "IS_SEND_TO_CLOUD_WORKER",
+  TIMESTAMP = "TIMESTAMP",
 }
 
 export enum ORDER_BY {

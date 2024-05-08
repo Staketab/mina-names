@@ -11,6 +11,7 @@ import style from "./index.module.css";
 import Link from "next/link";
 import { DOMAIN_STATUS, Routs } from "@/comman/types";
 import React from "react";
+import { CopyIcon } from "@/components/atoms/copyIcon";
 
 type ModalInfoProps = {
   data: {
@@ -55,7 +56,9 @@ const ModalInfo = ({ data }: ModalInfoProps): JSX.Element => {
               className={manropeSemiBold.className}
               text={ownerAddress}
               view={{ sm: 10, md: 14, lg: 18 }}
-            />
+            >
+              <CopyIcon value={ownerAddress} />
+            </StaticEllipse>
           </div>
           <span className={style.bottomContentRightSide}>
             <Image src={defaultIcon} alt="" width={24} height={20} />
@@ -80,14 +83,16 @@ const ModalInfo = ({ data }: ModalInfoProps): JSX.Element => {
                 className={manropeSemiBold.className}
                 text={id}
                 view={{ sm: 10, md: 14, lg: 18 }}
-              />
+              >
+                <CopyIcon value={id} />
+              </StaticEllipse>
             )}
           </div>
           <span className={style.bottomContentRightSide}>
             <Image src={defaultIcon} alt="" width={24} height={20} />
           </span>
         </div>
-        {domainStatus === DOMAIN_STATUS.ACTIVE || !domainStatus && (
+        {(domainStatus === DOMAIN_STATUS.ACTIVE || !domainStatus) && (
           <Link href={`${Routs.NAME}/${id}`}>
             <Button text="View Details" variant={Variant.black} />
           </Link>

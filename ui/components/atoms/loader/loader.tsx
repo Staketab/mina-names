@@ -1,7 +1,5 @@
 import React from "react";
 import { colorConfig, disabledColor } from "./constants";
-import loaderIcon from "./loader.gif";
-import Image from "next/image";
 
 export enum LoaderVariant {
   CIRCLE = "circle",
@@ -19,6 +17,7 @@ type LoaderProps = {
   circleSize?: {
     width: number;
     height: number;
+    strokeWidth?: number;
   };
 };
 
@@ -74,12 +73,34 @@ const Loader = ({
 
   if (variant === LoaderVariant.CIRCLE) {
     return (
-      <Image
-        src={loaderIcon}
-        alt="...loading"
-        width={circleSize.width || 32}
-        height={circleSize.height || 32}
-      />
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        // xmlns:xlink="http://www.w3.org/1999/xlink"
+        // style="margin: auto; background: transparent; display: block; shape-rendering: auto;"
+        width={circleSize?.width ? circleSize?.width + "px" : "20px"}
+        height={circleSize?.height ? circleSize?.height + "px" : "20px"}
+        viewBox="0 0 100 100"
+        preserveAspectRatio="xMidYMid"
+      >
+        <circle
+          cx="50"
+          cy="50"
+          fill="none"
+          stroke="rgba(89, 127, 255, 1)"
+          stroke-width={circleSize?.strokeWidth || "8"}
+          r="40"
+          stroke-dasharray="188.49555921538757 64.83185307179586"
+        >
+          <animateTransform
+            attributeName="transform"
+            type="rotate"
+            repeatCount="indefinite"
+            dur="1s"
+            values="0 50 50;360 50 50"
+            keyTimes="0;1"
+          ></animateTransform>
+        </circle>
+      </svg>
     );
   }
 
