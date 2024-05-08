@@ -48,6 +48,7 @@ const FileInput = ({
           name={InputType.file}
           accept={fileTypes.join(",")}
           onChange={handleChangeFile}
+          disabled={loading}
         />
         <span className={style.inputFileBtn}>
           {!loading && !isSupported && typeof isSupported === "boolean" && (
