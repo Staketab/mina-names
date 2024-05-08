@@ -84,6 +84,7 @@ export enum DATA_STATUS {
 export enum DOMAIN_STATUS {
   PENDING = "PENDING",
   ACTIVE = "ACTIVE",
+  RESERVED = "RESERVED",
 }
 
 export enum Routs {

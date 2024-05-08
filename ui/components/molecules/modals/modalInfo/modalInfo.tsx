@@ -9,7 +9,7 @@ import { monthDayYearTimeFormat } from "@/helpers/timeHelper";
 
 import style from "./index.module.css";
 import Link from "next/link";
-import { Routs } from "@/comman/types";
+import { DOMAIN_STATUS, Routs } from "@/comman/types";
 import React from "react";
 
 type ModalInfoProps = {
@@ -32,8 +32,14 @@ type ModalInfoProps = {
 const ModalInfo = ({ data }: ModalInfoProps): JSX.Element => {
   if (!data) return null;
 
-  const { id, ownerAddress, domainName, reservationTimestamp, domainImg } =
-    data;
+  const {
+    id,
+    ownerAddress,
+    domainName,
+    reservationTimestamp,
+    domainImg,
+    domainStatus,
+  } = data;
 
   return (
     <div className={classNames(style.content, interSemiBold.className)}>
@@ -81,9 +87,11 @@ const ModalInfo = ({ data }: ModalInfoProps): JSX.Element => {
             <Image src={defaultIcon} alt="" width={24} height={20} />
           </span>
         </div>
-        <Link href={`${Routs.NAME}/${id}`}>
-          <Button text="View Details" variant={Variant.black} />
-        </Link>
+        {domainStatus === DOMAIN_STATUS.ACTIVE || !domainStatus && (
+          <Link href={`${Routs.NAME}/${id}`}>
+            <Button text="View Details" variant={Variant.black} />
+          </Link>
+        )}
       </div>
     </div>
   );
