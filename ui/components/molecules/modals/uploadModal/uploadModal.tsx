@@ -9,11 +9,12 @@ import React, { useState } from "react";
 import { useStoreContext } from "@/store";
 import CryptoJS from "crypto-js";
 import { AccountDomainDetailsResponse } from "@/app/actions/types";
-import { contractAddress } from "@/comman/constants";
+import { contractAddress, developer } from "@/comman/constants";
 import { Modals } from "../modals.types";
 import { useRouter } from "next/navigation";
 import { Routs } from "@/comman/types";
 import { pinFile } from "@/app/actions/clientActions";
+import { IUseWallet } from "@/hooks/useWallet";
 
 interface ImageData {
   size: number;
@@ -52,8 +53,10 @@ const fileTypes = [
 
 const UploadModal = ({
   accountDomainDetails,
+  wallet,
 }: {
   accountDomainDetails: AccountDomainDetailsResponse;
+  wallet: IUseWallet;
 }): JSX.Element => {
   const router = useRouter();
 
@@ -73,8 +76,22 @@ const UploadModal = ({
     try {
       setLoading(true);
       const formData = new FormData();
+      const metadata = {
+        name: accountDomainDetails.domainName,
+        keyvalues: {
+          id: accountDomainDetails.id,
+          type: file.type,
+          chain: wallet?.network.chainId,
+          developer: developer,
+          contractAddress: contractAddress,
+          walletAddress: wallet?.accountId[0],
+        },
+      };
 
       formData.append("file", file);
+      formData.append("pinataMetadata", JSON.stringify(metadata));
+      formData.append("pinataOptions", JSON.stringify({ cidVersion: 1 }));
+
       const ipfsHash = await pinFile(formData);
 
       function readFileAsync(file) {
@@ -216,13 +233,14 @@ const UploadModal = ({
         fileTypes={fileTypes}
         onChange={handleChange}
         onTypeError={onTypeError}
+        disabled={loading}
       />
       <div className={style.buttonsBlock}>
         <Button text="Cancel" variant={Variant.cancel} onClick={handleClose} />
         <Button
           text="Update"
           variant={Variant.black}
-          disabled={!file}
+          disabled={!file || loading}
           onClick={submit}
         />
       </div>

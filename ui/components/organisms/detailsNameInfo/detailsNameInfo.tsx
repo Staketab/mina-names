@@ -18,10 +18,10 @@ import { Modals } from "@/components/molecules/modals/modals.types";
 import { Star } from "@/components/atoms/star";
 import { TABS_VARIANT, Tabs } from "@/components/molecules/tabs";
 import { OwnershipContent, ProfileContent } from "./components";
+import useWallet from "@/hooks/useWallet";
 
 const DetailsNameInfo = ({
   accountDomainDetails,
-  editImg,
 }: {
   accountDomainDetails: AccountDomainDetailsResponse;
   editImg: (value: string) => Promise<void>;
@@ -30,10 +30,12 @@ const DetailsNameInfo = ({
   const {
     actions: { openModal },
   } = useStoreContext();
+  const wallet = useWallet();
+  
   const handleEdit = () => {
     true;
     openModal(Modals.confirmation, {
-      editImg,
+      wallet: wallet,
       accountDomainDetails,
     });
   };

@@ -6,13 +6,17 @@
 
 .inputFileText {
   display: block;
-  width: 100%;
+  width: 600px;
   padding: 10px 12px;
   border-radius: 7px;
   border: 1px solid #7191fc;
   background: #fff;
   height: 40px;
   color: #9c9ea6;
+  padding-right: 200px;
+  overflow: hidden;
+  text-wrap: nowrap;
+  text-overflow: ellipsis;
 }
 
 .inputFile input[type="file"] {
