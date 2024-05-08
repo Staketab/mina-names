@@ -23,16 +23,35 @@ type sendResultMessage = {
   result: boolean;
 };
 
-interface IUseGlobal {
+export enum ChainId {
+  devnet = "devnet",
+  berkeley = "berkeley",
+  mainnet = "mainnet",
+}
+
+export type ChainInfoArgs = {
+  chainId: ChainId;
+  name: "Devnet" | "Berkeley" | "Mainnet";
+};
+
+interface ProviderError extends Error {
+  message: string;
+  code: number;
+  data?: unknown;
+}
+
+export interface IUseWallet {
   accountId;
   balance: Balance;
   connectMessage;
   sendResultMessage: sendResultMessage;
+  network: ChainInfoArgs;
   actions: {
     setWalletData: (payload: any) => any;
     onConnectWallet: () => Promise<void>;
     onDisconnectWallet: () => Promise<void>;
     setConnectMessage: (value: string | null) => void;
+    getNetwork: () => Promise<ChainInfoArgs | ProviderError>;
     onSendClick: ({
       amount,
       to,
@@ -52,24 +71,7 @@ interface IUseGlobal {
   };
 }
 
-enum ChainId {
-  devnet = "devnet",
-  berkeley = "berkeley",
-  mainnet = "mainnet",
-}
-
-type ChainInfoArgs = {
-  chainId: ChainId;
-  name: "Devnet" | "Berkeley" | "Mainnet";
-};
-
-interface ProviderError extends Error {
-  message: string;
-  code: number;
-  data?: unknown;
-}
-
-export default function useWallet(): IUseGlobal {
+export default function useWallet(): IUseWallet {
   const [account, setAccount] = useLocalStorage("account");
 
   const [walletData, setWalletData] = useState(null);
@@ -88,19 +90,12 @@ export default function useWallet(): IUseGlobal {
 
   const minaAdapter = typeof window !== "undefined" && window["mina"];
 
-  const requestNetwork = async () => {
+  const getNetwork = async (): Promise<ChainInfoArgs | ProviderError> => {
     const network: ChainInfoArgs | ProviderError = await minaAdapter
       ?.requestNetwork()
       .catch((err: any) => err);
 
-    // if ("chainId" in network && network.chainId !== ChainId.devnet) {
-    //   const switchResult: ChainInfoArgs | ProviderError = await minaAdapter
-    //     ?.switchChain({
-    //       chainId: ChainId.devnet,
-    //     })
-    //     .catch((err: any) => err);
-    //   console.log(switchResult);
-    // }
+    return network;
   };
 
   const onConnectWallet = async (): Promise<void> => {
@@ -113,20 +108,23 @@ export default function useWallet(): IUseGlobal {
       });
 
       const data = await minaAdapter.requestAccounts().catch((err) => err);
+      const network = await getNetwork();
 
       if (data.message) {
-        setWalletData({ ...walletData, connectMessage: data.message });
+        setWalletData({ ...walletData, connectMessage: data.message, network });
       } else {
         setWalletData({
           ...walletData,
           accountId: data,
           connectMessage: "Connected",
+          network,
         });
         setIsConnectedAuro(true);
         setAccount(
           JSON.stringify({
             ...walletData,
             accountId: data,
+            network,
             connectMessage: "Connected",
           })
         );
@@ -163,10 +161,6 @@ export default function useWallet(): IUseGlobal {
     }
   };
 
-  useEffect(() => {
-    requestNetwork();
-  }, []);
-
   return {
     ...walletData,
     balance,
@@ -177,6 +171,7 @@ export default function useWallet(): IUseGlobal {
       onDisconnectWallet,
       setConnectMessage,
       onSendClick,
+      getNetwork,
     },
   };
 }

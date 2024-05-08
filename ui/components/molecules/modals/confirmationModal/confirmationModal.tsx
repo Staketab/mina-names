@@ -7,15 +7,18 @@ import { Variant } from "@/components/atoms/button/types";
 import { useStoreContext } from "@/store";
 import { Modals } from "../modals.types";
 import { AccountDomainDetailsResponse } from "@/app/actions/types";
+import {  IUseWallet } from "@/hooks/useWallet";
 
 const ConfirmationModal = ({
   icon,
   text,
   accountDomainDetails,
+  wallet
 }: {
   icon?: string;
   text?: string;
   accountDomainDetails: AccountDomainDetailsResponse;
+  wallet: IUseWallet
 }): JSX.Element => {
   const {
     actions: { openModal, closeModal },
@@ -24,6 +27,7 @@ const ConfirmationModal = ({
     closeModal();
     openModal(Modals.upload, {
       accountDomainDetails,
+      wallet
     });
   };
 

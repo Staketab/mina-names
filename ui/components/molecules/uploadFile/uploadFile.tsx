@@ -9,10 +9,12 @@ const UploadFile = ({
   onChange,
   fileTypes,
   onTypeError,
+  disabled,
 }: {
   onChange: (value: File) => void;
   fileTypes: string[];
   onTypeError?: () => void;
+  disabled: boolean;
 }): JSX.Element => {
   const handleChange = (file: File) => {
     onChange(file);
@@ -25,6 +27,7 @@ const UploadFile = ({
         item.at(0) === "." ? item.slice(1) : item
       )}
       onTypeError={onTypeError}
+      disabled={disabled}
     >
       <div className={style.dropArea}>
         <Image src={uploadIcon} alt="" width={100} height={100} />

@@ -1,3 +1,5 @@
+import { ChainId } from "@/hooks/useWallet";
+
 export const fees = {
   slow: 0.0011,
   default: 0.0101,
@@ -18,3 +20,7 @@ export const bag = "bag";
 export const initReservationTime = 30;
 export const contractAddress =
   "B62qnXXnnwnyUKbEBuQM64LEfNcBRzCkeNSCu3H4mhbe7ittQX2mDNS";
+
+export const developer = "@staketab";
+
+export const chain = ChainId.devnet
