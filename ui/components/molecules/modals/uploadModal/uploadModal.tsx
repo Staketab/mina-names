@@ -9,7 +9,7 @@ import React, { useState } from "react";
 import { useStoreContext } from "@/store";
 import CryptoJS from "crypto-js";
 import { AccountDomainDetailsResponse } from "@/app/actions/types";
-import { contractAddress, developer } from "@/comman/constants";
+import { chain, contractAddress, developer } from "@/comman/constants";
 import { Modals } from "../modals.types";
 import { useRouter } from "next/navigation";
 import { Routs } from "@/comman/types";
@@ -81,7 +81,7 @@ const UploadModal = ({
         keyvalues: {
           id: accountDomainDetails.id,
           type: file.type,
-          chain: wallet?.network?.chainId,
+          chain: chain,
           developer: developer,
           contractAddress: contractAddress,
           walletAddress: wallet?.accountId?.[0],
