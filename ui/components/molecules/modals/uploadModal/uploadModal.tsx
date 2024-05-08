@@ -81,10 +81,10 @@ const UploadModal = ({
         keyvalues: {
           id: accountDomainDetails.id,
           type: file.type,
-          chain: wallet?.network.chainId,
+          chain: wallet?.network?.chainId,
           developer: developer,
           contractAddress: contractAddress,
-          walletAddress: wallet?.accountId[0],
+          walletAddress: wallet?.accountId?.[0],
         },
       };
 
