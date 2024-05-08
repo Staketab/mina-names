@@ -80,6 +80,11 @@ const ResultItem = ({
         PENDING
       </span>
     ),
+    [DOMAIN_STATUS.RESERVED]: (
+      <span className={classNames(style.status, style.pendingStatus)}>
+        RESERVED
+      </span>
+    ),
     default: (
       <span className={classNames(style.status, style.availableStatus)}>
         AVAILABLE
