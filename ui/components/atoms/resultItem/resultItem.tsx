@@ -98,7 +98,7 @@ const ResultItem = ({
       )}
     >
       <div>
-        {name}.mina
+        {name}
         {nameStatusText[status] || nameStatusText.default}
       </div>
       <div className={style.rightSide}>
