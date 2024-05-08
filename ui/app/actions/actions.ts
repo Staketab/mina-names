@@ -105,7 +105,6 @@ export async function getDomainsMetadata(id: string) {
 export async function checkReservedName(
   domainName: string
 ): Promise<{ id: string | null; status: DOMAIN_STATUS | null }> {
-  console.log(process.env.Non_NEXT_PUBLIC_API_URL);
 
   const res = await fetch(
     `${process.env.Non_NEXT_PUBLIC_API_URL}/domains/${domainName}/reserved`
