@@ -41,3 +41,7 @@
 .active .dot {
   background-color: var(--link-active-color);
 }
+
+.copyIcon {
+  margin-left: 5px;
+}

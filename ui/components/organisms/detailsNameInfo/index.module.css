@@ -45,14 +45,17 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  cursor: pointer;
 }
 
 .domainImg img {
   width: 64px;
   height: 64px;
   border-radius: 50%;
-  object-fit: cover; 
+  object-fit: cover;
+}
+
+.ownerDomainImg {
+  cursor: pointer;
 }
 
 .editIcon {

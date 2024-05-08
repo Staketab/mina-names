@@ -1,6 +1,6 @@
 "use client";
 
-import { editDomainImg, getAccountDomainDetails } from "@/app/actions/actions";
+import { getAccountDomainDetails } from "@/app/actions/actions";
 import { useEffect, useState } from "react";
 
 import DetailsNameInfo from "@/components/organisms/detailsNameInfo/detailsNameInfo";
@@ -16,14 +16,6 @@ export default function Page({ params }: { params: { id: string } }) {
     setAccountDomainDetails(response);
   };
 
-  const editImg = async (ipfsHash: string) => {
-    const response = await editDomainImg({
-      img: `https://gateway.pinata.cloud/ipfs/${ipfsHash}`,
-      id: params.id,
-    });
-    setAccountDomainDetails(response);
-  };
-
   useEffect(() => {
     if (params.id) {
       getAccountDomainDetailsById();
@@ -34,10 +26,7 @@ export default function Page({ params }: { params: { id: string } }) {
 
   return (
     <div className="container">
-      <DetailsNameInfo
-        accountDomainDetails={accountDomainDetails}
-        editImg={editImg}
-      />
+      <DetailsNameInfo accountDomainDetails={accountDomainDetails} />
       <DetailsNameTable />
     </div>
   );

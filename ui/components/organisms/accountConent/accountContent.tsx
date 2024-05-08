@@ -2,57 +2,34 @@
 
 import style from "./index.module.css";
 import { TABS_VARIANT, Tabs } from "@/components/molecules/tabs";
-import { NamesContent } from "./components";
+import { ActivityContent, NamesContent } from "./components";
 import avatarIcon from "../../../assets/avatar.svg";
-import { DOMAIN_STATUS, DataTable } from "@/comman/types";
 import useWallet from "@/hooks/useWallet";
 import { manropeBold } from "@/app/fonts";
 import Image from "next/image";
 import classNames from "classnames";
 
-const AccountContent = ({ accountDomains }: { accountDomains: DataTable }) => {
+const AccountContent = () => {
   const { accountId } = useWallet();
-
-  if (!accountDomains) return null;
-
-  const data = accountDomains.content.filter(
-    ({ domainStatus }) =>
-      domainStatus === DOMAIN_STATUS.ACTIVE ||
-      domainStatus === DOMAIN_STATUS.PENDING
-  );
   return (
     <div className={style.wrapper}>
       <div className={classNames(manropeBold.className, style.header)}>
         <Image src={avatarIcon} alt="" />
-        {accountId[0]}
+        {accountId?.[0]}
       </div>
       <Tabs
         className={style.contentTabs}
         variant={TABS_VARIANT.light}
         items={[
           {
-            content: (
-              <NamesContent
-                accountDomains={{ ...accountDomains, content: data }}
-              />
-            ),
+            content: <NamesContent />,
             title: "Names",
             value: 1,
           },
-          // {
-          //   content: <OffersContent />,
-          //   title: "Offers",
-          //   value: 2,
-          // },
-          // {
-          //   content: <div>Listings</div>,
-          //   title: "Listings",
-          //   value: 3,
-          // },
           {
-            content: <div>Activity</div>,
+            content: <ActivityContent />,
             title: "Activity",
-            value: 5,
+            value: 2,
           },
         ]}
         initValue={1}

@@ -24,22 +24,23 @@ const DetailsNameInfo = ({
   accountDomainDetails,
 }: {
   accountDomainDetails: AccountDomainDetailsResponse;
-  editImg: (value: string) => Promise<void>;
 }): JSX.Element => {
   const [isDefault, setIsDefault] = useState(accountDomainDetails.isDefault);
   const {
     actions: { openModal },
   } = useStoreContext();
+
   const wallet = useWallet();
-  
-  const handleEdit = () => {
-    true;
-    openModal(Modals.confirmation, {
-      wallet: wallet,
-      accountDomainDetails,
-    });
+
+  const handleEdit = (): void => {
+    isOwner &&
+      openModal(Modals.confirmation, {
+        wallet: wallet,
+        accountDomainDetails,
+      });
   };
-  const { domainImg, domainName, ownerAddress } = accountDomainDetails;
+  const { domainName, ownerAddress } = accountDomainDetails;
+  const isOwner = ownerAddress === wallet.accountId?.[0];
 
   const handleDefaultImg = async () => {
     const response = await setDefaultImg(accountDomainDetails.id);
@@ -57,7 +58,11 @@ const DetailsNameInfo = ({
       <div className={style.header}>
         <div className={style.leftSide}>
           <div className={style.imgWrapper} onClick={handleEdit}>
-            <span className={style.domainImg}>
+            <span
+              className={classNames(style.domainImg, {
+                [style.ownerDomainImg]: isOwner,
+              })}
+            >
               <Image
                 src={
                   (imgHash && `https://gateway.pinata.cloud/ipfs/${imgHash}`) ||
@@ -68,9 +73,13 @@ const DetailsNameInfo = ({
                 height={120}
               />
             </span>
-            <span className={classNames(interMedium.className, style.editIcon)}>
-              <Image src={editIcon} alt="Edit" />
-            </span>
+            {isOwner && (
+              <span
+                className={classNames(interMedium.className, style.editIcon)}
+              >
+                <Image src={editIcon} alt="Edit" />
+              </span>
+            )}
           </div>
           <div className={style.name}>
             <div className={classNames(manropeBold.className, style.name)}>

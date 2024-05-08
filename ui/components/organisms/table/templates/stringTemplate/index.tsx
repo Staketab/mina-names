@@ -2,7 +2,7 @@ import React from "react";
 import classNames from "classnames";
 
 import styles from "../index.module.css";
-import { interMedium } from "@/app/fonts";
+import { interMedium, manropeSemiBold } from "@/app/fonts";
 import { TableConfig } from "@/comman/types";
 
 type StringTemplateProps = {
@@ -25,7 +25,10 @@ const StringTemplate = ({ data, config }: StringTemplateProps) => {
     value === null;
 
   return (
-    <div className={classNames(interMedium.className, styles.stringTemplate)} style={config.style}>
+    <div
+      className={classNames(manropeSemiBold.className, styles.stringTemplate)}
+      style={config.style}
+    >
       {isShowDash ? (
         "-"
       ) : (

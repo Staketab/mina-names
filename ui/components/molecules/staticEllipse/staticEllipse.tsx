@@ -1,6 +1,6 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, ReactNode } from "react";
 
-import style from "./index.module.css";
+import styles from "./index.module.css";
 import classNames from "classnames";
 import { useMedia } from "../../../hooks/useMedia";
 import { View } from "@/comman/types";
@@ -11,11 +11,15 @@ const StaticEllipse = ({
   view,
   isActive,
   className,
+  children,
+  style,
 }: {
   text: string;
   view: View;
   isActive?: boolean;
   className?: string;
+  children?: ReactNode;
+  style?: React.CSSProperties;
 }): JSX.Element | null => {
   const [firstString, setFirstString] = useState<string | null>(null);
   const [secondString, setSecondString] = useState<string | null>(null);
@@ -58,25 +62,27 @@ const StaticEllipse = ({
 
   return (
     <div
-      className={classNames(style.wrapper, robotoMedium.className, className, {
-        [style.active]: isActive,
+      className={classNames(styles.wrapper, robotoMedium.className, className, {
+        [styles.active]: isActive,
       })}
+      style={{...style}}
     >
       {string ? (
-        <div className={style.string}>{string}</div>
+        <div className={styles.string}>{string}</div>
       ) : (
         <>
-          <div className={classNames(style.string, style.stringWithDots)}>
+          <div className={classNames(styles.string, styles.stringWithDots)}>
             {firstString}
-            <div className={style.dots}>
-              <span className={style.dot} />
-              <span className={style.dot} />
-              <span className={style.dot} />
+            <div className={styles.dots}>
+              <span className={styles.dot} />
+              <span className={styles.dot} />
+              <span className={styles.dot} />
             </div>
           </div>
-          <div className={style.string}>{secondString}</div>
+          <div className={styles.string}>{secondString}</div>
         </>
       )}
+      <div className={styles.copyIcon}>{children}</div>
     </div>
   );
 };

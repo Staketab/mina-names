@@ -6,6 +6,7 @@ import styles from "./index.module.css";
 import { useMedia } from "@/hooks/useMedia";
 import { useWindowResize } from "@/hooks/useWindowResixe";
 import Portal from "../../portal";
+import { manropeSemiBold } from "@/app/fonts";
 
 export type FloatingTooltipProps = {
   text?: string;
@@ -95,7 +96,7 @@ export default function FloatingTooltip({
         onMouseLeave={onCloseTooltip}
       >
         <div
-          className={styles.content}
+          className={classNames(styles.content, manropeSemiBold.className)}
         >
           {text}
         </div>
