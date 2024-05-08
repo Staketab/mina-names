@@ -23,14 +23,16 @@ const NamesTemplate = ({ data, config }: NamesTemplateProps) => {
       {!hiddenImg && (
         <Image src={imgUrl || defaultIcon} alt="" width={32} height={32} />
       )}
-      <StaticEllipse
-        style={config.style}
-        className={manropeSemiBold.className}
-        text={value}
-        view={view || { sm: 8, md: 12, lg: 14 }}
-      >
-        <CopyIcon value={value} />
-      </StaticEllipse>
+      {value && (
+        <StaticEllipse
+          style={config.style}
+          className={manropeSemiBold.className}
+          text={value}
+          view={view || { sm: 8, md: 12, lg: 14 }}
+        >
+          <CopyIcon value={value} />
+        </StaticEllipse>
+      )}
     </div>
   );
 };
