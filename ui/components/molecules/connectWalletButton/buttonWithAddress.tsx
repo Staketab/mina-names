@@ -53,7 +53,6 @@ const ButtonWithAddress = ({
           text={address}
           view={{ sm: 7, md: 7, lg: 7 }}
           className={style.staticEllipse}
-          disableTooltip
         />
         <DropdownWrapper
           className={style.dropdownWrapper}
