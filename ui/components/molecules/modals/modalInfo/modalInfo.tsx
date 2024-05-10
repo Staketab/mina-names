@@ -12,6 +12,7 @@ import Link from "next/link";
 import { DOMAIN_STATUS, Routs } from "@/comman/types";
 import React from "react";
 import { CopyIcon } from "@/components/atoms/copyIcon";
+import TruncateText from "../../truncateText/truncateText";
 
 type ModalInfoProps = {
   data: {
@@ -46,7 +47,9 @@ const ModalInfo = ({ data }: ModalInfoProps): JSX.Element => {
     <div className={classNames(style.content, interSemiBold.className)}>
       <div className={style.topContent}>
         <Image src={domainImg || defaultIcon} alt="" width={100} height={100} />
-        <div className={style.header}>{domainName}</div>
+        <div className={style.header}>
+          <TruncateText>{domainName}</TruncateText>
+        </div>
       </div>
       <div className={style.bottomContent}>
         <div className={classNames(style.infoItem, manropeSemiBold.className)}>
