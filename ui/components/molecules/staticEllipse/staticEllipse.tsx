@@ -5,7 +5,6 @@ import classNames from "classnames";
 import { useMedia } from "../../../hooks/useMedia";
 import { View } from "@/comman/types";
 import { robotoMedium } from "@/app/fonts";
-import Tooltip from "../tooltip";
 
 const StaticEllipse = ({
   text,
@@ -14,7 +13,6 @@ const StaticEllipse = ({
   className,
   children,
   style,
-  disableTooltip,
 }: {
   text: string;
   view: View;
@@ -22,7 +20,6 @@ const StaticEllipse = ({
   className?: string;
   children?: ReactNode;
   style?: React.CSSProperties;
-  disableTooltip?: boolean;
 }): JSX.Element | null => {
   const [firstString, setFirstString] = useState<string | null>(null);
   const [secondString, setSecondString] = useState<string | null>(null);
@@ -63,37 +60,27 @@ const StaticEllipse = ({
 
   if ((!firstString || !secondString || !text) && !string) return null;
 
-  const renderStringWithDot = (): JSX.Element => {
-    return (
-      <>
-        <div className={classNames(styles.string, styles.stringWithDots)}>
-          {firstString}
-          <div className={styles.dots}>
-            <span className={styles.dot} />
-            <span className={styles.dot} />
-            <span className={styles.dot} />
-          </div>
-        </div>
-        <div className={styles.string}>{secondString}</div>
-      </>
-    );
-  };
-
   return (
     <div
       className={classNames(styles.wrapper, robotoMedium.className, className, {
         [styles.active]: isActive,
       })}
-      style={{ ...style }}
+      style={{...style}}
     >
       {string ? (
         <div className={styles.string}>{string}</div>
-      ) : disableTooltip ? (
-        renderStringWithDot()
       ) : (
-        <Tooltip text={text} className={styles.tooltip}>
-          {renderStringWithDot()}
-        </Tooltip>
+        <>
+          <div className={classNames(styles.string, styles.stringWithDots)}>
+            {firstString}
+            <div className={styles.dots}>
+              <span className={styles.dot} />
+              <span className={styles.dot} />
+              <span className={styles.dot} />
+            </div>
+          </div>
+          <div className={styles.string}>{secondString}</div>
+        </>
       )}
       <div className={styles.copyIcon}>{children}</div>
     </div>

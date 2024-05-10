@@ -14,8 +14,11 @@ export const ScoringConfig: TableConfig[] = [
     view: {
       sm: 8,
       md: 12,
-      lg: 16,
+      lg: 12,
     },
+    style: {
+      maxWidth: '300px'
+    }
   },
   {
     colName: "button",
