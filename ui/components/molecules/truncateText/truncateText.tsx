@@ -1,4 +1,4 @@
-import React, { useRef } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import styles from "./index.module.css";
 import TooltipWrapper from "../tooltip/tooltipWrapper";
 import classNames from "classnames";
@@ -6,15 +6,20 @@ import { manropeSemiBold } from "@/app/fonts";
 
 export default function TruncateText({ children }) {
   const textRef = useRef(null);
+  const [isTruncated, setIsTruncated] = useState(false);
 
   const getStatusTruncateText = () => {
     if (textRef.current?.scrollWidth > textRef.current?.clientWidth) {
-      return true;
+      return setIsTruncated(true);
     }
-    return false;
+    return setIsTruncated(false);
   };
 
-  const tooltipText = getStatusTruncateText() ? children : null;
+  const tooltipText = isTruncated ? children : null;
+
+  useEffect(() => {
+    getStatusTruncateText();
+  }, [textRef?.current]);
 
   return (
     <TooltipWrapper text={tooltipText} controlRef={textRef}>

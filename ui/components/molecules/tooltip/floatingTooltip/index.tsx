@@ -10,11 +10,11 @@ import { manropeSemiBold } from "@/app/fonts";
 
 export type FloatingTooltipProps = {
   text?: string;
-  controlRef?: React.RefObject<HTMLInputElement>
-  onCloseTooltip: () => void,
-  onOpenTooltip: () => void,
-  open: boolean,
-}
+  controlRef?: React.RefObject<HTMLInputElement>;
+  onCloseTooltip: () => void;
+  onOpenTooltip: () => void;
+  open: boolean;
+};
 
 export default function FloatingTooltip({
   text,
@@ -95,9 +95,7 @@ export default function FloatingTooltip({
         onMouseEnter={onOpenTooltip}
         onMouseLeave={onCloseTooltip}
       >
-        <div
-          className={classNames(styles.content, manropeSemiBold.className)}
-        >
+        <div className={classNames(styles.content, manropeSemiBold.className)}>
           {text}
         </div>
       </div>
