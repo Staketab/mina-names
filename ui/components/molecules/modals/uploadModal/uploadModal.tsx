@@ -53,14 +53,15 @@ const fileTypes = [
 
 const UploadModal = ({
   accountDomainDetails,
-  wallet,
 }: {
   accountDomainDetails: AccountDomainDetailsResponse;
-  wallet: IUseWallet;
 }): JSX.Element => {
   const router = useRouter();
 
   const {
+    state: {
+      walletData: { accountId },
+    },
     actions: { closeModal, openModal },
   } = useStoreContext();
 
@@ -85,7 +86,7 @@ const UploadModal = ({
           chain: chain,
           developer: developer,
           contractAddress: contractAddress,
-          walletAddress: wallet?.accountId?.[0],
+          walletAddress: accountId,
         },
       };
 

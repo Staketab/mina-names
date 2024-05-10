@@ -25,7 +25,6 @@ import { useRouter } from "next/navigation";
 const CartContent = (): JSX.Element => {
   const {
     balance,
-    accountId,
     actions: { onSendClick, onConnectWallet },
   } = useWallet();
   const router = useRouter();
@@ -35,6 +34,7 @@ const CartContent = (): JSX.Element => {
   const {
     state: {
       bag: { domains },
+      walletData: { accountId },
     },
     actions: { deleteFromBag, addPeriod, openModal, clearBag },
   } = useStoreContext();
@@ -96,7 +96,7 @@ const CartContent = (): JSX.Element => {
         });
         const data = await reserveApplyName({
           txHash: response?.hash,
-          ownerAddress: accountId[0],
+          ownerAddress: accountId,
           domains: newDomains.map(({ name, amount }) => {
             return {
               domainName: name,

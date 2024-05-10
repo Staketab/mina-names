@@ -27,6 +27,9 @@ type ModalPurchaseProps = {
 const ModalPurchase = ({ name }: ModalPurchaseProps): JSX.Element => {
   const [selectedPeriod, setSelectedPeriod] = useState<number>(1);
   const {
+    state: {
+      walletData: { accountId },
+    },
     actions: { openModal, closeModal },
   } = useStoreContext();
   const router = useRouter();
@@ -37,8 +40,6 @@ const ModalPurchase = ({ name }: ModalPurchaseProps): JSX.Element => {
 
   const {
     balance,
-    sendResultMessage,
-    accountId,
     actions: { onSendClick },
   } = useWallet();
 
@@ -67,7 +68,7 @@ const ModalPurchase = ({ name }: ModalPurchaseProps): JSX.Element => {
             await saveName({
               name,
               amount,
-              ownerAddress: accountId[0],
+              ownerAddress: accountId,
               txHash: data?.hash,
               expirationTime: selectedPeriod,
             });

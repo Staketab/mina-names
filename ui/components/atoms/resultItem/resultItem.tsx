@@ -31,8 +31,10 @@ const ResultItem = ({
   const { id, name, status } = statusName;
   const {
     actions: { openModal, addToBag },
+    state: {
+      walletData: { accountId },
+    },
   } = useStoreContext();
-  const { accountId } = useWallet();
 
   const handleInfo = async () => {
     const response = await getAccountDomainDetails(id);
@@ -44,7 +46,7 @@ const ResultItem = ({
   const handleBag = async (): Promise<void> => {
     try {
       const response = await reserveName({
-        ownerAddress: accountId[0],
+        ownerAddress: accountId,
         domainName: name,
         expirationTime: 1,
         amount: amount,
