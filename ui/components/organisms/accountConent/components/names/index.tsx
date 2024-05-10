@@ -8,12 +8,17 @@ import { useEffect, useState } from "react";
 import { TypeView } from "@/components/atoms/switchView/switchView";
 import { getAccountDomains } from "@/app/actions/actions";
 import { useParams } from "next/navigation";
+import { useStoreContext } from "@/store";
 
 const NamesContent = (): JSX.Element => {
   const [accountDomains, setAccountDomains] = useState<DataTable>(null);
   const [loading, setLoading] = useState<boolean>(true);
-  const params = useParams()
-
+  const params = useParams();
+  const {
+    state: {
+      walletData: { accountId },
+    },
+  } = useStoreContext();
   const [typeView, setTypeView] = useState<TypeView>(TypeView.CARD);
   const handleSwitchView = (typeView: TypeView) => {
     setTypeView(typeView);
@@ -38,25 +43,26 @@ const NamesContent = (): JSX.Element => {
   };
 
   useEffect(() => {
-    (async () => {
-      try {
-        setLoading(true);
-        const account = JSON.parse(localStorage.getItem("account"));
-        const response = await getAccountDomains({
-          accountAddress:  params?.id || account?.accountId?.[0],
-          page: 0,
-          size: 50,
-          sortBy: SORT_BY.RESERVATION_TIMESTAMP,
-          orderBy: ORDER_BY.DESC,
-        });
-        const accountDomains = response?.content
-          .filter(filterByPendingAndActiveStatus)
-          .map(mapDomainImgByIPFS);
-        setAccountDomains({ ...response, content: accountDomains });
-      } catch (error) {}
-      setLoading(false);
-    })();
-  }, []);
+    if (params?.id || accountId) {
+      (async () => {
+        try {
+          setLoading(true);
+          const response = await getAccountDomains({
+            accountAddress: (params?.id as string) || accountId,
+            page: 0,
+            size: 50,
+            sortBy: SORT_BY.RESERVATION_TIMESTAMP,
+            orderBy: ORDER_BY.DESC,
+          });
+          const accountDomains = response?.content
+            .filter(filterByPendingAndActiveStatus)
+            .map(mapDomainImgByIPFS);
+          setAccountDomains({ ...response, content: accountDomains });
+        } catch (error) {}
+        setLoading(false);
+      })();
+    }
+  }, [params?.id, accountId]);
 
   return (
     <div className={style.wrapper}>

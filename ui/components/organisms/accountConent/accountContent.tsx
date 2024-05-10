@@ -4,20 +4,25 @@ import style from "./index.module.css";
 import { TABS_VARIANT, Tabs } from "@/components/molecules/tabs";
 import { ActivityContent, NamesContent } from "./components";
 import avatarIcon from "../../../assets/avatar.svg";
-import useWallet from "@/hooks/useWallet";
 import { manropeBold } from "@/app/fonts";
 import Image from "next/image";
 import classNames from "classnames";
 import { useParams } from "next/navigation";
+import { useStoreContext } from "@/store";
 
 const AccountContent = () => {
-  const { accountId } = useWallet();
-  const params = useParams()
+  const params = useParams();
+  const {
+    state: {
+      walletData: { accountId },
+    },
+  } = useStoreContext();
+
   return (
     <div className={style.wrapper}>
       <div className={classNames(manropeBold.className, style.header)}>
         <Image src={avatarIcon} alt="" />
-        {params?.id || accountId?.[0]}
+        {params?.id || accountId}
       </div>
       <Tabs
         className={style.contentTabs}
