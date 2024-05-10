@@ -4,10 +4,12 @@ import { Table } from "@/components/organisms/table";
 import { useEffect, useState } from "react";
 import { getActivities } from "@/app/actions/actions";
 import { activitiesConfig } from "./constants";
+import { useParams } from "next/navigation";
 
 const ActivityContent = (): JSX.Element => {
   const [activities, setActivities] = useState<DataTable>(null);
   const [loading, setLoading] = useState<boolean>(true);
+  const params = useParams()
 
   useEffect(() => {
     (async () => {
@@ -15,7 +17,7 @@ const ActivityContent = (): JSX.Element => {
         setLoading(true);
         const account = JSON.parse(localStorage.getItem("account"));
         const response = await getActivities({
-          accountAddress: account?.accountId?.[0],
+          accountAddress: params?.id || account?.accountId?.[0],
           page: 0,
           size: 50,
           sortBy: SORT_BY.TIMESTAMP,
