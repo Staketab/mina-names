@@ -62,7 +62,11 @@ const ListTableContent = ({
             return (
               <tr key={index}>
                 {configs.map((config, index) => {
-                  return <td key={index}>{getCell({ data: item, config })}</td>;
+                  return (
+                    <td key={index} style={config.style || {}}>
+                      {getCell({ data: item, config })}
+                    </td>
+                  );
                 })}
               </tr>
             );

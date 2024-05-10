@@ -11,7 +11,7 @@ export const activitiesConfig: TableConfig[] = [
     },
     style: {
       fontSize: '16px',
-      maxWidth: '200px'
+      maxWidth: '200px',
     }
   },
   {
@@ -50,7 +50,7 @@ export const activitiesConfig: TableConfig[] = [
     columnTemplate: TableTemplates.NAMES,
     headerText: "Tx Hash",
     fields: {
-      value: "transaction",
+      hash: "transaction",
     },
     hiddenImg: true,
     style: {
