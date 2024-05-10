@@ -8,14 +8,16 @@ import useWallet from "@/hooks/useWallet";
 import { manropeBold } from "@/app/fonts";
 import Image from "next/image";
 import classNames from "classnames";
+import { useParams } from "next/navigation";
 
 const AccountContent = () => {
   const { accountId } = useWallet();
+  const params = useParams()
   return (
     <div className={style.wrapper}>
       <div className={classNames(manropeBold.className, style.header)}>
         <Image src={avatarIcon} alt="" />
-        {accountId?.[0]}
+        {params?.id || accountId?.[0]}
       </div>
       <Tabs
         className={style.contentTabs}
