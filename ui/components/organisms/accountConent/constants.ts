@@ -11,6 +11,11 @@ export const ScoringConfig: TableConfig[] = [
       value: "domainName",
       url: "domainImg",
     },
+    view: {
+      sm: 8,
+      md: 12,
+      lg: 16,
+    },
   },
   {
     colName: "button",
@@ -18,9 +23,9 @@ export const ScoringConfig: TableConfig[] = [
     headerText: "",
     fields: {
       value: "Manage",
-      url: 'id',
-      parentPage: 'name',
-      status: 'domainStatus'
+      url: "id",
+      parentPage: "name",
+      status: "domainStatus",
     },
   },
   {

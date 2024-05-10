@@ -1,6 +1,5 @@
 import { DataTable, ORDER_BY, SORT_BY } from "@/comman/types";
 import { TypeView } from "@/components/atoms/switchView/switchView";
-import { ScoringConfig } from "../../constants";
 import { Table } from "@/components/organisms/table";
 import { useEffect, useState } from "react";
 import { getActivities } from "@/app/actions/actions";
@@ -23,15 +22,7 @@ const ActivityContent = (): JSX.Element => {
           orderBy: ORDER_BY.DESC,
         });
 
-        setActivities({
-          ...response,
-          content: response?.content?.map((item) => {
-            return {
-              ...item,
-              set: 'Set'
-            }
-          }),
-        });
+        setActivities(response);
       } catch (error) {}
       setLoading(false);
     })();

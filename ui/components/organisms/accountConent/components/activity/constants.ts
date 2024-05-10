@@ -10,7 +10,8 @@ export const activitiesConfig: TableConfig[] = [
       value: "domainName",
     },
     style: {
-      fontSize: '16px'
+      fontSize: '16px',
+      maxWidth: '200px'
     }
   },
   {
@@ -20,6 +21,9 @@ export const activitiesConfig: TableConfig[] = [
     fields: {
       value: "activity",
     },
+    style: {
+      maxWidth: '200px'
+    }
   },
   {
     colName: "names",
@@ -28,6 +32,9 @@ export const activitiesConfig: TableConfig[] = [
     fields: {
       value: "details",
     },
+    style: {
+      maxWidth: '200px'
+    }
   },
   {
     colName: "Time",

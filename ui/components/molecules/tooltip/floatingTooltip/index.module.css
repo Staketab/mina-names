@@ -1,6 +1,5 @@
 .tooltip {
   width: fit-content;
-  max-width: 400px;
   position: relative;
   background: #ffffff00;
   color: rgba(0, 0, 0, 0.87);

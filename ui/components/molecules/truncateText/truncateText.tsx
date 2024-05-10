@@ -19,7 +19,7 @@ export default function TruncateText({ children }) {
   return (
     <TooltipWrapper text={tooltipText} controlRef={textRef}>
       <div
-        style={{ maxWidth: "200%", marginBottom: 0 }}
+        style={{ maxWidth: "100%", marginBottom: 0 }}
         ref={textRef}
         className={classNames(
           styles.truncatedWrapper,
