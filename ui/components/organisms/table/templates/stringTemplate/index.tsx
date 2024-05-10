@@ -2,8 +2,9 @@ import React from "react";
 import classNames from "classnames";
 
 import styles from "../index.module.css";
-import { interMedium } from "@/app/fonts";
+import { manropeSemiBold } from "@/app/fonts";
 import { TableConfig } from "@/comman/types";
+import TruncateText from "@/components/molecules/truncateText";
 
 type StringTemplateProps = {
   data: any;
@@ -25,13 +26,16 @@ const StringTemplate = ({ data, config }: StringTemplateProps) => {
     value === null;
 
   return (
-    <div className={classNames(interMedium.className, styles.stringTemplate)} style={config.style}>
+    <div
+      className={classNames(manropeSemiBold.className, styles.stringTemplate)}
+      style={config.style}
+    >
       {isShowDash ? (
         "-"
       ) : (
         <>
           {prefix}
-          {!valFunc ? value : valFunc(value)}
+          <TruncateText>{!valFunc ? value : valFunc(value)}</TruncateText>
           {postfix}
           {additionValue && (
             <span className={styles.stringTemplateAdionValue}>

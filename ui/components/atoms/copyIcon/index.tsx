@@ -6,17 +6,19 @@ import styles from "./copyIcon.module.css";
 import classNames from "classnames";
 import Image from "next/image";
 type CopyIconProps = {
-  onClick: () => void;
+  onClick?: () => void;
   className?: string;
+  value: string
 };
 
-const CopyIcon = ({ onClick, className }: CopyIconProps): JSX.Element => {
+const CopyIcon = ({ onClick, className, value }: CopyIconProps): JSX.Element => {
   const [pressed, setPressed] = useState(false);
   const [showPressed, setShowPressed] = useState(false);
 
   const copyHandler = (e) => {
     e.stopPropagation();
-    onClick();
+    onClick?.();
+      navigator.clipboard.writeText(value);
     if (!pressed) {
       setPressed(true);
       setTimeout(() => {

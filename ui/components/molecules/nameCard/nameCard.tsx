@@ -12,6 +12,7 @@ import { DOMAIN_STATUS, Routs } from "@/comman/types";
 import { Status } from "@/components/atoms/status";
 import { dayMonthYearFormat } from "@/helpers/timeHelper";
 import classNames from "classnames";
+import TruncateText from "../truncateText/truncateText";
 
 type NameCardProps = {
   img: string;
@@ -41,7 +42,9 @@ const NameCard = ({
           blurDataURL={base64Data}
         />
       </div>
-      <span className={manropeSemiBold.className}>{name}</span>
+      <span className={classNames(manropeSemiBold.className, style.name)}>
+        <TruncateText>{name}</TruncateText>
+      </span>
       {endTimestamp && domainStatus !== DOMAIN_STATUS.PENDING && (
         <span className={classNames(style.expiration, manropeMedium.className)}>
           Expiration: {dayMonthYearFormat(Number(endTimestamp))}

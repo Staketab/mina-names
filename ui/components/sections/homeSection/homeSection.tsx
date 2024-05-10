@@ -72,7 +72,7 @@ const HomeSection = () => {
           onChange={(e) => handleChange(e.target.value)}
           onSubmit={handleInput}
           variant={InputVariant.search}
-          maxLength={30}
+          maxLength={25}
           enableClear
         />
         {statusName?.name && value && (

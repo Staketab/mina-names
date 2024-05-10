@@ -6,14 +6,15 @@ import styles from "./index.module.css";
 import { useMedia } from "@/hooks/useMedia";
 import { useWindowResize } from "@/hooks/useWindowResixe";
 import Portal from "../../portal";
+import { manropeSemiBold } from "@/app/fonts";
 
 export type FloatingTooltipProps = {
   text?: string;
-  controlRef?: React.RefObject<HTMLInputElement>
-  onCloseTooltip: () => void,
-  onOpenTooltip: () => void,
-  open: boolean,
-}
+  controlRef?: React.RefObject<HTMLInputElement>;
+  onCloseTooltip: () => void;
+  onOpenTooltip: () => void;
+  open: boolean;
+};
 
 export default function FloatingTooltip({
   text,
@@ -94,9 +95,7 @@ export default function FloatingTooltip({
         onMouseEnter={onOpenTooltip}
         onMouseLeave={onCloseTooltip}
       >
-        <div
-          className={styles.content}
-        >
+        <div className={classNames(styles.content, manropeSemiBold.className)}>
           {text}
         </div>
       </div>

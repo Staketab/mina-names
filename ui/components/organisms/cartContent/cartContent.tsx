@@ -97,10 +97,10 @@ const CartContent = (): JSX.Element => {
         const data = await reserveApplyName({
           txHash: response?.hash,
           ownerAddress: accountId[0],
-          domains: domains.map(({ name, amount }) => {
+          domains: newDomains.map(({ name, amount }) => {
             return {
               domainName: name,
-              amount: Number(amount) * rate,
+              amount: parseFloat(amount),
             };
           }),
         });

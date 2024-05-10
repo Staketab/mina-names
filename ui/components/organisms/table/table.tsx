@@ -38,7 +38,7 @@ const Table = ({
     onChangeSort(sort);
     onChangeOrder(undefined);
   };
-  const showErrorMessage = !isLoading && (!data || data?.content?.length < 1);
+  const showErrorMessage = !isLoading && !data?.content?.length;
 
   const renderPagination = () => {
     if (isHiddenPagination) return null;
@@ -77,7 +77,10 @@ const Table = ({
       {showErrorMessage && <TableErrorMessage />}
       {isLoading ? (
         <div className={style.loadingScreen}>
-          <Loader variant={LoaderVariant.CIRCLE} />
+          <Loader
+            variant={LoaderVariant.CIRCLE}
+            circleSize={{ height: 40, width: 40 }}
+          />
         </div>
       ) : (
         <> {!isHiddenBottomPagination && renderPagination()}</>
