@@ -7,10 +7,12 @@ import { SwitchView } from "@/components/atoms/switchView";
 import { useEffect, useState } from "react";
 import { TypeView } from "@/components/atoms/switchView/switchView";
 import { getAccountDomains } from "@/app/actions/actions";
+import { useParams } from "next/navigation";
 
 const NamesContent = (): JSX.Element => {
   const [accountDomains, setAccountDomains] = useState<DataTable>(null);
   const [loading, setLoading] = useState<boolean>(true);
+  const params = useParams()
 
   const [typeView, setTypeView] = useState<TypeView>(TypeView.CARD);
   const handleSwitchView = (typeView: TypeView) => {
@@ -41,7 +43,7 @@ const NamesContent = (): JSX.Element => {
         setLoading(true);
         const account = JSON.parse(localStorage.getItem("account"));
         const response = await getAccountDomains({
-          accountAddress: account?.accountId?.[0],
+          accountAddress:  params?.id || account?.accountId?.[0],
           page: 0,
           size: 50,
           sortBy: SORT_BY.RESERVATION_TIMESTAMP,
