@@ -12,6 +12,7 @@ on:
         options:
         - main
         - t-names
+
 jobs:
   deploy:
     runs-on: ubuntu-latest
@@ -28,9 +29,10 @@ jobs:
         token: ${{ secrets.GH_TOKEN }}
 
     - name: calculate environment
+      shell: bash
       run: |
-        pull_request_branch=${{ github.base_ref }}
         dispatch_branch=${{ github.event.inputs.environment }}
+        pull_request_branch=${GITHUB_BASE_REF#refs/heads/}
         echo "ENVIRONMENT=${pull_request_branch:-$dispatch_branch}" >> $GITHUB_ENV
 
     - name: Settings
@@ -43,39 +45,42 @@ jobs:
             "^t-names$": {
               "node_env": "development",
               "webroot": "/var/www/test/names",
-              "temproot": "/var/www/test/tmp-names",
               "ssh_hostname": "${{ secrets.FRONT_SCORE_IP }}",
               "ssh_password": "${{ secrets.FRONT_SCORE_SSH }}",
-              "lib_latest": "true",
-              "keep_source_maps": "false",
-              "serv": "names-test.service"
+              "systemd_service": "names-test.service"
             },
             "^main$": {
               "node_env": "production",
               "webroot": "/var/www/prod/names",
-              "temproot": "/var/www/prod/tmp-names",
               "ssh_hostname": "${{ secrets.FRONT_SCORE_IP }}",
               "ssh_password": "${{ secrets.FRONT_SCORE_SSH }}",
-              "lib_latest": "false",
-              "keep_source_maps": "false",
-              "serv": "names.service"
+              "systemd_service": "names.service"
             }
           }
         export_to: output,log
         mode: fill
 
-    - name: Deploy React.js
+    - name: generate .env
+      run: |
+        cat > ui/.env <<-EOF
+        Non_NEXT_PUBLIC_API_URL=${{ secrets.NEXT_PUBLIC_API_URL }}
+        Non_NEXT_PUBLIC_API_KEY=${{ secrets.NEXT_PUBLIC_API_KEY }}
+        NEXT_PUBLIC_IPFS_URL=${{ secrets.NEXT_PUBLIC_IPFS_URL }}
+        NEXT_PUBLIC_IPFS_KEY=${{ secrets.NEXT_PUBLIC_IPFS_KEY }}
+        Non_NEXT_PUBLIC_ZKCLOUDWORKER_AUTH=${{ secrets.NEXT_PUBLIC_ZKCLOUDWORKER_AUTH }}
+        Non_NEXT_PUBLIC_ZKCLOUDWORKER_JWR_TOKEN=${{ secrets.NEXT_PUBLIC_ZKCLOUDWORKER_JWR_TOKEN }}
+        Non_NEXT_PUBLIC_ZKCLOUDWORKER_ENDPOINT=${{ secrets.NEXT_PUBLIC_ZKCLOUDWORKER_ENDPOINT }}
+        EOF
+
+    - name: Deploy
       uses: ./.github/actions/mina-names
       with:
+        workdir: ui
         webroot: ${{ steps.settings.outputs.webroot }}
-        temproot: ${{ steps.settings.outputs.temproot }}
-        serv: ${{ steps.settings.outputs.serv }}
+        systemd_service: ${{ steps.settings.outputs.systemd_service }}
         ssh_hostname: ${{ steps.settings.outputs.ssh_hostname }}
         ssh_username: ${{ secrets.SERVER_USERNAME }}
         ssh_password: ${{ steps.settings.outputs.ssh_password }}
-        lib_latest: ${{ steps.settings.outputs.lib_latest }}
-        keep_source_maps: ${{ steps.settings.outputs.keep_source_maps }}
-        nodejs_version: 18.x
         github_token: ${{ secrets.GH_TOKEN }}
       env:
         REACT_APP_ENVIRONMENT: ${{ steps.settings.outputs.node_env }}
