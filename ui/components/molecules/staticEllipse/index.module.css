@@ -45,3 +45,7 @@
 .copyIcon {
   margin-left: 5px;
 }
+
+.wrapper .tooltip {
+  width: fit-content
+}
