@@ -1,4 +1,3 @@
-[submodule "mina-names-backend"]
-	path = mina-names-backend
+[submodule "ui/mina-names-backend"]
+	path = ui/mina-names-backend
 	url = https://github.com/Staketab/mina-names-backend
-	update = remote
