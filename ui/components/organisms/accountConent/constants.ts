@@ -17,7 +17,7 @@ export const ScoringConfig: TableConfig[] = [
       lg: 12,
     },
     style: {
-      maxWidth: '300px'
+      width: '300px'
     }
   },
   {
