@@ -78,6 +78,7 @@ const UploadModal = ({
       const formData = new FormData();
       const metadata = {
         name: file.name,
+        domainName: accountDomainDetails.domainName,
         keyvalues: {
           id: accountDomainDetails.id,
           type: file.type,
