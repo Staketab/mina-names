@@ -1,5 +1,5 @@
 import { bag } from "@/comman/constants";
-import { useStoreContext } from "@/store";
+import { initBag, initWalletData, useStoreContext } from "@/store";
 import { Dispatch, SetStateAction, useEffect, useState } from "react";
 
 export const useLocalStorage = (
@@ -22,12 +22,18 @@ export const useLocalStorage = (
   }, [value, key]);
 
   useEffect(() => {
-    const storage = localStorage.getItem(bag);
-    if (storage) {
-      const bag = JSON.parse(storage);
+    const bagStorage = localStorage.getItem(bag);
+    const accountStorage = localStorage.getItem("account");
+    if (bagStorage || accountStorage) {
       initStore({
         modals: [],
-        bag: bag,
+        bag: bagStorage ? JSON.parse(bagStorage) : initBag,
+        walletData: accountStorage
+          ? {
+              ...JSON.parse(accountStorage),
+              accountId: JSON.parse(accountStorage)?.accountId?.[0],
+            }
+          : initWalletData,
       });
     }
   }, []);

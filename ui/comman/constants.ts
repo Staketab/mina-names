@@ -23,4 +23,4 @@ export const contractAddress =
 
 export const developer = "@staketab";
 
-export const chain = ChainId.devnet
+export const chain = 'devnet'

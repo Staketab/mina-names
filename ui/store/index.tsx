@@ -1,6 +1,7 @@
 "use client";
 import { bag } from "@/comman/constants";
 import { Modals } from "@/components/molecules/modals/modals.types";
+import { ChainId, ChainInfoArgs } from "@/hooks/useWallet";
 import React, { useContext, useReducer } from "react";
 
 type Domain = {
@@ -14,6 +15,11 @@ type Bag = {
   domains: Domain[];
 };
 
+type WalletData = {
+  accountId: string;
+  connectMessage: string;
+  network: ChainInfoArgs;
+};
 export type OPEN_MODAL = {
   type: "OPEN_MODAL";
   payload: { modal: Modals; data?: unknown };
@@ -82,15 +88,28 @@ export interface IState {
     modal: Modals;
     data?: unknown;
   }[];
+  walletData?: WalletData;
   bag?: Bag;
 }
 
+export const initWalletData: WalletData = {
+  accountId: "",
+  connectMessage: "",
+  network: {
+    chainId: ChainId.devnet,
+    name: "Devnet",
+  },
+};
+
+export const initBag = {
+  reservationTime: null,
+  domains: [],
+};
+
 export const initialState: IState = {
   modals: [],
-  bag: {
-    reservationTime: null,
-    domains: [],
-  },
+  walletData: initWalletData,
+  bag: initBag,
 };
 
 export const reducer = (state: IState, action: StoreActions): IState => {

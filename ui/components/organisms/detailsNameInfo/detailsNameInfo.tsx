@@ -27,6 +27,9 @@ const DetailsNameInfo = ({
 }): JSX.Element => {
   const [isDefault, setIsDefault] = useState(accountDomainDetails.isDefault);
   const {
+    state: {
+      walletData: { accountId },
+    },
     actions: { openModal },
   } = useStoreContext();
 
@@ -40,9 +43,10 @@ const DetailsNameInfo = ({
       });
   };
   const { domainName, ownerAddress } = accountDomainDetails;
-  const isOwner = ownerAddress === wallet.accountId?.[0];
+  const isOwner = ownerAddress === accountId;
 
   const handleDefaultImg = async () => {
+    if (!isOwner) return;
     const response = await setDefaultImg(accountDomainDetails.id);
     setIsDefault(response);
   };
@@ -98,15 +102,6 @@ const DetailsNameInfo = ({
               </span>
             )}
           </div>
-
-          {/* <div className={classNames(interMedium.className, style.address)}>
-              Owned by
-              <StaticEllipse
-                text={ownerAddress}
-                view={{ sm: 10, md: 10, lg: 10 }}
-                isActive
-              />
-            </div> */}
         </div>
         <div className={style.rightSide}>
           <Switcher
@@ -114,10 +109,8 @@ const DetailsNameInfo = ({
             className={style.switcher}
             initialState={isDefault}
             onClick={handleDefaultImg}
-            disabled={isDefault}
+            disabled={isDefault || !isOwner}
           />
-          {/* <Button variant={Variant.grey}>Set Reminder</Button> */}
-          {/* <Button variant={Variant.black}>Extend</Button> */}
         </div>
       </div>
       <Tabs
@@ -130,17 +123,7 @@ const DetailsNameInfo = ({
             ),
             title: "Profile",
             value: 1,
-          },
-          {
-            content: <OwnershipContent />,
-            title: "Ownership",
-            value: 2,
-          },
-          // {
-          //   content: <div>Offers</div>,
-          //   title: "Offers",
-          //   value: 3,
-          // },
+          }
         ]}
         initValue={1}
       />

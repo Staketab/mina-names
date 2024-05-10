@@ -4,18 +4,25 @@ import { Table } from "@/components/organisms/table";
 import { useEffect, useState } from "react";
 import { getActivities } from "@/app/actions/actions";
 import { activitiesConfig } from "./constants";
+import { useParams } from "next/navigation";
+import { useStoreContext } from "@/store";
 
 const ActivityContent = (): JSX.Element => {
   const [activities, setActivities] = useState<DataTable>(null);
   const [loading, setLoading] = useState<boolean>(true);
+  const params = useParams();
+  const {
+    state: {
+      walletData: { accountId },
+    },
+  } = useStoreContext();
 
   useEffect(() => {
     (async () => {
       try {
         setLoading(true);
-        const account = JSON.parse(localStorage.getItem("account"));
         const response = await getActivities({
-          accountAddress: account?.accountId?.[0],
+          accountAddress: (params?.id as string) || accountId,
           page: 0,
           size: 50,
           sortBy: SORT_BY.TIMESTAMP,
