@@ -1,26 +1,26 @@
-# Mina zkApp: PROJECT_NAME
+# Domain Name Service Contract
 
-This template uses TypeScript.
+![Domain Name Service Contract](/docs/DomainName7.svg)
 
-## How to build
+## Rollup NFT integration
 
-```sh
-npm run build
+### Installation
+
+You need to install node, ts-node and git
+and clone this repo
+
+```
+git clone https://github.com/zkcloudworker/domain-name-contract
+cd domain-name-contract
+yarn
 ```
 
-## How to run tests
+### Setting environment
 
-```sh
-npm run test
-npm run testw # watch mode
+Create env.json using env.example.json as an example and fill in your values.
+
+### Running Rollup NFT integration example:
+
 ```
-
-## How to run coverage
-
-```sh
-npm run coverage
+yarn rollup
 ```
-
-## License
-
-[Apache-2.0](LICENSE)
