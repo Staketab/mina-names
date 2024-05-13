@@ -3,6 +3,7 @@ node_modules
 build
 coverage
 
+
 # Editor
 .vscode
 
@@ -11,3 +12,15 @@ coverage
 
 # Never commit keys to Git!
 keys
+env.json
+
+# zkCloudWorker
+.zkCloudWorker
+cache
+data
+
+# Yarn
+.yarn
+dist
+.pnp.cjs
+.pnp.loader.mjs
