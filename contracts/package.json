@@ -1,6 +1,6 @@
 {
   "name": "nameservice",
-  "version": "0.3.2",
+  "version": "0.3.3",
   "author": "@staketab",
   "license": "Apache-2.0",
   "scripts": {
@@ -13,7 +13,7 @@
     "o1js": "^1.1.0",
     "tslib": "^2.6.2",
     "unique-names-generator": "^4.7.1",
-    "zkcloudworker": "^0.7.6"
+    "zkcloudworker": "^0.7.9"
   },
   "devDependencies": {
     "@jest/globals": "^29.7.0",
