@@ -6,7 +6,7 @@
 
 ## Architecture
 
-![Domain Name Service Contract](/docs/DomainName7.svg)
+![Domain Name Service Contract](/contracts/docs/DomainName7.svg)
 
 ## Running tests
 
