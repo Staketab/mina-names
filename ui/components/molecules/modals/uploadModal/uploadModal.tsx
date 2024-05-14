@@ -194,7 +194,10 @@ const UploadModal = ({
           header: "Updating is in progress.",
           button: {
             text: "See Domains",
-            action: () => router.push(Routs.NAMES),
+            action: () => {
+              router.push(Routs.NAMES);
+              closeModal();
+            },
           },
         });
       } else {
