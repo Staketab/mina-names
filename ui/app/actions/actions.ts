@@ -107,8 +107,15 @@ export async function checkReservedName(
 ): Promise<{ id: string | null; status: DOMAIN_STATUS | null }> {
 
   const res = await fetch(
-    `${process.env.Non_NEXT_PUBLIC_API_URL}/domains/${domainName}/reserved`
+    `${process.env.Non_NEXT_PUBLIC_API_URL}/domains/${domainName}/reserved`,
+    {
+      headers: {
+        "Content-Type": "application/json",
+        "x-api-key": process.env.Non_NEXT_PUBLIC_API_KEY,
+      },
+    }
   );
+  
   return await res.json();
 }
 
