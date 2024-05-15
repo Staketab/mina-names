@@ -3460,7 +3460,7 @@ __metadata:
     tslib: "npm:^2.6.2"
     typescript: "npm:^5.4.5"
     unique-names-generator: "npm:^4.7.1"
-    zkcloudworker: "npm:^0.7.10"
+    zkcloudworker: "npm:^0.7.11"
   languageName: unknown
   linkType: soft
 
@@ -4686,15 +4686,15 @@ __metadata:
   languageName: node
   linkType: hard
 
-"zkcloudworker@npm:^0.7.10":
-  version: 0.7.10
-  resolution: "zkcloudworker@npm:0.7.10"
+"zkcloudworker@npm:^0.7.11":
+  version: 0.7.11
+  resolution: "zkcloudworker@npm:0.7.11"
   dependencies:
     axios: "npm:^1.6.8"
     chalk: "npm:^4.1.2"
     nats: "npm:^2.24.0"
   peerDependencies:
     o1js: ^1.1.0
-  checksum: 10c0/3e1a49e3650154b21c973665cf2d10085793d0d922e2c46e2ec0313e21f13def06eb1ce84cadb87ccb24afdd8c491a6487f41abb25e47eebade1d17cb1bd9cd9
+  checksum: 10c0/4527f7f393d7ce58bf9f761c712d9b39caf847ab3b0fb3256a21164657e4c8f5c8b5dfeed7de5f62c6be784d137764f60f8fe947465ce96acff0fc68c610bbb8
   languageName: node
   linkType: hard

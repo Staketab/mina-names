@@ -75,6 +75,7 @@ import { stringToFields, stringFromFields } from "./lib/hash";
 import { nameContract } from "./config";
 import { RollupNFTData, createRollupNFT } from "./rollup/rollup-nft";
 import { Metadata } from "minanft";
+import { isMainThread } from "worker_threads";
 
 const fullValidation = true;
 const proofsOff = false as boolean;
@@ -99,54 +100,61 @@ export class DomainNameServiceWorker extends zkCloudWorker {
   }
 
   private async compile(compileSmartContracts: boolean = true): Promise<void> {
-    const cpuCores = os.cpus();
-    const numberOfCPUCores = cpuCores.length;
-    console.log("CPU cores:", numberOfCPUCores);
-    console.time("compiled");
-    if (DomainNameServiceWorker.mapUpdateVerificationKey === undefined) {
-      console.time("compiled MapUpdate");
-      DomainNameServiceWorker.mapUpdateVerificationKey = (
-        await MapUpdate.compile({
-          cache: this.cache,
-        })
-      ).verificationKey;
-      console.timeEnd("compiled MapUpdate");
-    }
+    try {
+      const cpuCores = os.cpus();
+      const numberOfCPUCores = cpuCores.length;
+      console.log("CPU cores:", numberOfCPUCores);
+      console.time("compiled");
+      if (DomainNameServiceWorker.mapUpdateVerificationKey === undefined) {
+        console.time("compiled MapUpdate");
+        DomainNameServiceWorker.mapUpdateVerificationKey = (
+          await MapUpdate.compile({
+            cache: this.cache,
+          })
+        ).verificationKey;
+        console.timeEnd("compiled MapUpdate");
+      }
 
-    if (compileSmartContracts === false) {
+      if (compileSmartContracts === false) {
+        console.timeEnd("compiled");
+        return;
+      }
+
+      if (DomainNameServiceWorker.blockContractVerificationKey === undefined) {
+        console.time("compiled BlockContract");
+        DomainNameServiceWorker.blockContractVerificationKey = (
+          await BlockContract.compile({
+            cache: this.cache,
+          })
+        ).verificationKey;
+        console.timeEnd("compiled BlockContract");
+      }
+      if (DomainNameServiceWorker.validatorsVerificationKey === undefined) {
+        console.time("compiled ValidatorsVoting");
+        DomainNameServiceWorker.validatorsVerificationKey = (
+          await ValidatorsVoting.compile({
+            cache: this.cache,
+          })
+        ).verificationKey;
+        console.timeEnd("compiled ValidatorsVoting");
+      }
+
+      if (DomainNameServiceWorker.contractVerificationKey === undefined) {
+        console.time("compiled DomainNameContract");
+        DomainNameServiceWorker.contractVerificationKey = (
+          await DomainNameContract.compile({
+            cache: this.cache,
+          })
+        ).verificationKey;
+        console.timeEnd("compiled DomainNameContract");
+      }
       console.timeEnd("compiled");
-      return;
+    } catch (error) {
+      console.error("Error in compile, restarting container", error);
+      // Restarting the container, see https://github.com/o1-labs/o1js/issues/1651
+      await this.cloud.forceWorkerRestart();
+      throw error;
     }
-
-    if (DomainNameServiceWorker.blockContractVerificationKey === undefined) {
-      console.time("compiled BlockContract");
-      DomainNameServiceWorker.blockContractVerificationKey = (
-        await BlockContract.compile({
-          cache: this.cache,
-        })
-      ).verificationKey;
-      console.timeEnd("compiled BlockContract");
-    }
-    if (DomainNameServiceWorker.validatorsVerificationKey === undefined) {
-      console.time("compiled ValidatorsVoting");
-      DomainNameServiceWorker.validatorsVerificationKey = (
-        await ValidatorsVoting.compile({
-          cache: this.cache,
-        })
-      ).verificationKey;
-      console.timeEnd("compiled ValidatorsVoting");
-    }
-
-    if (DomainNameServiceWorker.contractVerificationKey === undefined) {
-      console.time("compiled DomainNameContract");
-      DomainNameServiceWorker.contractVerificationKey = (
-        await DomainNameContract.compile({
-          cache: this.cache,
-        })
-      ).verificationKey;
-      console.timeEnd("compiled DomainNameContract");
-    }
-    console.timeEnd("compiled");
   }
 
   public async create(transaction: string): Promise<string | undefined> {
@@ -332,7 +340,7 @@ export class DomainNameServiceWorker extends zkCloudWorker {
   public async task(): Promise<string | undefined> {
     if (this.cloud.task === undefined) throw new Error("task is undefined");
     console.log(
-      `Executing task ${this.cloud.task} with taskId ${this.cloud.taskId}`
+      `Executing task ${this.cloud.task} with taskId ${this.cloud.taskId}, isMainTread: ${isMainThread}`
     );
     try {
       switch (this.cloud.task) {
