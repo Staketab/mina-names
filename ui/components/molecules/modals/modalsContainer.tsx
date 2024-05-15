@@ -10,6 +10,7 @@ import React, { useMemo } from "react";
 const ModalContainer = (): JSX.Element => {
   const {
     state: { modals },
+    actions: {closeModal}
   } = useStoreContext();
 
   return (
@@ -30,6 +31,7 @@ const ModalContainer = (): JSX.Element => {
             animation="appear"
             show={true}
             key={modal.modal}
+            onClose={() => closeModal()}
           >
             <div className={style.contentWrapper}>{modalChild}</div>
           </PopupOverlay>

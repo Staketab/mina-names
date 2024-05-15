@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { useLocalStorage } from "./useLocalStorage";
 import useAddressBalance, { Balance } from "./useAddressBalance";
+import { initWalletData, useStoreContext } from "@/store";
 
 export type SendPaymentresponse = {
   hash?: string;
@@ -73,6 +74,9 @@ export interface IUseWallet {
 
 export default function useWallet(): IUseWallet {
   const [account, setAccount] = useLocalStorage("account");
+  const {
+    actions: { setWalletData: setWalletDataToStore },
+  } = useStoreContext();
 
   const [walletData, setWalletData] = useState(null);
   const [, setIsConnectedAuro] = useLocalStorage(isConnectedAuro);
@@ -120,14 +124,14 @@ export default function useWallet(): IUseWallet {
           network,
         });
         setIsConnectedAuro(true);
-        setAccount(
-          JSON.stringify({
-            ...walletData,
-            accountId: data,
-            network,
-            connectMessage: "Connected",
-          })
-        );
+        const newWalletData = {
+          ...walletData,
+          accountId: data,
+          network,
+          connectMessage: "Connected",
+        };
+        setAccount(JSON.stringify(newWalletData));
+        setWalletDataToStore({...newWalletData, accountId: data?.[0]});
       }
     }
   };
@@ -136,6 +140,7 @@ export default function useWallet(): IUseWallet {
     setWalletData(null);
     setIsConnectedAuro(false);
     setAccount(null);
+    setWalletDataToStore(initWalletData)
   };
 
   const onSendClick = async ({ amount, to, fee, memo }) => {

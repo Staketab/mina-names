@@ -5,4 +5,5 @@ export enum Modals {
   info = "info",
   confirmation = "confirmation",
   upload = "upload",
+  walletConnect = "walletConnect"
 }
