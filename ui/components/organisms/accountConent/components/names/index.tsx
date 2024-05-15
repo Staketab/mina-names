@@ -12,7 +12,7 @@ import { useStoreContext } from "@/store";
 
 const NamesContent = (): JSX.Element => {
   const [accountDomains, setAccountDomains] = useState<DataTable>(null);
-  const [loading, setLoading] = useState<boolean>(true);
+  const [loading, setLoading] = useState<boolean>(false);
   const params = useParams();
   const {
     state: {

@@ -5,7 +5,7 @@ export type Balance = {
   balanceUsd: number;
 };
 
-const useAddressBalance = (address): { balance: Balance } => {
+const useAddressBalance = (address): Balance  => {
   const [balance, setBalance] = useState<Balance>(null);
 
   const getBalance = async (address): Promise<void> => {
@@ -28,9 +28,7 @@ const useAddressBalance = (address): { balance: Balance } => {
     }
   }, [address]);
 
-  return {
-    balance,
-  };
+  return balance;
 };
 
 export default useAddressBalance;

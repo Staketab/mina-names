@@ -9,6 +9,8 @@ import FailScreen from "./screens/failScreen";
 import WalletConnectPopUpMobileHeader from "./mobileHeader";
 import { useMedia } from "../../../../hooks/useMedia";
 import { useKeyPress } from "../../../../hooks/useKeyPress";
+import { useStoreContext } from "@/store";
+import { Modals } from "../../modals/modals.types";
 
 const messages = {
   0: "Connecting your wallet is like “logging in” to Web3. Select your wallet from the options to get started.",
@@ -42,9 +44,18 @@ const WalletConnectPopUpCore = ({
   const [step, setStep] = useState(0);
   const [stepStatus, setStepStatus] = useState(statuses.normal);
   const [connectingWalletName, setConnectingWalletName] = useState(null);
+  const {
+    state: {
+      walletData: { accountId },
+    },
+    actions: { closeModal },
+  } = useStoreContext();
   const media = useMedia();
   const isMobile = !media.greater.xs;
-  useKeyPress("Escape", onClose);
+  useKeyPress("Escape", () => {
+    onClose?.();
+    closeModal(Modals.walletConnect);
+  });
 
   const findWalletByName = (name) => list.find((el) => el.name === name);
   const currentWallet = findWalletByName(connectingWalletName);
@@ -73,17 +84,17 @@ const WalletConnectPopUpCore = ({
   };
 
   useEffect(() => {
-    if (rejected && !connected) {
+    if (rejected && !accountId) {
       setStepStatus(statuses.rejected);
       setStep(1);
-    } else if (connected && walletName && walletName === connectingWalletName) {
+    } else if (accountId && walletName && walletName === connectingWalletName) {
       setStepStatus(statuses.normal);
       setStep(2);
-    } else if (connected && !walletName) {
+    } else if (accountId && !walletName) {
       setStepStatus(statuses.normal);
       setStep(2);
     }
-  }, [connected, rejected, walletName, connectingWalletName]);
+  }, [accountId, rejected, walletName, connectingWalletName]);
 
   const renderComponentBySteps = (step): JSX.Element => {
     switch (step) {
@@ -132,7 +143,10 @@ const WalletConnectPopUpCore = ({
           return (
             <SuccessScreen
               walletName={connectingWalletName}
-              onClose={onClose}
+              onClose={() => {
+                onClose?.();
+                closeModal(Modals.walletConnect);
+              }}
               onResolve={onResolve}
             />
           );
@@ -147,7 +161,10 @@ const WalletConnectPopUpCore = ({
     <div className={style.walletConnectPopUp}>
       <WalletConnectPopUpHeader
         step={step}
-        onClose={onClose}
+        onClose={() => {
+          onClose?.();
+          closeModal(Modals.walletConnect);
+        }}
         message={messages[step]}
         action={actions[step]}
         isMobile={isMobile}

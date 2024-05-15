@@ -43,7 +43,7 @@ const ModalPurchase = ({ name }: ModalPurchaseProps): JSX.Element => {
     actions: { onSendClick },
   } = useWallet();
 
-  const isInsufficientBalance = balance.balance < amount;
+  const isInsufficientBalance = balance?.balance < amount;
 
   const increment = (): void => {
     if (selectedPeriod === maxPeriod) return;

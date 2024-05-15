@@ -1,60 +1,52 @@
 "use client";
-
-import { useState } from "react";
 import classNames from "classnames";
 
 import style from "./index.module.css";
 import ButtonWithAddress from "./buttonWithAddress";
 import ConnectButton from "./connectButton";
-import WalletConnectPopUp from "./walletConnectPopUp";
 import getWalletConfig from "./hellper";
 import useWallet from "@/hooks/useWallet";
+import { useStoreContext } from "@/store";
+import { Modals } from "../modals/modals.types";
 
 const ConnectWalletButton = () => {
-  const [showPopup, setShowPopup] = useState(false);
   const {
-    accountId,
     connectMessage,
     actions: { onConnectWallet, onDisconnectWallet },
   } = useWallet();
+  const {
+    state: {
+      walletData: { accountId },
+    },
+    actions: { openModal },
+  } = useStoreContext();
 
   const walletName = accountId ? "Auro Wallet" : null;
 
-  const closeHandler = () => {
-    setShowPopup(false);
-  };
-
-  const address = accountId?.[0];
-
   const handleConnect = () => {
-    setShowPopup(true);
+    openModal(Modals.walletConnect, {
+      walletName: walletName,
+      connected: !!accountId,
+      rejected: connectMessage === "user reject",
+      connectFunction: onConnectWallet,
+      list: getWalletConfig(),
+      keyID: "walletConnectPopUp",
+      zIndex: 52,
+    });
   };
 
   return (
-    <div>
-      <div className={classNames(style.plate, { [style.connect]: !address })}>
-        {address ? (
-          <ButtonWithAddress
-            address={address}
-            onDisconnect={async () => {
-              await onDisconnectWallet();
-            }}
-          />
-        ) : (
-          <ConnectButton onClick={handleConnect} />
-        )}
-      </div>
-      <WalletConnectPopUp
-        walletName={walletName}
-        connected={!!accountId}
-        rejected={connectMessage === "user reject"}
-        connectFunction={onConnectWallet}
-        onClose={closeHandler}
-        list={getWalletConfig()}
-        show={showPopup}
-        keyID="walletConnectPopUp"
-        zIndex={52}
-      />
+    <div className={classNames(style.plate, { [style.connect]: !accountId })}>
+      {accountId ? (
+        <ButtonWithAddress
+          address={accountId}
+          onDisconnect={async () => {
+            await onDisconnectWallet();
+          }}
+        />
+      ) : (
+        <ConnectButton onClick={handleConnect} />
+      )}
     </div>
   );
 };
