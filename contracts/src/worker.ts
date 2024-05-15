@@ -470,7 +470,9 @@ export class DomainNameServiceWorker extends zkCloudWorker {
   }
 
   private async getBlocksInfo(): Promise<string | undefined> {
-    const MAX_BLOCKS = 10;
+    const startTime = Date.now();
+    const MAX_RUN_TIME = 1000 * 20; // 25 seconds
+    const MAX_BLOCKS = 3;
     try {
       let startBlock: PublicKey | undefined = undefined;
       let contractAddress: PublicKey | undefined = undefined;
@@ -494,6 +496,7 @@ export class DomainNameServiceWorker extends zkCloudWorker {
       const tokenId = zkApp.deriveTokenId();
       await this.fetchMinaAccount({
         publicKey: contractAddress,
+        timeout: 1000 * 5,
       });
       if (!Mina.hasAccount(contractAddress)) {
         console.error(
@@ -504,7 +507,11 @@ export class DomainNameServiceWorker extends zkCloudWorker {
       if (startBlock === undefined) {
         startBlock = LastBlock.unpack(zkApp.lastCreatedBlock.get()).address;
       }
-      await this.fetchMinaAccount({ publicKey: startBlock, tokenId });
+      await this.fetchMinaAccount({
+        publicKey: startBlock,
+        tokenId,
+        timeout: 5 * 1000,
+      });
       if (!Mina.hasAccount(startBlock, tokenId)) {
         console.error(
           `getBlocksInfo: Block ${startBlock.toBase58()} not found`
@@ -541,7 +548,11 @@ export class DomainNameServiceWorker extends zkCloudWorker {
       let block = new BlockContract(blockAddress, tokenId);
       let blockNumber = Number(block.blockNumber.get().toBigInt());
       const blocks: {}[] = [];
-      while (count < MAX_BLOCKS && blockNumber > 0) {
+      while (
+        count < MAX_BLOCKS &&
+        blockNumber > 0 &&
+        Date.now() - startTime < MAX_RUN_TIME
+      ) {
         const root = block.root.get().toJSON();
         const storage = block.storage.get().toIpfsHash();
         const flags = BlockParams.unpack(block.blockParams.get());
@@ -574,6 +585,7 @@ export class DomainNameServiceWorker extends zkCloudWorker {
           publicKey: blockAddress,
           tokenId,
           force: true,
+          timeout: 5 * 1000,
         });
         blockNumber = Number(block.blockNumber.get().toBigInt());
         count++;
@@ -2218,9 +2230,10 @@ export class DomainNameServiceWorker extends zkCloudWorker {
     publicKey: string | PublicKey;
     tokenId?: string | Field | undefined;
     force?: boolean;
+    timeout?: number;
   }) {
     const { publicKey, tokenId, force } = params;
-    const timeout = 1000 * 60 * 2; // 2 minutes
+    const timeout = params.timeout ?? 1000 * 60 * 2; // 2 minutes
     const startTime = Date.now();
     let result = { account: undefined };
     while (Date.now() - startTime < timeout) {
