@@ -78,7 +78,7 @@ import { Metadata } from "minanft";
 import { isMainThread } from "worker_threads";
 
 const fullValidation = true;
-const proofsOff = false as boolean;
+const proofsOff = true as boolean;
 
 export class DomainNameServiceWorker extends zkCloudWorker {
   static mapUpdateVerificationKey: VerificationKey | undefined = undefined;
@@ -158,141 +158,108 @@ export class DomainNameServiceWorker extends zkCloudWorker {
   }
 
   public async create(transaction: string): Promise<string | undefined> {
-    const msg = `proof created with proofs ${
-      proofsOff === true ? "off" : "on"
-    }`;
-    console.time(msg);
-    const args = JSON.parse(transaction);
-    if (proofsOff === false) {
-      const state: MapTransition = MapTransition.fromFields(
-        deserializeFields(args.state)
-      ) as MapTransition;
-      // TODO: handle all operations
-      const isAccepted = args.isAccepted;
-      const updateType = args.type;
-      const signature = args.signature
-        ? (Signature.fromBase58(args.signature) as Signature)
-        : undefined;
-      const oldDomain = args.oldDomain
-        ? (DomainName.fromFields(
-            deserializeFields(args.oldDomain)
-          ) as DomainName)
-        : undefined;
-      const oldRoot = args.oldRoot ? Field.fromJSON(args.oldRoot) : undefined;
-      const time = args.time ? UInt64.from(BigInt(args.time)) : undefined;
-      const tx = args.tx
-        ? (DomainTransaction.fromFields(
-            deserializeFields(args.tx)
-          ) as DomainTransaction)
-        : undefined;
+    try {
+      const msg = `proof created with proofs ${
+        proofsOff === true ? "off" : "on"
+      }`;
+      console.time(msg);
+      const args = JSON.parse(transaction);
+      if (proofsOff === false) {
+        const state: MapTransition = MapTransition.fromFields(
+          deserializeFields(args.state)
+        ) as MapTransition;
+        // TODO: handle all operations
+        const isAccepted = args.isAccepted;
+        const updateType = args.type;
+        const signature = args.signature
+          ? (Signature.fromBase58(args.signature) as Signature)
+          : undefined;
+        const oldDomain = args.oldDomain
+          ? (DomainName.fromFields(
+              deserializeFields(args.oldDomain)
+            ) as DomainName)
+          : undefined;
+        const oldRoot = args.oldRoot ? Field.fromJSON(args.oldRoot) : undefined;
+        const time = args.time ? UInt64.from(BigInt(args.time)) : undefined;
+        const tx = args.tx
+          ? (DomainTransaction.fromFields(
+              deserializeFields(args.tx)
+            ) as DomainTransaction)
+          : undefined;
 
-      if (isAccepted === undefined) throw new Error("isAccepted is undefined");
-      if (updateType === undefined) throw new Error("updateType is undefined");
-      if (
-        updateType !== "add" &&
-        updateType !== "remove" &&
-        updateType !== "update" &&
-        updateType !== "extend"
-      )
-        throw new Error("updateType is invalid");
-
-      if (
-        isAccepted === false &&
-        (time === undefined || tx === undefined || oldRoot === undefined)
-      )
-        throw new Error("time, tx or oldRoot is undefined");
-
-      await this.compile(false);
-      if (DomainNameServiceWorker.mapUpdateVerificationKey === undefined)
-        throw new Error("verificationKey is undefined");
-
-      let proof: MapUpdateProof;
-      if (isAccepted === true) {
-        if (
-          updateType === "update" &&
-          (oldDomain === undefined || signature === undefined)
-        )
-          throw new Error("oldDomain or signature is undefined");
-        if (updateType === "extend" && oldDomain === undefined)
-          throw new Error("oldDomain is undefined");
-
-        const update: MapUpdateData = MapUpdateData.fromFields(
-          deserializeFields(args.update)
-        ) as MapUpdateData;
-        if (update === undefined) throw new Error("update is undefined");
+        if (isAccepted === undefined)
+          throw new Error("isAccepted is undefined");
         if (updateType === undefined)
           throw new Error("updateType is undefined");
-        if (updateType === "add") {
-          proof = await MapUpdate.add(state, update);
-        } else if (updateType === "remove") {
-          proof = await MapUpdate.remove(state, update);
-        } else if (updateType === "update") {
-          if (update === undefined) throw new Error("update is undefined");
-          if (oldDomain === undefined)
-            throw new Error("oldDomain is undefined");
-          if (signature === undefined)
-            throw new Error("signature is undefined");
-          const txSignature: Signature = signature;
-          const txUpdate: MapUpdateData = update;
-          const txDomain: DomainName = oldDomain;
-          proof = await MapUpdate.update(
-            state,
-            txUpdate,
-            txDomain,
-            txSignature
-          );
-        } else if (updateType === "extend") {
-          if (update === undefined) throw new Error("update is undefined");
-          if (oldDomain === undefined)
-            throw new Error("oldDomain is undefined");
-          const txUpdate: MapUpdateData = update;
-          const txDomain: DomainName = oldDomain;
-          proof = await MapUpdate.extend(state, txUpdate, txDomain);
-        } else {
-          throw new Error("invalid updateType");
-        }
-      } else {
-        if (time === undefined || tx === undefined || oldRoot === undefined)
-          throw new Error("time, tx or oldRoot is undefined");
-        proof = await MapUpdate.reject(state, oldRoot, time, tx);
-      }
+        if (
+          updateType !== "add" &&
+          updateType !== "remove" &&
+          updateType !== "update" &&
+          updateType !== "extend"
+        )
+          throw new Error("updateType is invalid");
 
-      const ok = await verify(
-        proof.toJSON(),
-        DomainNameServiceWorker.mapUpdateVerificationKey
-      );
-      if (!ok) throw new Error("proof verification failed");
-      console.timeEnd(msg);
-      return JSON.stringify(proof.toJSON(), null, 2);
-    } else {
-      //console.log("Proofs are off, returning state as is");
-      console.timeEnd(msg);
-      return args.state;
-    }
-  }
-  public async merge(
-    proof1: string,
-    proof2: string
-  ): Promise<string | undefined> {
-    const msg = `proof merged with proofs ${proofsOff === true ? "off" : "on"}`;
-    console.time(msg);
-    if (proofsOff === false) {
-      await this.compile(false);
-      try {
+        if (
+          isAccepted === false &&
+          (time === undefined || tx === undefined || oldRoot === undefined)
+        )
+          throw new Error("time, tx or oldRoot is undefined");
+
+        await this.compile(false);
         if (DomainNameServiceWorker.mapUpdateVerificationKey === undefined)
           throw new Error("verificationKey is undefined");
 
-        const sourceProof1: MapUpdateProof = await MapUpdateProof.fromJSON(
-          JSON.parse(proof1) as JsonProof
-        );
-        const sourceProof2: MapUpdateProof = await MapUpdateProof.fromJSON(
-          JSON.parse(proof2) as JsonProof
-        );
-        const state = MapTransition.merge(
-          sourceProof1.publicInput,
-          sourceProof2.publicInput
-        );
-        const proof = await MapUpdate.merge(state, sourceProof1, sourceProof2);
+        let proof: MapUpdateProof;
+        if (isAccepted === true) {
+          if (
+            updateType === "update" &&
+            (oldDomain === undefined || signature === undefined)
+          )
+            throw new Error("oldDomain or signature is undefined");
+          if (updateType === "extend" && oldDomain === undefined)
+            throw new Error("oldDomain is undefined");
+
+          const update: MapUpdateData = MapUpdateData.fromFields(
+            deserializeFields(args.update)
+          ) as MapUpdateData;
+          if (update === undefined) throw new Error("update is undefined");
+          if (updateType === undefined)
+            throw new Error("updateType is undefined");
+          if (updateType === "add") {
+            proof = await MapUpdate.add(state, update);
+          } else if (updateType === "remove") {
+            proof = await MapUpdate.remove(state, update);
+          } else if (updateType === "update") {
+            if (update === undefined) throw new Error("update is undefined");
+            if (oldDomain === undefined)
+              throw new Error("oldDomain is undefined");
+            if (signature === undefined)
+              throw new Error("signature is undefined");
+            const txSignature: Signature = signature;
+            const txUpdate: MapUpdateData = update;
+            const txDomain: DomainName = oldDomain;
+            proof = await MapUpdate.update(
+              state,
+              txUpdate,
+              txDomain,
+              txSignature
+            );
+          } else if (updateType === "extend") {
+            if (update === undefined) throw new Error("update is undefined");
+            if (oldDomain === undefined)
+              throw new Error("oldDomain is undefined");
+            const txUpdate: MapUpdateData = update;
+            const txDomain: DomainName = oldDomain;
+            proof = await MapUpdate.extend(state, txUpdate, txDomain);
+          } else {
+            throw new Error("invalid updateType");
+          }
+        } else {
+          if (time === undefined || tx === undefined || oldRoot === undefined)
+            throw new Error("time, tx or oldRoot is undefined");
+          proof = await MapUpdate.reject(state, oldRoot, time, tx);
+        }
+
         const ok = await verify(
           proof.toJSON(),
           DomainNameServiceWorker.mapUpdateVerificationKey
@@ -300,22 +267,76 @@ export class DomainNameServiceWorker extends zkCloudWorker {
         if (!ok) throw new Error("proof verification failed");
         console.timeEnd(msg);
         return JSON.stringify(proof.toJSON(), null, 2);
-      } catch (error) {
-        console.log("Error in merge", error);
+      } else {
+        //console.log("Proofs are off, returning state as is");
         console.timeEnd(msg);
-        throw error;
+        return args.state;
       }
-    } else {
-      //console.log("Proofs are off, merging state");
-      const state1: MapTransition = MapTransition.fromFields(
-        deserializeFields(proof1)
-      ) as MapTransition;
-      const state2: MapTransition = MapTransition.fromFields(
-        deserializeFields(proof2)
-      ) as MapTransition;
-      const state = MapTransition.merge(state1, state2);
-      console.timeEnd(msg);
-      return serializeFields(MapTransition.toFields(state));
+    } catch (error) {
+      console.error("Error in create", error);
+      await this.cloud.forceWorkerRestart();
+      return "Error in create";
+    }
+  }
+
+  public async merge(
+    proof1: string,
+    proof2: string
+  ): Promise<string | undefined> {
+    try {
+      const msg = `proof merged with proofs ${
+        proofsOff === true ? "off" : "on"
+      }`;
+      console.time(msg);
+      if (proofsOff === false) {
+        await this.compile(false);
+        try {
+          if (DomainNameServiceWorker.mapUpdateVerificationKey === undefined)
+            throw new Error("verificationKey is undefined");
+
+          const sourceProof1: MapUpdateProof = await MapUpdateProof.fromJSON(
+            JSON.parse(proof1) as JsonProof
+          );
+          const sourceProof2: MapUpdateProof = await MapUpdateProof.fromJSON(
+            JSON.parse(proof2) as JsonProof
+          );
+          const state = MapTransition.merge(
+            sourceProof1.publicInput,
+            sourceProof2.publicInput
+          );
+          const proof = await MapUpdate.merge(
+            state,
+            sourceProof1,
+            sourceProof2
+          );
+          const ok = await verify(
+            proof.toJSON(),
+            DomainNameServiceWorker.mapUpdateVerificationKey
+          );
+          if (!ok) throw new Error("proof verification failed");
+          console.timeEnd(msg);
+          return JSON.stringify(proof.toJSON(), null, 2);
+        } catch (error) {
+          console.log("Error in merge", error);
+          console.timeEnd(msg);
+          throw error;
+        }
+      } else {
+        //console.log("Proofs are off, merging state");
+        const state1: MapTransition = MapTransition.fromFields(
+          deserializeFields(proof1)
+        ) as MapTransition;
+        const state2: MapTransition = MapTransition.fromFields(
+          deserializeFields(proof2)
+        ) as MapTransition;
+        const state = MapTransition.merge(state1, state2);
+        console.timeEnd(msg);
+        return serializeFields(MapTransition.toFields(state));
+      }
+    } catch (error) {
+      console.error("Error in merge", error);
+      await this.cloud.forceWorkerRestart();
+      return "Error in merge";
     }
   }
 
@@ -349,10 +370,13 @@ export class DomainNameServiceWorker extends zkCloudWorker {
       switch (this.cloud.task) {
         case "validateBlock":
           result = await this.validateRollupBlock();
+          break;
         case "proveBlock":
+          break;
           result = await this.proveRollupBlock();
         case "txTask":
           result = await this.txTask();
+          break;
 
         default:
           console.error("Unknown task in task:", this.cloud.task);
