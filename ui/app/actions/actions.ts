@@ -152,9 +152,37 @@ export async function editDomainImg(payload: {
   return await res.json();
 }
 
-export const setDefaultImg = async (id: string): Promise<boolean> => {
+/**
+ * Sets the default name for a domain by its ID.
+ *
+ * @param {string} id - The ID of the domain.
+ * @returns {Promise<boolean>} A promise that resolves to a boolean indicating if the operation was successful.
+ */
+
+export const setDefaultName = async (id: string): Promise<boolean> => {
   const res = await fetch(
     `${process.env.Non_NEXT_PUBLIC_API_URL}/domains/${id}/default`,
+    {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+        "x-api-key": process.env.Non_NEXT_PUBLIC_API_KEY,
+      },
+    }
+  );
+  return await res.json();
+};
+
+/**
+ * Removes the default name for a domain by its ID.
+ *
+ * @param {string} id - The ID of the domain.
+ * @returns {Promise<boolean>} A promise that resolves to a boolean indicating if the operation was successful.
+ */
+
+export const removeDefaultName = async (id: string): Promise<boolean> => {
+  const res = await fetch(
+    `${process.env.Non_NEXT_PUBLIC_API_URL}/domains/${id}/default/remove`,
     {
       method: "PUT",
       headers: {

@@ -1,7 +1,7 @@
 import classNames from "classnames";
 import React, { useEffect, useState } from "react";
 import style from "./index.module.css";
-import { interSemiBold, manropeSemiBold } from "@/app/fonts";
+import { manropeSemiBold } from "@/app/fonts";
 
 const Switcher = ({
   text,
@@ -25,7 +25,7 @@ const Switcher = ({
   const clickHandler = () => {
     if (disabled) return;
     const newState = !state;
-    setState(newState);
+    // setState(newState);
     onClick?.(newState);
   };
 
@@ -46,7 +46,7 @@ const Switcher = ({
       width: size * 2 + padding * 2 + "px",
       height: size + padding * 2 + "px",
       borderRadius: (size + padding * 2) / 2 + "px",
-      backgroundColor: "rgba(178, 199, 247, 1)",
+      backgroundColor: "rgba(238, 239, 245, 1)",
     },
     unset: {
       width: size * 2 + padding * 2 + "px",
@@ -76,8 +76,8 @@ const Switcher = ({
       height: size + "px",
       left: `calc(100% - ${size}px - ${padding}px)`,
       top: padding,
-      boxShadow: "0px 1px 1px rgba(87, 123, 204, 0.3)",
-      backgroundColor: "rgba(216, 227, 251, 1)",
+      boxShadow: "0px 1px 1px rgba(204, 204, 204, 0.3)",
+      backgroundColor: "rgba(247, 247, 250, 1)",
     },
     unset: {
       top: padding,
@@ -86,10 +86,17 @@ const Switcher = ({
       height: size + "px",
     },
   });
+  useEffect(() => {
+    setState(initialState);
+  }, [initialState]);
 
   return (
     <div
-      className={classNames(style.switcherComponent, className, manropeSemiBold.className)}
+      className={classNames(
+        style.switcherComponent,
+        className,
+        manropeSemiBold.className
+      )}
       onClick={clickHandler}
     >
       {text && <p className={style.leftText}>{text}</p>}
