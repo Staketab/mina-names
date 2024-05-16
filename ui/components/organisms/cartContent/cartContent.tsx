@@ -21,7 +21,6 @@ import { Modals } from "@/components/molecules/modals/modals.types";
 import { DATA_STATUS, Routs } from "@/comman/types";
 import { DomainForTable, DomainsForTable } from "./cartContent.types";
 import { useRouter } from "next/navigation";
-import getWalletConfig from "@/components/molecules/connectWalletButton/hellper";
 
 const CartContent = (): JSX.Element => {
   const {
@@ -85,15 +84,9 @@ const CartContent = (): JSX.Element => {
 
   const handlePurchase = async (): Promise<void> => {
     if (connectButton) {
-      const walletName = accountId ? "Auro Wallet" : null;
       openModal(Modals.walletConnect, {
-        walletName: walletName,
-        connected: !!accountId,
-        rejected: connectMessage === "user reject",
-        connectFunction: onConnectWallet,
-        list: getWalletConfig(),
-        keyID: "walletConnectPopUp",
-        zIndex: 52,
+        connectMessage,
+        onConnectWallet,
       });
       return;
     }

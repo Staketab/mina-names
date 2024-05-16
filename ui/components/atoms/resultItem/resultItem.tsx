@@ -35,6 +35,10 @@ const ResultItem = ({
       walletData: { accountId },
     },
   } = useStoreContext();
+  const {
+    connectMessage,
+    actions: { onConnectWallet },
+  } = useWallet();
 
   const handleInfo = async () => {
     const response = await getAccountDomainDetails(id);
@@ -43,7 +47,7 @@ const ResultItem = ({
     });
   };
 
-  const handleBag = async (): Promise<void> => {
+  const addToBagRequest = async (): Promise<void> => {
     try {
       const response = await reserveName({
         ownerAddress: accountId,
@@ -61,8 +65,18 @@ const ResultItem = ({
         });
         clearInput();
       }
-    } catch (error) {
-      console.log(error);
+    } catch (error) {}
+  };
+
+  const handleBag = async (): Promise<void> => {
+    if (!accountId) {
+      openModal(Modals.walletConnect, {
+        onConnectWallet,
+        connectMessage,
+        onResolve: addToBagRequest,
+      });
+    } else {
+      addToBagRequest();
     }
   };
 

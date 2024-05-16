@@ -21,17 +21,10 @@ const ConnectWalletButton = () => {
     actions: { openModal },
   } = useStoreContext();
 
-  const walletName = accountId ? "Auro Wallet" : null;
-
   const handleConnect = () => {
     openModal(Modals.walletConnect, {
-      walletName: walletName,
-      connected: !!accountId,
-      rejected: connectMessage === "user reject",
-      connectFunction: onConnectWallet,
-      list: getWalletConfig(),
-      keyID: "walletConnectPopUp",
-      zIndex: 52,
+      connectMessage,
+      onConnectWallet,
     });
   };
 

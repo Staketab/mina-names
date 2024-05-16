@@ -5,6 +5,14 @@
   cursor: pointer;
 }
 
+.wrapper a {
+  display: flex;
+}
+
+.wrapper a:hover {
+  color: #587efc;
+}
+
 .active {
   color: var(--link-active-color);
   cursor: pointer;
@@ -47,5 +55,5 @@
 }
 
 .wrapper .tooltip {
-  width: fit-content
+  width: fit-content;
 }

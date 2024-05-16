@@ -37,7 +37,7 @@
 
 .header {
   text-align: center;
-  font-size: 16px;
+  font-size: 24px;
   max-width: 360px;
 }
 
@@ -60,6 +60,13 @@
   padding: 8px;
   border-radius: 8px;
   background-color: #f2f2f5;
+  transition: all .3s;
+  width: 44px;
+  height: 44px;
+}
+
+a.bottomContentRightSide:hover {
+  background-color: transparent;
 }
 
 .bottomContentLeftSide > div {
@@ -72,4 +79,8 @@
 
 .bottomContent button {
   width: 100%;
+}
+
+.leftSideHeader {
+  font-size: 16px;
 }
