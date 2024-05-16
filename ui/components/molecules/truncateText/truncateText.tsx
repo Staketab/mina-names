@@ -1,10 +1,16 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { ReactNode, useEffect, useRef, useState } from "react";
 import styles from "./index.module.css";
 import TooltipWrapper from "../tooltip/tooltipWrapper";
 import classNames from "classnames";
 import { manropeSemiBold } from "@/app/fonts";
 
-export default function TruncateText({ children }) {
+export default function TruncateText({
+  children,
+  className,
+}: {
+  children: ReactNode;
+  className?: string;
+}) {
   const textRef = useRef(null);
   const [isTruncated, setIsTruncated] = useState(false);
 
@@ -28,7 +34,8 @@ export default function TruncateText({ children }) {
         ref={textRef}
         className={classNames(
           styles.truncatedWrapper,
-          manropeSemiBold.className
+          manropeSemiBold.className,
+          className
         )}
       >
         {children}

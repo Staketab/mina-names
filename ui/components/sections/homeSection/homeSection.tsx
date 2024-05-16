@@ -21,9 +21,11 @@ const HomeSection = () => {
 
   const handleInput = async (asyncValue: string): Promise<any> => {
     const currentValue = typeof asyncValue === "string" ? asyncValue : value;
-    const response = await checkReservedName(currentValue);
+    if (currentValue) {
+      const response = await checkReservedName(currentValue);
 
-    return response;
+      return response;
+    }
   };
   const debouncedServerFetch = useMemo(
     () => debounceAsync(handleInput, 1000),
@@ -34,7 +36,7 @@ const HomeSection = () => {
     setValue("");
   };
 
-  const handleChange = async (value) => {
+  const handleChange = async (value: string) => {
     const cleanInput = value.replace(/[^a-z0-9- ]/g, "");
     setValue(cleanInput);
 
@@ -69,7 +71,13 @@ const HomeSection = () => {
           placeholder="Search Names.mina"
           value={value}
           className={style.input}
-          onChange={(e) => handleChange(e.target.value)}
+          onChange={(e) => {
+            if (typeof e === "string") {
+              handleChange(e);
+            } else {
+              handleChange(e.target.value);
+            }
+          }}
           onSubmit={handleInput}
           variant={InputVariant.search}
           maxLength={25}

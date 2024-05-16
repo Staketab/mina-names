@@ -14,6 +14,7 @@ const Header = (): JSX.Element => {
   useLocalStorage();
   const {
     state: {
+      walletData: { accountId },
       bag: { domains },
     },
   } = useStoreContext();
@@ -22,9 +23,11 @@ const Header = (): JSX.Element => {
       <Logo />
       <div className={style.rightSide}>
         <ConnectWalletButton />
-        <Link href={`${Routs.CART}`}>
-          <Bag variant={BAG_VARIANTS.GRADIENT} size={domains.length} />
-        </Link>
+        {accountId && (
+          <Link href={`${Routs.CART}`}>
+            <Bag variant={BAG_VARIANTS.GRADIENT} size={domains.length} />
+          </Link>
+        )}
       </div>
     </header>
   );

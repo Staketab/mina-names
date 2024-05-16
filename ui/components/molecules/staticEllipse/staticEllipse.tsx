@@ -13,6 +13,7 @@ const StaticEllipse = ({
   className,
   children,
   style,
+  link,
 }: {
   text: string;
   view: View;
@@ -20,6 +21,7 @@ const StaticEllipse = ({
   className?: string;
   children?: ReactNode;
   style?: React.CSSProperties;
+  link?: string;
 }): JSX.Element | null => {
   const [firstString, setFirstString] = useState<string | null>(null);
   const [secondString, setSecondString] = useState<string | null>(null);
@@ -60,12 +62,45 @@ const StaticEllipse = ({
 
   if ((!firstString || !secondString || !text) && !string) return null;
 
+  if (link) {
+    return (
+      <div
+        className={classNames(
+          styles.wrapper,
+          robotoMedium.className,
+          className
+        )}
+        style={{ ...style }}
+      >
+        <a href={link} target="_blank">
+          {string ? (
+            <div className={styles.string}>{string}</div>
+          ) : (
+            <>
+              <div className={classNames(styles.string, styles.stringWithDots)}>
+                {firstString}
+                <div className={styles.dots}>
+                  <span className={styles.dot} />
+                  <span className={styles.dot} />
+                  <span className={styles.dot} />
+                </div>
+              </div>
+              <div className={styles.string}>{secondString}</div>
+            </>
+          )}
+        </a>
+
+        <div className={styles.copyIcon}>{children}</div>
+      </div>
+    );
+  }
+
   return (
     <div
       className={classNames(styles.wrapper, robotoMedium.className, className, {
         [styles.active]: isActive,
       })}
-      style={{...style}}
+      style={{ ...style }}
     >
       {string ? (
         <div className={styles.string}>{string}</div>

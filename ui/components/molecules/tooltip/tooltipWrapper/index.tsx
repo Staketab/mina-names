@@ -3,7 +3,7 @@ import React, { ReactNode, useState } from "react";
 import FloatingTooltip from "../floatingTooltip";
 
 type TooltipWrapperProps = {
-  text?: string;
+  text?: string | ReactNode;
   controlRef?: React.RefObject<HTMLInputElement>;
   children?: ReactNode;
 };
