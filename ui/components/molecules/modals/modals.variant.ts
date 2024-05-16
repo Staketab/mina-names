@@ -6,7 +6,6 @@ import { ModalPurchase } from "./modalPurchase";
 import { ModalInfo } from "./modalInfo";
 import { ConfirmationModal } from "./confirmationModal";
 import { UploadModal } from "./uploadModal";
-import WalletConnectPopUp from "../connectWalletButton/walletConnectPopUp";
 import WalletConnectPopUpCore from "../connectWalletButton/walletConnectPopUp/core";
 
 export const modalVariants: Record<string, FC<any>> = {

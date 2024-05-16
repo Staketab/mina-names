@@ -12,12 +12,12 @@ import style from "./index.module.css";
 import classNames from "classnames";
 import { interMedium, manropeBold, manropeMedium } from "@/app/fonts";
 import { useState } from "react";
-import { setDefaultImg } from "@/app/actions/actions";
+import { removeDefaultName, setDefaultName } from "@/app/actions/actions";
 import { useStoreContext } from "@/store";
 import { Modals } from "@/components/molecules/modals/modals.types";
 import { Star } from "@/components/atoms/star";
 import { TABS_VARIANT, Tabs } from "@/components/molecules/tabs";
-import { OwnershipContent, ProfileContent } from "./components";
+import { ProfileContent } from "./components";
 import useWallet from "@/hooks/useWallet";
 
 const DetailsNameInfo = ({
@@ -25,7 +25,11 @@ const DetailsNameInfo = ({
 }: {
   accountDomainDetails: AccountDomainDetailsResponse;
 }): JSX.Element => {
-  const [isDefault, setIsDefault] = useState(accountDomainDetails.isDefault);
+  const [isDefault, setIsDefault] = useState<boolean>(
+    accountDomainDetails.isDefault
+  );
+  const [removeAndSetDefaultNameLoading, setRemoveAndSetDefaultNameLoading] =
+    useState<boolean>(false);
   const {
     state: {
       walletData: { accountId },
@@ -45,10 +49,20 @@ const DetailsNameInfo = ({
   const { domainName, ownerAddress } = accountDomainDetails;
   const isOwner = ownerAddress === accountId;
 
-  const handleDefaultImg = async () => {
+  const handleDefaultName = async () => {
     if (!isOwner) return;
-    const response = await setDefaultImg(accountDomainDetails.id);
-    setIsDefault(response);
+    try {
+      setRemoveAndSetDefaultNameLoading(true);
+      if (isDefault) {
+        const response = await removeDefaultName(accountDomainDetails.id);
+        setRemoveAndSetDefaultNameLoading(false);
+        setIsDefault(!response);
+      } else {
+        const response = await setDefaultName(accountDomainDetails.id);
+        setRemoveAndSetDefaultNameLoading(false);
+        setIsDefault(response);
+      }
+    } catch (error) {}
   };
 
   const imgHash =
@@ -108,8 +122,8 @@ const DetailsNameInfo = ({
             text="Set as default name"
             className={style.switcher}
             initialState={isDefault}
-            onClick={handleDefaultImg}
-            disabled={isDefault || !isOwner}
+            onClick={handleDefaultName}
+            disabled={removeAndSetDefaultNameLoading || !isOwner}
           />
         </div>
       </div>
@@ -123,7 +137,7 @@ const DetailsNameInfo = ({
             ),
             title: "Profile",
             value: 1,
-          }
+          },
         ]}
         initValue={1}
       />
