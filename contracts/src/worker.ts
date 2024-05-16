@@ -342,21 +342,26 @@ export class DomainNameServiceWorker extends zkCloudWorker {
     console.log(
       `Executing task ${this.cloud.task} with taskId ${this.cloud.taskId}, isMainTread: ${isMainThread}`
     );
+    if (!(await this.run()))
+      return `task ${this.cloud.task} is already running`;
+    let result: string | undefined = undefined;
     try {
       switch (this.cloud.task) {
         case "validateBlock":
-          return await this.validateRollupBlock();
+          result = await this.validateRollupBlock();
         case "proveBlock":
-          return await this.proveRollupBlock();
+          result = await this.proveRollupBlock();
         case "txTask":
-          return await this.txTask();
+          result = await this.txTask();
 
         default:
           console.error("Unknown task in task:", this.cloud.task);
-          return "error: Unknown task in task";
       }
+      await this.stop();
+      return result ?? "error in task";
     } catch (error) {
       console.error("Error in task", error);
+      await this.stop();
       return "error in task";
     }
   }
@@ -741,7 +746,6 @@ export class DomainNameServiceWorker extends zkCloudWorker {
   }
 
   private async proveRollupBlock(): Promise<string | undefined> {
-    if (!(await this.run())) return "proveRollupBlock is already running";
     if (this.cloud.args === undefined)
       throw new Error("this.cloud.args is undefined");
     console.time("proveBlock");
@@ -764,14 +768,14 @@ export class DomainNameServiceWorker extends zkCloudWorker {
         console.error(`Proof job failed for block ${args.blockNumber}`);
         await this.cloud.deleteTask(this.cloud.taskId);
         console.timeEnd("proveBlock");
-        await this.stop();
+
         return "proof job failed";
       } else {
         console.log(
           `Proof job is not finished yet for block ${args.blockNumber}`
         );
         console.timeEnd("proveBlock");
-        await this.stop();
+
         return "proof job is not finished yet";
       }
     }
@@ -803,7 +807,7 @@ export class DomainNameServiceWorker extends zkCloudWorker {
     if (!Mina.hasAccount(blockAddress, tokenId)) {
       console.log(`Block ${blockAddress.toBase58()} not found`);
       console.timeEnd("proveBlock");
-      await this.stop();
+
       return "block is not found";
     }
     const block = new BlockContract(blockAddress, tokenId);
@@ -811,14 +815,14 @@ export class DomainNameServiceWorker extends zkCloudWorker {
     if (flags.isValidated.toBoolean() === false) {
       console.log(`Block ${blockNumber} is not yet validated`);
       console.timeEnd("proveBlock");
-      await this.stop();
+
       return "block is not validated";
     }
     if (flags.isInvalid.toBoolean() === true) {
       console.error(`Block ${blockNumber} is invalid`);
       await this.cloud.deleteTask(this.cloud.taskId);
       console.timeEnd("proveBlock");
-      await this.stop();
+
       return "block is invalid";
     }
 
@@ -826,7 +830,7 @@ export class DomainNameServiceWorker extends zkCloudWorker {
       console.error(`Block ${blockNumber} is already proved`);
       await this.cloud.deleteTask(this.cloud.taskId);
       console.timeEnd("proveBlock");
-      await this.stop();
+
       return "block is already proved";
     }
 
@@ -841,7 +845,7 @@ export class DomainNameServiceWorker extends zkCloudWorker {
         `Previous block ${previousBlockAddress.toBase58()} not found`
       );
       console.timeEnd("proveBlock");
-      await this.stop();
+
       return "previous block is not found";
     }
 
@@ -850,7 +854,7 @@ export class DomainNameServiceWorker extends zkCloudWorker {
     if (oldRoot.toJSON() !== state.oldRoot.toJSON()) {
       console.error(`Invalid previous block root`);
       console.timeEnd("proveBlock");
-      await this.stop();
+
       return "Invalid previous block root";
     }
 
@@ -858,7 +862,7 @@ export class DomainNameServiceWorker extends zkCloudWorker {
     if (flagsPrevious.isFinal.toBoolean() === false) {
       console.log(`Previous block is not final`);
       console.timeEnd("proveBlock");
-      await this.stop();
+
       return "Previous block is not final";
     } else {
       const previousBlockNumber = Number(
@@ -905,7 +909,7 @@ export class DomainNameServiceWorker extends zkCloudWorker {
       }
     );
 
-    await tx.prove();
+    await this.prove(tx);
     const txSent = await tx.sign([deployer]).safeSend();
     if (txSent.errors.length > 0) {
       console.error(
@@ -939,13 +943,11 @@ export class DomainNameServiceWorker extends zkCloudWorker {
       }
       await sleep(20000);
     }
-    await this.stop();
+
     return txSent.hash;
   }
 
   private async validateRollupBlock(): Promise<string | undefined> {
-    if (!(await this.run())) return "validateRollupBlock is already running";
-
     if (this.cloud.args === undefined)
       throw new Error("this.cloud.args is undefined");
     const args = JSON.parse(this.cloud.args);
@@ -986,7 +988,7 @@ export class DomainNameServiceWorker extends zkCloudWorker {
       if (!Mina.hasAccount(blockAddress, tokenId)) {
         console.log(`Block ${blockAddress.toBase58()} not found`);
         console.timeEnd(`block ${args.blockNumber} validated`);
-        await this.stop();
+
         return "block is not found";
       }
 
@@ -1001,7 +1003,7 @@ export class DomainNameServiceWorker extends zkCloudWorker {
         console.log(`Block ${blockNumber} is marked as invalid`);
         await this.cloud.deleteTask(this.cloud.taskId);
         console.timeEnd(`block ${args.blockNumber} validated`);
-        await this.stop();
+
         return `Block ${blockNumber} is marked as invalid`;
       }
 
@@ -1041,7 +1043,7 @@ export class DomainNameServiceWorker extends zkCloudWorker {
               });
             await this.cloud.deleteTask(this.cloud.taskId);
             console.timeEnd(`block ${args.blockNumber} validated`);
-            await this.stop();
+
             return `Block ${blockNumber} is already validated`;
           }
         }
@@ -1079,7 +1081,7 @@ export class DomainNameServiceWorker extends zkCloudWorker {
       if (previousBlockParams.isValidated.toBoolean() === false) {
         console.log(`Previous block is not validated yet, waiting`);
         console.timeEnd(`block ${args.blockNumber} validated`);
-        await this.stop();
+
         return `Previous block is not validated yet, waiting`;
       }
 
@@ -1264,7 +1266,7 @@ export class DomainNameServiceWorker extends zkCloudWorker {
         });
         await this.cloud.deleteTask(this.cloud.taskId);
         console.timeEnd(`block ${blockNumber} validated`);
-        await this.stop();
+
         return `Block ${blockNumber} is already validated`;
       }
 
@@ -1299,7 +1301,7 @@ export class DomainNameServiceWorker extends zkCloudWorker {
           `Block ${args.blockNumber} is bad and previous block is not final`
         );
         console.timeEnd(`block ${args.blockNumber} validated`);
-        await this.stop();
+
         return `Block ${args.blockNumber} is bad and previous block is not final`;
       }
       validated = false;
@@ -1382,7 +1384,7 @@ export class DomainNameServiceWorker extends zkCloudWorker {
       }
     );
 
-    await tx.prove();
+    await this.prove(tx);
     const txSent = await tx.sign([deployer]).safeSend();
     if (txSent.errors.length > 0) {
       console.error(
@@ -1445,7 +1447,7 @@ export class DomainNameServiceWorker extends zkCloudWorker {
       }
       await sleep(20000);
     }
-    await this.stop();
+
     return txSent.hash;
   }
 
@@ -1666,8 +1668,6 @@ export class DomainNameServiceWorker extends zkCloudWorker {
   private async createRollupBlock(
     txs: CloudTransaction[]
   ): Promise<string | undefined> {
-    if (!(await this.run())) return "createRollupBlock is already running";
-
     if (this.cloud.args === undefined)
       throw new Error("this.cloud.args is undefined");
     const args = JSON.parse(this.cloud.args);
@@ -1708,7 +1708,7 @@ export class DomainNameServiceWorker extends zkCloudWorker {
           console.log(
             "lastBlockAddress is not equal to previousBlockAddress, waiting.."
           );
-          await this.stop();
+
           return "lastBlockAddress is not equal to previousBlockAddress";
         }
         if (timeStarted > Date.now() - this.MIN_TIME_BETWEEN_BLOCKS) {
@@ -1716,7 +1716,7 @@ export class DomainNameServiceWorker extends zkCloudWorker {
             lastBlockTme: new Date(timeStarted).toLocaleString(),
             now: new Date().toLocaleString(),
           });
-          await this.stop();
+
           return "Not enough time between blocks";
         }
       }
@@ -1737,7 +1737,7 @@ export class DomainNameServiceWorker extends zkCloudWorker {
       previousValidBlockParams.isValidated.toBoolean() === false
     ) {
       console.log(`Previous block is not final and not validated`);
-      await this.stop();
+
       return "Previous block is not final and not validated";
     }
     const previousBlockTimeCreated = Number(
@@ -1749,7 +1749,7 @@ export class DomainNameServiceWorker extends zkCloudWorker {
       Date.now() - previousBlockTimeCreated < this.MAX_TIME_BETWEEN_BLOCKS
     ) {
       console.log("Not enough transactions to create a block:", txs.length);
-      await this.stop();
+
       return "Not enough transactions to create a block";
     }
 
@@ -1898,7 +1898,7 @@ export class DomainNameServiceWorker extends zkCloudWorker {
     ) {
       console.log("Not enough transactions to create a block:", count);
       await this.cloud.saveDataByKey("lastBlockAddress", undefined);
-      await this.stop();
+
       console.timeEnd("block calculated");
       console.timeEnd("block created");
       return "Not enough transactions to create a block";
@@ -2184,7 +2184,7 @@ export class DomainNameServiceWorker extends zkCloudWorker {
 
     tx.sign([blockProducer.privateKey, blockPrivateKey]);
     try {
-      await tx.prove();
+      await this.prove(tx);
       console.timeEnd("prepared tx");
       const txSent = await tx.safeSend();
       console.log(
@@ -2193,7 +2193,7 @@ export class DomainNameServiceWorker extends zkCloudWorker {
       if (txSent.status !== "pending") {
         console.error("Error sending block creation transaction");
         console.timeEnd(`block created`);
-        await this.stop();
+
         return "Error sending block creation transaction";
       }
       if (this.cloud.isLocalCloud === true) {
@@ -2224,12 +2224,12 @@ export class DomainNameServiceWorker extends zkCloudWorker {
       });
 
       console.timeEnd(`block created`);
-      await this.stop();
+
       return txSent.hash;
     } catch (error) {
       console.error("Error sending block creation transaction", error);
       console.timeEnd(`block created`);
-      await this.stop();
+
       return "Error sending block creation transaction";
     }
   }
@@ -2291,5 +2291,16 @@ export class DomainNameServiceWorker extends zkCloudWorker {
         force
       );
     return result;
+  }
+
+  private async prove(tx: Mina.Transaction<false, false>) {
+    try {
+      await tx.prove();
+      return tx;
+    } catch (error) {
+      console.error("Error in prove", error);
+      await this.cloud.forceWorkerRestart();
+      throw new Error("Error in prove");
+    }
   }
 }
