@@ -86,10 +86,10 @@ export class DomainNameServiceWorker extends zkCloudWorker {
   static blockContractVerificationKey: VerificationKey | undefined = undefined;
   static validatorsVerificationKey: VerificationKey | undefined = undefined;
   readonly cache: Cache;
-  readonly MIN_TIME_BETWEEN_BLOCKS = 1000 * 60 * 1; // 2 minutes
+  readonly MIN_TIME_BETWEEN_BLOCKS = 1000 * 60 * 20; // 2 minutes
   readonly MAX_TIME_BETWEEN_BLOCKS = 1000 * 60 * 60; // 60 minutes
   readonly MIN_TRANSACTIONS = 1;
-  readonly MAX_TRANSACTIONS = 50;
+  readonly MAX_TRANSACTIONS = 4;
 
   constructor(cloud: Cloud) {
     super(cloud);
@@ -372,8 +372,8 @@ export class DomainNameServiceWorker extends zkCloudWorker {
           result = await this.validateRollupBlock();
           break;
         case "proveBlock":
-          break;
           result = await this.proveRollupBlock();
+          break;
         case "txTask":
           result = await this.txTask();
           break;
@@ -1702,6 +1702,22 @@ export class DomainNameServiceWorker extends zkCloudWorker {
       console.error("createRollupBlock: contractAddress is invalid");
       return "contractAddress is invalid";
     }
+    const previousBlockAddressVar = await this.cloud.getDataByKey(
+      "lastBlockAddress"
+    );
+    if (previousBlockAddressVar !== undefined) {
+      const { address, timeStarted } = JSON.parse(previousBlockAddressVar);
+      if (address !== undefined && timeStarted !== undefined) {
+        if (timeStarted > Date.now() - this.MIN_TIME_BETWEEN_BLOCKS) {
+          console.log("Not enough time between blocks:", {
+            lastBlockTme: new Date(timeStarted).toLocaleString(),
+            now: new Date().toLocaleString(),
+          });
+
+          return "Not enough time between blocks";
+        }
+      }
+    }
 
     const blockPrivateKey = PrivateKey.random();
     const blockPublicKey = blockPrivateKey.toPublicKey();
@@ -1719,9 +1735,6 @@ export class DomainNameServiceWorker extends zkCloudWorker {
     let previousValidBlockAddress = previousBlockAddress;
     console.log("previousBlockAddress", previousBlockAddress.toBase58());
 
-    const previousBlockAddressVar = await this.cloud.getDataByKey(
-      "lastBlockAddress"
-    );
     if (previousBlockAddressVar !== undefined) {
       const { address, timeStarted } = JSON.parse(previousBlockAddressVar);
       if (address !== undefined && timeStarted !== undefined) {
@@ -1734,14 +1747,6 @@ export class DomainNameServiceWorker extends zkCloudWorker {
           );
 
           return "lastBlockAddress is not equal to previousBlockAddress";
-        }
-        if (timeStarted > Date.now() - this.MIN_TIME_BETWEEN_BLOCKS) {
-          console.log("Not enough time between blocks:", {
-            lastBlockTme: new Date(timeStarted).toLocaleString(),
-            now: new Date().toLocaleString(),
-          });
-
-          return "Not enough time between blocks";
         }
       }
     }
