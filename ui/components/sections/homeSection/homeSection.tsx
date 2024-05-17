@@ -37,7 +37,7 @@ const HomeSection = () => {
   };
 
   const handleChange = async (value: string) => {
-    const cleanInput = value.replace(/[^a-z0-9- ]/g, "");
+    const cleanInput = value.toLocaleLowerCase().replace(/[^a-z0-9- ]/g, "");
     setValue(cleanInput);
 
     try {
@@ -72,11 +72,7 @@ const HomeSection = () => {
           value={value}
           className={style.input}
           onChange={(e) => {
-            if (typeof e === "string") {
-              handleChange(e);
-            } else {
-              handleChange(e.target.value);
-            }
+            handleChange(e.target.value);
           }}
           onSubmit={handleInput}
           variant={InputVariant.search}
