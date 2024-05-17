@@ -99,7 +99,7 @@ const ModalInfo = ({ data }: ModalInfoProps): JSX.Element => {
           content: (
             <StaticEllipse
               className={manropeSemiBold.className}
-              text={ownerAddress}
+              text={ownerAddress || ""}
               view={{ sm: 10, md: 14, lg: 18 }}
             />
           ),
@@ -115,13 +115,14 @@ const ModalInfo = ({ data }: ModalInfoProps): JSX.Element => {
         })}
         {renderContentItem({
           header: "IPFS",
-          url: `https://gateway.pinata.cloud/ipfs/${ipfs}`,
+          url: ipfs && `https://gateway.pinata.cloud/ipfs/${ipfs}`,
+          hiddenIcon: !ipfs,
           content: (
             <StaticEllipse
               className={manropeSemiBold.className}
-              text={ipfs}
+              text={ipfs || '-'}
               view={{ sm: 10, md: 14, lg: 18 }}
-              link={`https://gateway.pinata.cloud/ipfs/${ipfs}`}
+              link={ipfs && `https://gateway.pinata.cloud/ipfs/${ipfs}`}
             />
           ),
         })}
