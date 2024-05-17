@@ -45,13 +45,6 @@ const Input = ({
         type={type}
         disabled={disabled}
         maxLength={maxLength}
-        onPaste={(e) => {
-          if ("value" in e.target) {
-            const value = e.target.value;
-            // @ts-ignore
-            onChange((value as string).toLocaleLowerCase());
-          }
-        }}
       />
       <div className={style.actions}>
         {enableClear && value && (
