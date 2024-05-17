@@ -21,7 +21,7 @@ import { Modals } from "@/components/molecules/modals/modals.types";
 import { DATA_STATUS, Routs } from "@/comman/types";
 import { DomainForTable, DomainsForTable } from "./cartContent.types";
 import { useRouter } from "next/navigation";
-import { addMinaText } from "@/helpers/name.helper";
+import { addMinaText, sliceName } from "@/helpers/name.helper";
 
 const CartContent = (): JSX.Element => {
   const {
@@ -113,7 +113,7 @@ const CartContent = (): JSX.Element => {
           ownerAddress: accountId,
           domains: newDomains.map(({ name, amount }) => {
             return {
-              domainName: name,
+              domainName: sliceName(name),
               amount: parseFloat(amount),
             };
           }),
