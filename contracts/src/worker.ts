@@ -1063,7 +1063,7 @@ export class DomainNameServiceWorker extends zkCloudWorker {
                 task: "proveBlock",
                 metadata: `prove block ${args.blockNumber} (restart)`,
                 userId: this.cloud.userId,
-                maxAttempts: 20,
+                maxAttempts: 50,
               });
             await this.cloud.deleteTask(this.cloud.taskId);
             console.timeEnd(`block ${args.blockNumber} validated`);
@@ -1286,7 +1286,7 @@ export class DomainNameServiceWorker extends zkCloudWorker {
           task: "proveBlock",
           metadata: `prove block ${blockNumber} (restart)`,
           userId: this.cloud.userId,
-          maxAttempts: 20,
+          maxAttempts: 50,
         });
         await this.cloud.deleteTask(this.cloud.taskId);
         console.timeEnd(`block ${blockNumber} validated`);

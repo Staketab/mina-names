@@ -316,7 +316,6 @@ describe("Domain Name Service Contract", () => {
       //console.log("PINATA_JWT:", process.env.PINATA_JWT);
     });
   }
-
   if (!deploy) {
     it.skip(`should restart the sequencer`, async () => {
       console.log(`Restarting sequencer...`);
