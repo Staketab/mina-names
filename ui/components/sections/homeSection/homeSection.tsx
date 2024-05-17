@@ -42,7 +42,7 @@ const HomeSection = () => {
 
     try {
       if (!cleanInput) return;
-      const result = await debouncedServerFetch(`${cleanInput}.mina`);
+      const result = await debouncedServerFetch(cleanInput);
 
       if (result === "skipped") {
         return;
@@ -51,7 +51,7 @@ const HomeSection = () => {
       if (result) {
         setStatusName({
           id: result.id,
-          name: `${cleanInput}.mina`,
+          name: `${cleanInput}`,
           status: result.status,
         });
       }

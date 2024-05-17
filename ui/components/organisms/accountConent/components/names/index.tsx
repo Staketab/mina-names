@@ -9,6 +9,7 @@ import { TypeView } from "@/components/atoms/switchView/switchView";
 import { getAccountDomains } from "@/app/actions/actions";
 import { useParams } from "next/navigation";
 import { useStoreContext } from "@/store";
+import { addMinaText } from "@/helpers/name.helper";
 
 const NamesContent = (): JSX.Element => {
   const [accountDomains, setAccountDomains] = useState<DataTable>(null);
@@ -37,6 +38,7 @@ const NamesContent = (): JSX.Element => {
       JSON.parse(domain?.ipfsImg)?.linkedObject?.storage?.slice(2);
     return {
       ...domain,
+      domainName: addMinaText(domain?.domainName),
       domainImg:
         (imgHash && `https://gateway.pinata.cloud/ipfs/${imgHash}`) || null,
     };

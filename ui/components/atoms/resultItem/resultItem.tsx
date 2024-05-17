@@ -13,6 +13,7 @@ import { Modals } from "@/components/molecules/modals/modals.types";
 import { amount } from "@/comman/constants";
 import useWallet from "@/hooks/useWallet";
 import { DOMAIN_STATUS } from "@/comman/types";
+import { addMinaText } from "@/helpers/name.helper";
 
 const ResultItem = ({
   statusName,
@@ -119,7 +120,7 @@ const ResultItem = ({
       )}
     >
       <div>
-        {name}
+        {addMinaText(name)}
         {nameStatusText[status] || nameStatusText.default}
       </div>
       <div className={style.rightSide}>

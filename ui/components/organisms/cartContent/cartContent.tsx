@@ -21,6 +21,7 @@ import { Modals } from "@/components/molecules/modals/modals.types";
 import { DATA_STATUS, Routs } from "@/comman/types";
 import { DomainForTable, DomainsForTable } from "./cartContent.types";
 import { useRouter } from "next/navigation";
+import { addMinaText } from "@/helpers/name.helper";
 
 const CartContent = (): JSX.Element => {
   const {
@@ -72,6 +73,7 @@ const CartContent = (): JSX.Element => {
   const newDomains: DomainsForTable = domains.map((item) => {
     return {
       ...item,
+      name: addMinaText(item.name),
       amount: Number(item.amount) * item.years * rate + " MINA",
       onClick: deleteReservedName,
       onCount: onCount,
