@@ -1,3 +1,4 @@
+"use client";
 import React, { useEffect, useMemo, useState } from "react";
 import WalletConnectPopUpHeader from "./header";
 import style from "./WalletConnectPopUp.module.css";
@@ -9,6 +10,9 @@ import FailScreen from "./screens/failScreen";
 import WalletConnectPopUpMobileHeader from "./mobileHeader";
 import { useMedia } from "../../../../hooks/useMedia";
 import { useKeyPress } from "../../../../hooks/useKeyPress";
+import { useStoreContext } from "@/store";
+import { Modals } from "../../modals/modals.types";
+import getWalletConfig from "../hellper";
 
 const messages = {
   0: "Connecting your wallet is like “logging in” to Web3. Select your wallet from the options to get started.",
@@ -29,22 +33,31 @@ const statuses = {
 };
 
 const WalletConnectPopUpCore = ({
-  walletName,
-  connected = false,
-  rejected = false,
-  connectFunction,
-  onClose,
-  onResolve,
-  list = [],
+  connectMessage,
   isMobileConnection,
-  onReturnToWallets,
+  onConnectWallet,
+  onResolve
 }) => {
   const [step, setStep] = useState(0);
   const [stepStatus, setStepStatus] = useState(statuses.normal);
-  const [connectingWalletName, setConnectingWalletName] = useState(null);
+  const [connectingWalletName, setConnectingWalletName] =
+    useState<string>(null);
+  const {
+    state: {
+      walletData: { accountId },
+    },
+    actions: { closeModal },
+  } = useStoreContext();
+
+  const walletName = accountId ? "Auro Wallet" : null;
+  const list = getWalletConfig();
+  const rejected = connectMessage === "user reject";
+  
   const media = useMedia();
   const isMobile = !media.greater.xs;
-  useKeyPress("Escape", onClose);
+  useKeyPress("Escape", () => {
+    closeModal(Modals.walletConnect);
+  });
 
   const findWalletByName = (name) => list.find((el) => el.name === name);
   const currentWallet = findWalletByName(connectingWalletName);
@@ -57,33 +70,32 @@ const WalletConnectPopUpCore = ({
     ];
   }, [list]);
 
-  const cardClickHandler = (name, installed) => {
+  const cardClickHandler = (name: string, installed: boolean): void => {
     setConnectingWalletName(name);
     if (installed) {
       setStepStatus(statuses.normal);
-      connectFunction(name);
+      onConnectWallet(name);
     } else setStepStatus(statuses.notInstalled);
     setStep(1);
   };
 
-  const onReturn = () => {
+  const onReturn = (): void => {
     setStep(0);
     setStepStatus(statuses.normal);
-    onReturnToWallets?.();
   };
 
   useEffect(() => {
-    if (rejected && !connected) {
+    if (rejected && !accountId) {
       setStepStatus(statuses.rejected);
       setStep(1);
-    } else if (connected && walletName && walletName === connectingWalletName) {
+    } else if (accountId && walletName && walletName === connectingWalletName) {
       setStepStatus(statuses.normal);
       setStep(2);
-    } else if (connected && !walletName) {
+    } else if (accountId && !walletName) {
       setStepStatus(statuses.normal);
       setStep(2);
     }
-  }, [connected, rejected, walletName, connectingWalletName]);
+  }, [accountId, rejected, walletName, connectingWalletName]);
 
   const renderComponentBySteps = (step): JSX.Element => {
     switch (step) {
@@ -132,7 +144,9 @@ const WalletConnectPopUpCore = ({
           return (
             <SuccessScreen
               walletName={connectingWalletName}
-              onClose={onClose}
+              onClose={() => {
+                closeModal(Modals.walletConnect);
+              }}
               onResolve={onResolve}
             />
           );
@@ -147,7 +161,9 @@ const WalletConnectPopUpCore = ({
     <div className={style.walletConnectPopUp}>
       <WalletConnectPopUpHeader
         step={step}
-        onClose={onClose}
+        onClose={() => {
+          closeModal(Modals.walletConnect);
+        }}
         message={messages[step]}
         action={actions[step]}
         isMobile={isMobile}
@@ -155,7 +171,7 @@ const WalletConnectPopUpCore = ({
       <div className={style.screen}>{renderComponentBySteps(step)}</div>
       {isMobile && (
         <WalletConnectPopUpMobileHeader
-          onClose={onClose}
+          onClose={() => closeModal(Modals.walletConnect)}
           message={step === 0 && `${installed.length} avaliable wallets`}
           action={actions[step]}
         />
@@ -163,5 +179,4 @@ const WalletConnectPopUpCore = ({
     </div>
   );
 };
-
-export default WalletConnectPopUpCore;
+export default React.memo(WalletConnectPopUpCore);

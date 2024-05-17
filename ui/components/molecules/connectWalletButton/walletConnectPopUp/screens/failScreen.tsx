@@ -1,5 +1,5 @@
 import Triangle from '../img/Triangle.svg';
-import Image from 'next/image';
+import Image, { StaticImageData } from 'next/image';
 import { Button } from '../../../../atoms/button';
 import classNames from 'classnames';
 
@@ -8,7 +8,7 @@ import { interSemiBold } from '@/app/fonts';
 
 type FailScreenProps = {
     walletName: string;
-    walletImg?: string;
+    walletImg?: StaticImageData;
     installed?: boolean;
     onReturn?: () => void;
     onRetry?: (walletName: string, installed?: boolean) => void;

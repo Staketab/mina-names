@@ -9,7 +9,7 @@ const InstallScreen = ({ onReturn, walletName = 'wallet', downloadUrl, downloadU
         <div className={style.installScreen}>
             {!isMobileConnection || downloadUrlMobile ? (
                 <>
-                    <p className={classNames(style.screenTitle, interSemiBold.className)}>Mima Wallet</p>
+                    <p className={classNames(style.screenTitle, interSemiBold.className)}>Mina Wallet</p>
                     <p className={style.installScreenSubtitle}>
                         <span>{walletName}</span> is not installed
                     </p>

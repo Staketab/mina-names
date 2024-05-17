@@ -53,6 +53,11 @@ export type CLEAR_BAG = {
   type: "CLEAR_BAG";
 };
 
+export type SET_WALLET_DATA = {
+  type: "SET_WALLET_DATA";
+  payload?: WalletData;
+};
+
 type StoreActions =
   | OPEN_MODAL
   | CLOSE_MODAL
@@ -60,7 +65,8 @@ type StoreActions =
   | DELETE_FROM_BAG
   | ADD_PERIOD
   | INIT_STOR_FROM_LOCAL_STORAGE
-  | CLEAR_BAG;
+  | CLEAR_BAG
+  | SET_WALLET_DATA;
 
 type initStore = (value: IState) => void;
 type OpenModal = (modal: Modals, data?: unknown) => void;
@@ -69,6 +75,7 @@ type addToBag = (data: Domain) => void;
 type deleteFromBag = (id: string) => void;
 type addPeriod = (id: string, value: number) => void;
 type clearBag = () => void;
+type setWalletData = (value?: WalletData) => void;
 
 type IStore = {
   state: IState;
@@ -80,6 +87,7 @@ type IStore = {
     addPeriod: addPeriod;
     initStore: initStore;
     clearBag: clearBag;
+    setWalletData: setWalletData;
   };
 };
 
@@ -185,6 +193,16 @@ export const reducer = (state: IState, action: StoreActions): IState => {
         ...state,
         bag: clearedBag,
       };
+    case "SET_WALLET_DATA":
+      const accountStorage = localStorage.getItem("account");
+      return {
+        ...state,
+        walletData: {
+          ...JSON.parse(accountStorage),
+          accountId: JSON.parse(accountStorage)?.accountId?.[0],
+          ...action.payload,
+        },
+      };
 
     default:
       return state;
@@ -203,6 +221,7 @@ export const StoreContext: React.Context<IStore> = React.createContext({
     addPeriod: noop,
     initStore: noop,
     clearBag: noop,
+    setWalletData: noop,
   },
 });
 
@@ -239,6 +258,9 @@ const Store = ({
   const initStore = (value: IState) =>
     dispatch({ type: "INIT_STOR_FROM_LOCAL_STORAGE", payload: value });
 
+  const setWalletData = (value?: WalletData) =>
+    dispatch({ type: "SET_WALLET_DATA", payload: value });
+
   return (
     <StoreContext.Provider
       value={{
@@ -251,6 +273,7 @@ const Store = ({
           addPeriod,
           initStore,
           clearBag,
+          setWalletData,
         },
       }}
     >

@@ -21,15 +21,17 @@ import { Modals } from "@/components/molecules/modals/modals.types";
 import { DATA_STATUS, Routs } from "@/comman/types";
 import { DomainForTable, DomainsForTable } from "./cartContent.types";
 import { useRouter } from "next/navigation";
+import { addMinaText } from "@/helpers/name.helper";
 
 const CartContent = (): JSX.Element => {
   const {
     balance,
+    connectMessage,
     actions: { onSendClick, onConnectWallet },
   } = useWallet();
   const router = useRouter();
 
-  const isInsufficientBalance = balance.balance < amount;
+  const isInsufficientBalance = balance?.balance < amount;
 
   const {
     state: {
@@ -38,6 +40,10 @@ const CartContent = (): JSX.Element => {
     },
     actions: { deleteFromBag, addPeriod, openModal, clearBag },
   } = useStoreContext();
+
+  const connectButton = !accountId && "Connect Wallet";
+  const insufficientBalanceButton =
+    isInsufficientBalance && "Insufficient Balance";
 
   const deleteReservedName = async (value: DomainForTable): Promise<void> => {
     try {
@@ -67,6 +73,7 @@ const CartContent = (): JSX.Element => {
   const newDomains: DomainsForTable = domains.map((item) => {
     return {
       ...item,
+      name: addMinaText(item.name),
       amount: Number(item.amount) * item.years * rate + " MINA",
       onClick: deleteReservedName,
       onCount: onCount,
@@ -78,6 +85,13 @@ const CartContent = (): JSX.Element => {
   }, 0);
 
   const handlePurchase = async (): Promise<void> => {
+    if (connectButton) {
+      openModal(Modals.walletConnect, {
+        connectMessage,
+        onConnectWallet,
+      });
+      return;
+    }
     try {
       await onConnectWallet();
       const response = await onSendClick({
@@ -157,10 +171,13 @@ const CartContent = (): JSX.Element => {
           initValue={1}
         />
         <Button
-          text={isInsufficientBalance ? "Insufficient Balance" : "Next"}
+          text={connectButton || insufficientBalanceButton || "Next"}
           variant={Variant.black}
           onClick={handlePurchase}
-          disabled={isInsufficientBalance || !newDomains.length}
+          disabled={
+            !!(isInsufficientBalance && !connectButton) ||
+            !!(!newDomains.length && !connectButton)
+          }
         />
       </div>
     </div>

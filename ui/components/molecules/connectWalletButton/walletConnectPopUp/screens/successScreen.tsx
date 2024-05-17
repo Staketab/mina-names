@@ -7,7 +7,7 @@ import { interSemiBold } from '@/app/fonts';
 
 type SuccessScreenProps = {
     onClose: () => void;
-    onResolve: (value: string) => void;
+    onResolve?: (value: string) => void;
     walletName: string;
 };
 

@@ -13,6 +13,7 @@ import { Modals } from "@/components/molecules/modals/modals.types";
 import { amount } from "@/comman/constants";
 import useWallet from "@/hooks/useWallet";
 import { DOMAIN_STATUS } from "@/comman/types";
+import { addMinaText } from "@/helpers/name.helper";
 
 const ResultItem = ({
   statusName,
@@ -35,6 +36,10 @@ const ResultItem = ({
       walletData: { accountId },
     },
   } = useStoreContext();
+  const {
+    connectMessage,
+    actions: { onConnectWallet },
+  } = useWallet();
 
   const handleInfo = async () => {
     const response = await getAccountDomainDetails(id);
@@ -43,7 +48,7 @@ const ResultItem = ({
     });
   };
 
-  const handleBag = async (): Promise<void> => {
+  const addToBagRequest = async (): Promise<void> => {
     try {
       const response = await reserveName({
         ownerAddress: accountId,
@@ -61,8 +66,18 @@ const ResultItem = ({
         });
         clearInput();
       }
-    } catch (error) {
-      console.log(error);
+    } catch (error) {}
+  };
+
+  const handleBag = async (): Promise<void> => {
+    if (!accountId) {
+      openModal(Modals.walletConnect, {
+        onConnectWallet,
+        connectMessage,
+        onResolve: addToBagRequest,
+      });
+    } else {
+      addToBagRequest();
     }
   };
 
@@ -105,7 +120,7 @@ const ResultItem = ({
       )}
     >
       <div>
-        {name}
+        {addMinaText(name)}
         {nameStatusText[status] || nameStatusText.default}
       </div>
       <div className={style.rightSide}>

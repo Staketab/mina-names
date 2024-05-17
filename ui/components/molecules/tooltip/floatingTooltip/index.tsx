@@ -9,7 +9,7 @@ import Portal from "../../portal";
 import { manropeSemiBold } from "@/app/fonts";
 
 export type FloatingTooltipProps = {
-  text?: string;
+  text?: string | ReactNode;
   controlRef?: React.RefObject<HTMLInputElement>;
   onCloseTooltip: () => void;
   onOpenTooltip: () => void;

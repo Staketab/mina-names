@@ -44,10 +44,7 @@ const ButtonWithAddress = ({
 
   return (
     <>
-      <div
-        className={style.buttonWithAddress}
-        ref={wrapperRef}
-      >
+      <div className={style.buttonWithAddress} ref={wrapperRef}>
         <Image src={account} alt="" className={style.accountIcon} />
         <StaticEllipse
           text={address}
