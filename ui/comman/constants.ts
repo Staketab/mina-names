@@ -19,7 +19,7 @@ export const bag = "bag";
 
 export const initReservationTime = 30;
 export const contractAddress =
-  "B62qnXXnnwnyUKbEBuQM64LEfNcBRzCkeNSCu3H4mhbe7ittQX2mDNS";
+  "B62qoYeVkaeVimrjBNdBEKpQTDR1gVN2ooaarwXaJmuQ9t8MYu9mDNS";
 
 export const developer = "@staketab";
 
