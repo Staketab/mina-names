@@ -1,4 +1,10 @@
 import { PrivateKey, PublicKey } from "o1js";
+import {
+  BLOCK_PRODUCER_PRIVATE_KEY,
+  VALIDATOR_PRIVATE_KEY,
+  CONTRACT_PRIVATE_KEY,
+  FIRST_BLOCK_PRIVATE_KEY,
+} from "../env.json";
 
 interface ContractConfig {
   contractPrivateKey: PrivateKey;
@@ -8,28 +14,22 @@ interface ContractConfig {
 }
 
 export const nameContract: ContractConfig = {
-  contractPrivateKey: PrivateKey.fromBase58(
-    "EKEVjiMz5ogNynnKmLF1oRs6Wj5bZdW1itZgvpTQYaHrPnu3qFpG"
-  ),
-  contractAddress: "B62qnXXnnwnyUKbEBuQM64LEfNcBRzCkeNSCu3H4mhbe7ittQX2mDNS",
+  contractPrivateKey: PrivateKey.fromBase58(CONTRACT_PRIVATE_KEY),
+  contractAddress: "B62qoYeVkaeVimrjBNdBEKpQTDR1gVN2ooaarwXaJmuQ9t8MYu9mDNS",
 
-  firstBlockPrivateKey: PrivateKey.fromBase58(
-    "EKDjCdQMYuc6F3XRRSmCaWYH1WiMUXHHQkvzgKBp9NnhA9PHGXwf"
-  ),
+  firstBlockPrivateKey: PrivateKey.fromBase58(FIRST_BLOCK_PRIVATE_KEY),
   firstBlockPublicKey: PublicKey.fromBase58(
-    "B62qpRmnH6SU4hZ9Z9JLm877SUaHSahFhu1nTwiPzJgmsZ2AsMnNAME"
+    "B62qio6DQCbqzvaPCxNbqE64nifFWacXLEQ9Cw7DUvx42Pe6D71NAME"
   ),
 };
 
 export const blockProducer = {
   publicKey: PublicKey.fromBase58(
-    "B62qrjVdai5dwVie36KGy5cYrLN9YfB2EJ5mRXSEVcnzrA3Q3AqNAME"
+    "B62qkuRTdKMsB2UgNKYTVCSLqMKuPupkreqCKuoNSUifkyP2jb7DFST"
   ),
-  privateKey: PrivateKey.fromBase58(
-    "EKDqL5JFFqfL9UGUuUpJiDGnYWxdB1tmcYUbWH8iAxWSMkYs25bz"
-  ),
+  privateKey: PrivateKey.fromBase58(BLOCK_PRODUCER_PRIVATE_KEY),
 };
 
 export const validatorsPrivateKeys: PrivateKey[] = [
-  PrivateKey.fromBase58("EKEdPmiFqHFXWdW2PSdEm3R2DbNrYX2JCZUW7ohkM5yfoGhMDX9b"),
+  PrivateKey.fromBase58(VALIDATOR_PRIVATE_KEY),
 ];
