@@ -33,11 +33,10 @@ const ResultItem = ({
   const {
     actions: { openModal, addToBag },
     state: {
-      walletData: { accountId },
+      walletData: { accountId, connectMessage },
     },
   } = useStoreContext();
   const {
-    connectMessage,
     actions: { onConnectWallet },
   } = useWallet();
 
@@ -57,12 +56,13 @@ const ResultItem = ({
         amount: amount,
       });
 
-      if (response.id) {
+      if (response.id && accountId) {
         addToBag({
           name: response.domainName,
           years: response.expirationTime,
           amount: response.amount,
           id: response.id,
+          key: accountId,
         });
         clearInput();
       }

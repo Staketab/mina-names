@@ -26,7 +26,6 @@ import { addMinaText, sliceName } from "@/helpers/name.helper";
 const CartContent = (): JSX.Element => {
   const {
     balance,
-    connectMessage,
     actions: { onSendClick, onConnectWallet },
   } = useWallet();
   const router = useRouter();
@@ -35,11 +34,13 @@ const CartContent = (): JSX.Element => {
 
   const {
     state: {
-      bag: { domains },
-      walletData: { accountId },
+      bag,
+      walletData: { accountId, connectMessage },
     },
-    actions: { deleteFromBag, addPeriod, openModal, clearBag },
+    actions: { addPeriod, openModal, clearBag, deleteFromBag },
   } = useStoreContext();
+
+  const currentDomainsByAccount = bag?.[accountId]?.domains || [];
 
   const connectButton = !accountId && "Connect Wallet";
   const insufficientBalanceButton =
@@ -49,7 +50,7 @@ const CartContent = (): JSX.Element => {
     try {
       const response = await deleteName({ id: value.id });
       if (response.status === DATA_STATUS.SUCCESS) {
-        deleteFromBag(value?.id);
+        deleteFromBag({ id: value?.id, key: accountId });
       }
     } catch (error) {}
   };
@@ -65,12 +66,12 @@ const CartContent = (): JSX.Element => {
         amount: count * amount,
       });
       if (response.status === DATA_STATUS.SUCCESS) {
-        addPeriod(value.id, count);
+        addPeriod({ id: value.id, value: count, key: accountId });
       }
     } catch (error) {}
   };
 
-  const newDomains: DomainsForTable = domains.map((item) => {
+  const newDomains: DomainsForTable = currentDomainsByAccount.map((item) => {
     return {
       ...item,
       name: addMinaText(item.name),
@@ -119,7 +120,9 @@ const CartContent = (): JSX.Element => {
           }),
         });
         if (data.status === DATA_STATUS.SUCCESS) {
-          domains.forEach(({ id }) => deleteFromBag(id));
+          currentDomainsByAccount.forEach(({ id }) =>
+            deleteFromBag({ id, key: accountId })
+          );
           clearBag();
         }
       } else {

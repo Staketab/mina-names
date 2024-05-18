@@ -19,6 +19,7 @@ import { Star } from "@/components/atoms/star";
 import { TABS_VARIANT, Tabs } from "@/components/molecules/tabs";
 import { ProfileContent } from "./components";
 import useWallet from "@/hooks/useWallet";
+import { addMinaText } from "@/helpers/name.helper";
 
 const DetailsNameInfo = ({
   accountDomainDetails,
@@ -101,7 +102,7 @@ const DetailsNameInfo = ({
           </div>
           <div className={style.name}>
             <div className={classNames(manropeBold.className, style.name)}>
-              {domainName}
+              {addMinaText(domainName)}
             </div>
             <Star />
             {isDefault && (

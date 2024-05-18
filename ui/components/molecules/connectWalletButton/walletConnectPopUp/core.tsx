@@ -179,4 +179,4 @@ const WalletConnectPopUpCore = ({
     </div>
   );
 };
-export default React.memo(WalletConnectPopUpCore);
+export default WalletConnectPopUpCore;
