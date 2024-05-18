@@ -106,7 +106,7 @@ const CartContent = (): JSX.Element => {
           text: "The Domain was successfully purchased!",
           button: {
             text: "See Domains",
-            action: () => router.push(Routs.NAMES),
+            action: () => router.push(`${Routs.NAMES}/${accountId}`),
           },
         });
         const data = await reserveApplyName({

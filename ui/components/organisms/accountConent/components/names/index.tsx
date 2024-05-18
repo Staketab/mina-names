@@ -13,7 +13,7 @@ import { addMinaText } from "@/helpers/name.helper";
 
 const NamesContent = (): JSX.Element => {
   const [accountDomains, setAccountDomains] = useState<DataTable>(null);
-  const [loading, setLoading] = useState<boolean>(false);
+  const [loading, setLoading] = useState<boolean>(true);
   const params = useParams();
   const {
     state: {
@@ -63,6 +63,7 @@ const NamesContent = (): JSX.Element => {
         } catch (error) {}
         setLoading(false);
       })();
+      return;
     }
   }, [params?.id, accountId]);
 

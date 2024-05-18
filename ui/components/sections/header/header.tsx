@@ -9,6 +9,9 @@ import Link from "next/link";
 import { Routs } from "@/comman/types";
 import { initWalletData, useStoreContext } from "@/store";
 import { useEffect } from "react";
+import { useRouter } from "next/router";
+import { usePathname } from "next/navigation";
+import classNames from "classnames";
 
 const Header = (): JSX.Element => {
   const {
@@ -19,10 +22,12 @@ const Header = (): JSX.Element => {
     actions: { initStore },
   } = useStoreContext();
   const currentDomainsByAccount = bag?.[accountId]?.domains || [];
+  const pathName = usePathname();
+  const isHomePage = pathName === Routs.HOME;
 
   useEffect(() => {
-    const bagStorage = localStorage.getItem('bag');
-    const accountStorage = localStorage.getItem("account");    
+    const bagStorage = localStorage.getItem("bag");
+    const accountStorage = localStorage.getItem("account");
     if (bagStorage || accountStorage) {
       initStore({
         modals: [],
@@ -38,7 +43,11 @@ const Header = (): JSX.Element => {
   }, []);
 
   return (
-    <header className={style.header}>
+    <header
+      className={classNames(style.header, {
+        [style.bottomBoard]: !isHomePage,
+      })}
+    >
       <Logo />
       <div className={style.rightSide}>
         <ConnectWalletButton />
