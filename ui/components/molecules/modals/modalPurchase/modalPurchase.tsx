@@ -87,7 +87,10 @@ const ModalPurchase = ({ name }: ModalPurchaseProps): JSX.Element => {
             text: "The Domain has not been purchased!",
             button: {
               text: "Try Again",
-              action: handlePurchase,
+              action: () => {
+                closeModal(Modals.transactionFailed)
+                handlePurchase()
+              },
             },
           });
         }

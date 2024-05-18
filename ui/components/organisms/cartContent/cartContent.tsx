@@ -37,7 +37,7 @@ const CartContent = (): JSX.Element => {
       bag,
       walletData: { accountId, connectMessage },
     },
-    actions: { addPeriod, openModal, clearBag, deleteFromBag },
+    actions: { addPeriod, openModal, closeModal, clearBag, deleteFromBag },
   } = useStoreContext();
 
   const currentDomainsByAccount = bag?.[accountId]?.domains || [];
@@ -79,7 +79,7 @@ const CartContent = (): JSX.Element => {
       onClick: deleteReservedName,
       onCount: onCount,
     };
-  });
+  })?.reverse();
 
   const totalAmount = newDomains.reduce((acc, domain) => {
     return (acc += parseInt(domain.amount));
@@ -131,7 +131,10 @@ const CartContent = (): JSX.Element => {
           text: "The Domain has not been purchased!",
           button: {
             text: "Try Again",
-            action: handlePurchase,
+            action: () => {
+              closeModal(Modals.transactionFailed)
+              handlePurchase()
+            } ,
           },
         });
       }
