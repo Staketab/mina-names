@@ -9,13 +9,19 @@ type Domain = {
   years: number;
   amount: string | number;
   id: string;
+  key?: string;
 };
-type Bag = {
+
+type BagByAccount = {
   reservationTime: Date | number;
   domains: Domain[];
 };
 
-type WalletData = {
+type Bag = {
+  [key: string]: BagByAccount;
+};
+
+export type WalletData = {
   accountId: string;
   connectMessage: string;
   network: ChainInfoArgs;
@@ -38,7 +44,10 @@ export type ADD_TO_BAG = {
 
 export type DELETE_FROM_BAG = {
   type: "DELETE_FROM_BAG";
-  payload: string;
+  payload: {
+    id: string;
+    key: string;
+  };
 };
 
 export type ADD_PERIOD = {
@@ -46,6 +55,7 @@ export type ADD_PERIOD = {
   payload: {
     id: string;
     value: number;
+    key: string;
   };
 };
 
@@ -72,10 +82,10 @@ type initStore = (value: IState) => void;
 type OpenModal = (modal: Modals, data?: unknown) => void;
 type CloseModal = (modal?: Modals) => void;
 type addToBag = (data: Domain) => void;
-type deleteFromBag = (id: string) => void;
-type addPeriod = (id: string, value: number) => void;
+type addPeriod = (payload: { id: string; value: number; key: string }) => void;
 type clearBag = () => void;
 type setWalletData = (value?: WalletData) => void;
+type deleteFromBag = (payload: { id: string; key: string }) => void;
 
 type IStore = {
   state: IState;
@@ -109,10 +119,8 @@ export const initWalletData: WalletData = {
   },
 };
 
-export const initBag = {
-  reservationTime: null,
-  domains: [],
-};
+
+export const initBag = {};
 
 export const initialState: IState = {
   modals: [],
@@ -140,66 +148,75 @@ export const reducer = (state: IState, action: StoreActions): IState => {
         }),
       };
     case "ADD_TO_BAG":
-      const dataBag = {
-        reservationTime: Date.now(),
-        domains: [...state.bag.domains, action.payload],
+      const domains = state?.bag?.[action.payload.key]?.domains;
+
+      const newDataBag = {
+        [action.payload.key]: {
+          reservationTime: Date.now(),
+          domains: [...(domains? domains : []), action.payload]
+        },
       };
-      localStorage.setItem(bag, JSON.stringify(dataBag));
+
+      localStorage.setItem("bag", JSON.stringify(newDataBag));
       return {
         ...state,
-        bag: dataBag,
+        bag: newDataBag,
       };
     case "DELETE_FROM_BAG":
-      const newBag = {
+      const key = action.payload.key as string;
+
+      const filteredBag = {
         ...state.bag,
-        domains: state.bag.domains.filter(
-          (domain) => domain.id !== action.payload
-        ),
+        [key]: {
+          reservationTime: state.bag?.[key]?.reservationTime,
+          domains: state.bag[key].domains.filter(
+            ({ id }) => id !== action.payload.id
+          ),
+        },
       };
-      localStorage.setItem(bag, JSON.stringify(newBag));
+
+      localStorage.setItem("bag", JSON.stringify(filteredBag));
 
       return {
         ...state,
-        bag: newBag,
+        bag: filteredBag,
       };
     case "ADD_PERIOD":
       const editedBag = {
         ...state.bag,
-        domains: state.bag.domains.map((domain) => {
-          if (domain.id === action.payload.id) {
-            return {
-              ...domain,
-              years: action.payload.value,
-            };
-          }
-          return domain;
-        }),
+        [action.payload.key]: {
+          reservationTime: state.bag?.[action.payload.key].reservationTime,
+          domains: state.bag?.[action.payload.key]?.domains?.map((domain) => {
+            if (domain.id === action.payload.id) {
+              return {
+                ...domain,
+                years: action.payload.value,
+              };
+            }
+            return domain;
+          }),
+        },
       };
-      localStorage.setItem(bag, JSON.stringify(editedBag));
+
+      localStorage.setItem("bag", JSON.stringify(editedBag));
 
       return {
         ...state,
         bag: editedBag,
       };
     case "CLEAR_BAG":
-      const clearedBag = {
-        domains: [],
-        reservationTime: null,
-      };
-
-      localStorage.setItem(bag, JSON.stringify(clearedBag));
+      localStorage.setItem(bag, JSON.stringify(initBag));
 
       return {
         ...state,
-        bag: clearedBag,
+        bag: null,
       };
     case "SET_WALLET_DATA":
-      const accountStorage = localStorage.getItem("account");
+      localStorage.setItem("account", JSON.stringify(action.payload));
+
       return {
         ...state,
         walletData: {
-          ...JSON.parse(accountStorage),
-          accountId: JSON.parse(accountStorage)?.accountId?.[0],
           ...action.payload,
         },
       };
@@ -222,6 +239,7 @@ export const StoreContext: React.Context<IStore> = React.createContext({
     initStore: noop,
     clearBag: noop,
     setWalletData: noop,
+    newAddToBag: noop,
   },
 });
 
@@ -241,18 +259,12 @@ const Store = ({
   const addToBag = (domain: Domain) =>
     dispatch({ type: "ADD_TO_BAG", payload: domain });
 
-  const deleteFromBag = (id: string) =>
-    dispatch({ type: "DELETE_FROM_BAG", payload: id });
-
   const clearBag = () => dispatch({ type: "CLEAR_BAG" });
 
-  const addPeriod = (id: string, value: number) =>
+  const addPeriod = (payload) =>
     dispatch({
       type: "ADD_PERIOD",
-      payload: {
-        id,
-        value,
-      },
+      payload: payload,
     });
 
   const initStore = (value: IState) =>
@@ -260,6 +272,9 @@ const Store = ({
 
   const setWalletData = (value?: WalletData) =>
     dispatch({ type: "SET_WALLET_DATA", payload: value });
+
+  const deleteFromBag = (payload) =>
+    dispatch({ type: "DELETE_FROM_BAG", payload: payload });
 
   return (
     <StoreContext.Provider

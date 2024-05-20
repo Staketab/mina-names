@@ -21,7 +21,7 @@ const AccountContent = () => {
   return (
     <div className={style.wrapper}>
       <div className={classNames(manropeBold.className, style.header)}>
-        <Image src={avatarIcon} alt="" />
+        <Image src={avatarIcon} alt="" width={40} height={40}/>
         {params?.id || accountId}
       </div>
       <Tabs

@@ -6,6 +6,7 @@ import { getActivities } from "@/app/actions/actions";
 import { activitiesConfig } from "./constants";
 import { useParams } from "next/navigation";
 import { useStoreContext } from "@/store";
+import { addMinaText } from "@/helpers/name.helper";
 
 const ActivityContent = (): JSX.Element => {
   const [activities, setActivities] = useState<DataTable>(null);
@@ -21,7 +22,7 @@ const ActivityContent = (): JSX.Element => {
     (async () => {
       try {
         setLoading(true);
-        const response = await getActivities({
+        const response: DataTable = await getActivities({
           accountAddress: (params?.id as string) || accountId,
           page: 0,
           size: 50,
@@ -29,7 +30,14 @@ const ActivityContent = (): JSX.Element => {
           orderBy: ORDER_BY.DESC,
         });
 
-        setActivities(response);
+        setActivities({...response, 
+          content: response?.content?.map((item) => {
+            return {
+              ...item,
+              domainName: addMinaText(item?.domainName)
+            }
+          })
+        });
       } catch (error) {}
       setLoading(false);
     })();

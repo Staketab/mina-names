@@ -195,7 +195,7 @@ const UploadModal = ({
           button: {
             text: "See Domains",
             action: () => {
-              router.push(Routs.NAMES);
+              router.push(`${Routs.NAMES}/${accountId}`);
               closeModal();
             },
           },

@@ -71,7 +71,7 @@ const Table = ({
             handleSort={handleSort}
           />
         ) : (
-          <NameCards data={data?.content} />
+          <NameCards data={data?.content} isLoading={isLoading}/>
         )}
       </div>
       {showErrorMessage && <TableErrorMessage />}

@@ -7,19 +7,26 @@ const AllContent = ({
   accountDomains,
   typeView,
   loading,
+  page,
+  size,
+  onSize,
+  onPage,
 }: {
   accountDomains: DataTable;
   typeView: TypeView;
   loading: boolean;
+  onSize: (size: number) => void;
+  onPage: (size: number) => void;
+  size: number;
+  page: number;
 }): JSX.Element => {
-  
   return (
     <Table
       data={accountDomains}
       config={ScoringConfig}
       isLoading={loading}
-      currentPage={0}
-      pageLimit={50}
+      currentPage={page}
+      pageLimit={size}
       totalElements={accountDomains?.totalElements}
       pagesCount={accountDomains?.totalPages}
       typeView={typeView}
@@ -31,11 +38,11 @@ const AllContent = ({
       ]}
       sortBy={SORT_BY.RESERVATION_TIMESTAMP}
       orderBy={ORDER_BY.DESC}
-      onChangePage={(data) => {
-        console.log(data);
+      onChangePage={(page) => {
+        onPage(page);
       }}
-      onChangeLimit={(data) => {
-        console.log(data);
+      onChangeLimit={(size) => {
+        onSize(size);
       }}
       onChangeSort={(data) => {
         console.log(data);

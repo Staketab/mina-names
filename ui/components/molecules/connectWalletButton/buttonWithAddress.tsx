@@ -59,7 +59,7 @@ const ButtonWithAddress = ({
         >
           <Link
             className={classNames(style.item, interSemiBold.className)}
-            href={Routs.NAMES}
+            href={`${Routs.NAMES}/${address}`}
           >
             <Image src={account} alt="" className={style.icon} />
             Names
