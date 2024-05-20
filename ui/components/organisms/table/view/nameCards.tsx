@@ -1,6 +1,7 @@
 import { DOMAIN_STATUS } from "@/comman/types";
 import { NameCard } from "../../../molecules/nameCard";
 import style from "../index.module.css";
+import { Loader, LoaderVariant } from "@/components/atoms/loader";
 
 type NameCardsProps = {
   data: {
@@ -10,10 +11,11 @@ type NameCardsProps = {
     domainStatus: DOMAIN_STATUS;
     endTimestamp: number;
   }[];
+  isLoading: boolean;
 };
 
-const NameCards = ({ data }: NameCardsProps): JSX.Element => {
-  if (!data) return null;
+const NameCards = ({ data, isLoading }: NameCardsProps): JSX.Element => {
+  if (!data || isLoading) return null;
 
   return (
     <div className={style.nameCards}>

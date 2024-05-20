@@ -29,7 +29,6 @@ const ActivityContent = (): JSX.Element => {
           sortBy: SORT_BY.TIMESTAMP,
           orderBy: ORDER_BY.DESC,
         });
-console.log(response);
 
         setActivities({...response, 
           content: response?.content?.map((item) => {
