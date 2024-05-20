@@ -56,7 +56,7 @@ const ProfileContent = ({
             href={`https://gateway.pinata.cloud/ipfs/${accountDomainDetails.ipfs}`}
             target="_blank"
           >
-            {`https://gateway.pinata.cloud/ipfs/${accountDomainDetails.ipfs}`}
+            {accountDomainDetails.ipfs}
           </a>
         ),
       })}

@@ -40,6 +40,11 @@
   font-size: 14px;
 }
 
+.inputFileBtn > div {
+  width: 20px;
+  height: 20px;
+}
+
 .notSupported {
   border-color: #e56767;
 }
