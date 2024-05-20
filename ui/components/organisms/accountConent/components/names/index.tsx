@@ -53,9 +53,7 @@ const NamesContent = (): JSX.Element => {
     if (params?.id || accountId) {
       (async () => {
         try {
-          setLoading(true);
-          console.log(page);
-          
+          setLoading(true);          
           const response = await getAccountDomains({
             accountAddress: (params?.id as string) || accountId,
             page: page,
