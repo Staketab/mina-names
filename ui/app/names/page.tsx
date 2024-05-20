@@ -16,6 +16,7 @@ export default function Page() {
   } = useStoreContext();
   const router = useRouter();
   const account =
+    typeof window !== 'undefined' &&
     localStorage.getItem("account") &&
     JSON.parse(localStorage.getItem("account"));
 
