@@ -124,6 +124,18 @@ const UploadModal = ({
         sha3_512: sha3_512,
       };
 
+      let createTxTaskArgs: string = JSON.stringify({
+        contractAddress,
+      });
+  
+      const createTxTaskAnswer = await zkCloudWorkerRequest({
+        command: "execute",
+        task: "createTxTask",
+        transactions: [],
+        args: createTxTaskArgs,
+        metadata: `backend txTask`,
+      });      
+
       const tx: Transaction = {
         operation: "update",
         name: accountDomainDetails.domainName,
