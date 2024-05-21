@@ -75,7 +75,7 @@ const WalletConnectPopUpCore = ({
     if (installed) {
       setStepStatus(statuses.normal);
       const accoutnId = await onConnectWallet(name);
-      onResolve(accoutnId)
+      onResolve && onResolve(accoutnId)
     } else setStepStatus(statuses.notInstalled);
     setStep(1);
   };
