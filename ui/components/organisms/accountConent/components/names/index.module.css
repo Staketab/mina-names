@@ -2,6 +2,11 @@
   position: relative;
 }
 
+.tabs{
+  gap: 16px;
+
+}
+
 .tabs > div:first-child {
   justify-content: flex-start;
   padding: 0 24px;

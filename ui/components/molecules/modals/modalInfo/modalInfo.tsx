@@ -14,6 +14,7 @@ import React, { ReactNode } from "react";
 import { CopyIcon } from "@/components/atoms/copyIcon";
 import TruncateText from "../../truncateText/truncateText";
 import { getUrlToMinascan } from "@/helpers/getUrlToMinascan";
+import { addMinaText } from "@/helpers/name.helper";
 
 type ModalInfoProps = {
   data: {
@@ -88,7 +89,7 @@ const ModalInfo = ({ data }: ModalInfoProps): JSX.Element => {
         <Image src={domainImg || defaultIcon} alt="" width={100} height={100} />
         <div className={style.header}>
           <TruncateText className={manropeBold.className}>
-            {domainName}
+            {addMinaText(domainName)}
           </TruncateText>
         </div>
       </div>
@@ -128,6 +129,7 @@ const ModalInfo = ({ data }: ModalInfoProps): JSX.Element => {
         })}
         {renderContentItem({
           header: "Domain ID",
+          hiddenIcon: true,
           content: id && (
             <StaticEllipse
               className={manropeSemiBold.className}

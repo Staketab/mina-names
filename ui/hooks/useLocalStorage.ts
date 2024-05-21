@@ -1,42 +1,20 @@
-import { bag } from "@/comman/constants";
-import { initBag, initWalletData, useStoreContext } from "@/store";
 import { Dispatch, SetStateAction, useEffect, useState } from "react";
 
 export const useLocalStorage = (
-  key?: string,
-  initialValue?: string
+  key?: string
 ): [string, Dispatch<SetStateAction<string | boolean>>] => {
-  const {
-    actions: { initStore },
-  } = useStoreContext();
   const localStorageItem =
-    (typeof window !== "undefined" && localStorage?.getItem(key)) ||
-    initialValue ||
-    "";
+    (typeof window !== "undefined" && localStorage?.getItem(key)) || "";
+
   const [value, setValue] = useState(() => {
     return localStorageItem;
   });
 
   useEffect(() => {
-    localStorage.setItem(key, value);
-  }, [value, key]);
-
-  useEffect(() => {
-    const bagStorage = localStorage.getItem(bag);
-    const accountStorage = localStorage.getItem("account");
-    if (bagStorage || accountStorage) {
-      initStore({
-        modals: [],
-        bag: bagStorage ? JSON.parse(bagStorage) : initBag,
-        walletData: accountStorage
-          ? {
-              ...JSON.parse(accountStorage),
-              accountId: JSON.parse(accountStorage)?.accountId?.[0],
-            }
-          : initWalletData,
-      });
+    if (key) {
+      localStorage.setItem(key, value);
     }
-  }, []);
+  }, [value, key]);
 
   return [value, setValue];
 };

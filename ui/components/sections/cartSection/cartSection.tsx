@@ -13,10 +13,14 @@ import Image from "next/image";
 const CartSection = () => {
   const {
     state: {
-      bag: { reservationTime, domains },
+      bag,
+      walletData: { accountId },
     },
     actions: { deleteFromBag },
   } = useStoreContext();
+  const currentBagByAccount = bag?.[accountId];
+  const reservationTime = currentBagByAccount?.reservationTime;
+  const domains = currentBagByAccount?.domains || [];
 
   const [time, setTime] = useState<string>("");
 
@@ -28,7 +32,7 @@ const CartSection = () => {
     const interval = setInterval(() => {
       const result = getTimeDifference(Number(reservationTime));
       if (!result) {
-        domains.forEach(({ id }) => deleteFromBag(id));
+        domains.forEach(({ id }) => deleteFromBag({id: id, key: accountId}));
       }
       setTime(result);
     }, 1000);

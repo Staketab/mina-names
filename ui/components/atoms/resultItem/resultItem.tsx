@@ -33,11 +33,10 @@ const ResultItem = ({
   const {
     actions: { openModal, addToBag },
     state: {
-      walletData: { accountId },
+      walletData: { accountId, connectMessage },
     },
   } = useStoreContext();
   const {
-    connectMessage,
     actions: { onConnectWallet },
   } = useWallet();
 
@@ -48,21 +47,22 @@ const ResultItem = ({
     });
   };
 
-  const addToBagRequest = async (): Promise<void> => {
+  const addToBagRequest = async (id?: string): Promise<void> => {
     try {
       const response = await reserveName({
-        ownerAddress: accountId,
+        ownerAddress: id || accountId,
         domainName: name,
         expirationTime: 1,
         amount: amount,
       });
 
-      if (response.id) {
+      if (response.id && (id || accountId)) {
         addToBag({
           name: response.domainName,
           years: response.expirationTime,
           amount: response.amount,
           id: response.id,
+          key: id || accountId,
         });
         clearInput();
       }
@@ -74,7 +74,7 @@ const ResultItem = ({
       openModal(Modals.walletConnect, {
         onConnectWallet,
         connectMessage,
-        onResolve: addToBagRequest,
+        onResolve: (id) => addToBagRequest(id),
       });
     } else {
       addToBagRequest();

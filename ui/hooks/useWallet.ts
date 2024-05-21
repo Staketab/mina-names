@@ -1,7 +1,6 @@
-import { useEffect, useState } from "react";
-import { useLocalStorage } from "./useLocalStorage";
+import { useState } from "react";
 import useAddressBalance, { Balance } from "./useAddressBalance";
-import { initWalletData, useStoreContext } from "@/store";
+import { WalletData, initWalletData, useStoreContext } from "@/store";
 
 export type SendPaymentresponse = {
   hash?: string;
@@ -15,8 +14,6 @@ export type OnSend = (
   fee: number,
   memo: string
 ) => Promise<SendPaymentresponse>;
-
-export const isConnectedAuro = "isConnectedAuro";
 
 type sendResultMessage = {
   hash: string;
@@ -42,13 +39,9 @@ interface ProviderError extends Error {
 }
 
 export interface IUseWallet {
-  accountId;
   balance: Balance;
-  connectMessage;
   sendResultMessage: sendResultMessage;
-  network: ChainInfoArgs;
   actions: {
-    setWalletData: (payload: any) => any;
     onConnectWallet: () => Promise<void>;
     onDisconnectWallet: () => Promise<void>;
     setConnectMessage: (value: string | null) => void;
@@ -73,24 +66,18 @@ export interface IUseWallet {
 }
 
 export default function useWallet(): IUseWallet {
-  const [account, setAccount] = useLocalStorage("account");
   const {
+    state: { walletData },
     actions: { setWalletData: setWalletDataToStore },
   } = useStoreContext();
 
-  const [walletData, setWalletData] = useState(null);
-  const [, setIsConnectedAuro] = useLocalStorage(isConnectedAuro);
   const [sendResultMessage, setSendResultMessage] =
     useState<sendResultMessage>();
 
-  useEffect(() => {
-    !!account && setWalletData(JSON.parse(account));
-  }, []);
-
-  const balance = useAddressBalance(walletData?.accountId?.[0]);
+  const balance = useAddressBalance(walletData?.accountId);
 
   const setConnectMessage = (connectMessage) =>
-    setWalletData({ ...walletData, connectMessage: connectMessage });
+    setWalletDataToStore({ ...walletData, connectMessage: connectMessage });
 
   const minaAdapter = typeof window !== "undefined" && window["mina"];
 
@@ -106,41 +93,35 @@ export default function useWallet(): IUseWallet {
     if (!minaAdapter) {
       console.warn("No provider was found Auro Wallet");
     } else {
-      setWalletData({
-        ...walletData,
-        connectMessage: "Onboarding in progress",
-      });
+      // setWalletDataToStore({
+      //   ...walletData,
+      //   connectMessage: "Onboarding in progress",
+      // });
 
       const data = await minaAdapter.requestAccounts().catch((err) => err);
       const network = await getNetwork();
 
       if (data.message) {
-        setWalletData({ ...walletData, connectMessage: data.message, network });
-      } else {
-        setWalletData({
+        setWalletDataToStore({
           ...walletData,
-          accountId: data,
-          connectMessage: "Connected",
-          network,
+          connectMessage: data.message,
+          network: network as ChainInfoArgs,
         });
-        setIsConnectedAuro(true);
+      } else {
         const newWalletData = {
-          ...walletData,
-          accountId: data,
+          accountId: data?.[0] || "",
           network,
           connectMessage: "Connected",
-        };
-        setAccount(JSON.stringify(newWalletData));
-        setWalletDataToStore({...newWalletData, accountId: data?.[0]});
+        } as WalletData;
+
+        setWalletDataToStore(newWalletData);
+        return data?.[0]
       }
     }
   };
 
   const onDisconnectWallet = async (): Promise<void> => {
-    setWalletData(null);
-    setIsConnectedAuro(false);
-    setAccount(null);
-    setWalletDataToStore(initWalletData)
+    setWalletDataToStore(initWalletData);
   };
 
   const onSendClick = async ({ amount, to, fee, memo }) => {
@@ -167,11 +148,9 @@ export default function useWallet(): IUseWallet {
   };
 
   return {
-    ...walletData,
     balance,
     sendResultMessage,
     actions: {
-      setWalletData,
       onConnectWallet,
       onDisconnectWallet,
       setConnectMessage,

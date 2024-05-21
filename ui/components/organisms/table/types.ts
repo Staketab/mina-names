@@ -11,7 +11,7 @@ export interface TableProps {
   pagesCount?: number;
   sortBy?: SORT_BY;
   orderBy?: ORDER_BY;
-  onChangePage?: (value: string) => void;
+  onChangePage?: (value: number) => void;
   limitOptions?: LimitOptions;
   onChangeLimit?: (value: number) => void;
   onChangeSort?: (value: SORT_BY) => void;

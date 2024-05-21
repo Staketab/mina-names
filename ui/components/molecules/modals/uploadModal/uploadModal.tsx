@@ -95,6 +95,9 @@ const UploadModal = ({
       formData.append("pinataOptions", JSON.stringify({ cidVersion: 1 }));
 
       const ipfsHash = await pinFile(formData);
+      if(!ipfsHash) {        
+        throw new Error(`IpfsHash does not exist`);
+      }
 
       function readFileAsync(file) {
         return new Promise((resolve, reject) => {
@@ -123,6 +126,18 @@ const UploadModal = ({
         mimeType: file.type,
         sha3_512: sha3_512,
       };
+
+      let createTxTaskArgs: string = JSON.stringify({
+        contractAddress,
+      });
+  
+      const createTxTaskAnswer = await zkCloudWorkerRequest({
+        command: "execute",
+        task: "createTxTask",
+        transactions: [],
+        args: createTxTaskArgs,
+        metadata: `backend txTask`,
+      });      
 
       const tx: Transaction = {
         operation: "update",
@@ -195,7 +210,7 @@ const UploadModal = ({
           button: {
             text: "See Domains",
             action: () => {
-              router.push(Routs.NAMES);
+              router.push(`${Routs.NAMES}/${accountId}`);
               closeModal();
             },
           },

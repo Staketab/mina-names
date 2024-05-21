@@ -10,10 +10,15 @@ import { getAccountDomains } from "@/app/actions/actions";
 import { useParams } from "next/navigation";
 import { useStoreContext } from "@/store";
 import { addMinaText } from "@/helpers/name.helper";
+const initPage = 0;
+const initSize = 50;
 
 const NamesContent = (): JSX.Element => {
+  const [size, setSize] = useState<number>(initSize);
+  const [page, setPage] = useState<number>(initPage);
+
   const [accountDomains, setAccountDomains] = useState<DataTable>(null);
-  const [loading, setLoading] = useState<boolean>(false);
+  const [loading, setLoading] = useState<boolean>(true);
   const params = useParams();
   const {
     state: {
@@ -48,11 +53,11 @@ const NamesContent = (): JSX.Element => {
     if (params?.id || accountId) {
       (async () => {
         try {
-          setLoading(true);
+          setLoading(true);          
           const response = await getAccountDomains({
             accountAddress: (params?.id as string) || accountId,
-            page: 0,
-            size: 50,
+            page: page,
+            size: size,
             sortBy: SORT_BY.RESERVATION_TIMESTAMP,
             orderBy: ORDER_BY.DESC,
           });
@@ -63,8 +68,18 @@ const NamesContent = (): JSX.Element => {
         } catch (error) {}
         setLoading(false);
       })();
+      return;
     }
-  }, [params?.id, accountId]);
+  }, [params?.id, accountId, size, page]);
+
+  const onSize = (size) => {
+    setPage(initPage);
+    setSize(size);
+  };
+
+  const onPage = (page) => {
+    setPage(page);
+  };
 
   return (
     <div className={style.wrapper}>
@@ -78,6 +93,10 @@ const NamesContent = (): JSX.Element => {
                 accountDomains={accountDomains}
                 typeView={typeView}
                 loading={loading}
+                onSize={onSize}
+                onPage={onPage}
+                page={page}
+                size={size}
               />
             ),
             title: "All",
@@ -88,6 +107,10 @@ const NamesContent = (): JSX.Element => {
               <AllContent
                 typeView={typeView}
                 loading={loading}
+                onSize={onSize}
+                onPage={onPage}
+                page={page}
+                size={size}
                 accountDomains={{
                   ...accountDomains,
                   content: accountDomains?.content?.filter(
@@ -106,6 +129,10 @@ const NamesContent = (): JSX.Element => {
               <AllContent
                 typeView={typeView}
                 loading={loading}
+                onSize={onSize}
+                onPage={onPage}
+                page={page}
+                size={size}
                 accountDomains={{
                   ...accountDomains,
                   content: accountDomains?.content?.filter(
