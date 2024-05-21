@@ -11,9 +11,8 @@ type SuccessScreenProps = {
     walletName: string;
 };
 
-const SuccessScreen = ({ onClose, walletName, onResolve }: SuccessScreenProps): JSX.Element => {
+const SuccessScreen = ({ onClose, walletName }: SuccessScreenProps): JSX.Element => {
     useEffect(() => {
-        onResolve && onResolve(walletName);
         const timeout = setTimeout(onClose, 3000);
         return () => {
             clearTimeout(timeout);

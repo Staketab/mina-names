@@ -93,10 +93,10 @@ export default function useWallet(): IUseWallet {
     if (!minaAdapter) {
       console.warn("No provider was found Auro Wallet");
     } else {
-      setWalletDataToStore({
-        ...walletData,
-        connectMessage: "Onboarding in progress",
-      });
+      // setWalletDataToStore({
+      //   ...walletData,
+      //   connectMessage: "Onboarding in progress",
+      // });
 
       const data = await minaAdapter.requestAccounts().catch((err) => err);
       const network = await getNetwork();
@@ -115,6 +115,7 @@ export default function useWallet(): IUseWallet {
         } as WalletData;
 
         setWalletDataToStore(newWalletData);
+        return data?.[0]
       }
     }
   };

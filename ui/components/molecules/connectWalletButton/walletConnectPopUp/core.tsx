@@ -70,11 +70,12 @@ const WalletConnectPopUpCore = ({
     ];
   }, [list]);
 
-  const cardClickHandler = (name: string, installed: boolean): void => {
+  const cardClickHandler = async (name: string, installed: boolean): Promise<void> => {
     setConnectingWalletName(name);
     if (installed) {
       setStepStatus(statuses.normal);
-      onConnectWallet(name);
+      const accoutnId = await onConnectWallet(name);
+      onResolve(accoutnId)
     } else setStepStatus(statuses.notInstalled);
     setStep(1);
   };
@@ -147,7 +148,6 @@ const WalletConnectPopUpCore = ({
               onClose={() => {
                 closeModal(Modals.walletConnect);
               }}
-              onResolve={onResolve}
             />
           );
         }
