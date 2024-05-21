@@ -95,6 +95,9 @@ const UploadModal = ({
       formData.append("pinataOptions", JSON.stringify({ cidVersion: 1 }));
 
       const ipfsHash = await pinFile(formData);
+      if(!ipfsHash) {        
+        throw new Error(`IpfsHash does not exist`);
+      }
 
       function readFileAsync(file) {
         return new Promise((resolve, reject) => {
