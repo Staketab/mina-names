@@ -63,9 +63,10 @@
   transition: all .3s;
   width: 44px;
   height: 44px;
+  cursor: pointer;
 }
 
-a.bottomContentRightSide:hover {
+.bottomContentRightSide:hover {
   background-color: transparent;
 }
 
