@@ -1,6 +1,8 @@
 .wrapper {
-  /* background-color: var(--col-light);
-  border-radius: 12px; */
+  width: 412px;
+  height: 380px;
+  display: flex;
+  flex-direction: column;
 }
 
 .topContent {
@@ -8,7 +10,7 @@
   align-items: center;
   justify-content: center;
   background-image: url("./failedBg.svg");
-  height: 200px;
+  height: 215px;
 }
 
 .topContent img {
@@ -23,12 +25,13 @@
   align-items: center;
   padding: 24px 58px;
   color: #57575a;
+  flex-grow: 1;
 }
 
 .bottomContent > div:first-child {
   font-size: 18px;
   color: #1a1a1b;
-  margin-bottom: 4px;
+  margin-bottom: 8px;
 }
 
 .buttonsBlock {
