@@ -22,8 +22,10 @@ import { DomainForTable, DomainsForTable } from "./cartContent.types";
 import { useRouter } from "next/navigation";
 import { addMinaText, sliceName } from "@/helpers/name.helper";
 import { useWallet } from "@/hooks";
+import { useState } from "react";
 
 const CartContent = (): JSX.Element => {
+  const [disableNextBtn, setDisableNextBtn] = useState(false);
   const {
     balance,
     actions: { onSendClick, onConnectWallet },
@@ -71,21 +73,24 @@ const CartContent = (): JSX.Element => {
     } catch (error) {}
   };
 
-  const newDomains: DomainsForTable = currentDomainsByAccount.map((item) => {
-    return {
-      ...item,
-      name: addMinaText(item.name),
-      amount: Number(item.amount) * item.years * rate + " MINA",
-      onClick: deleteReservedName,
-      onCount: onCount,
-    };
-  })?.reverse();
+  const newDomains: DomainsForTable = currentDomainsByAccount
+    .map((item) => {
+      return {
+        ...item,
+        name: addMinaText(item.name),
+        amount: Number(item.amount) * item.years * rate + " MINA",
+        onClick: deleteReservedName,
+        onCount: onCount,
+      };
+    })
+    ?.reverse();
 
   const totalAmount = newDomains.reduce((acc, domain) => {
     return (acc += parseInt(domain.amount));
   }, 0);
 
   const handlePurchase = async (): Promise<void> => {
+    setDisableNextBtn(true);
     if (connectButton) {
       openModal(Modals.walletConnect, {
         connectMessage,
@@ -132,13 +137,16 @@ const CartContent = (): JSX.Element => {
           button: {
             text: "Try Again",
             action: () => {
-              closeModal(Modals.transactionFailed)
-              handlePurchase()
-            } ,
+              closeModal(Modals.transactionFailed);
+              handlePurchase();
+            },
           },
         });
       }
-    } catch (error) {}
+    } catch (error) {
+    } finally {
+    }
+    setDisableNextBtn(false);
   };
 
   return (
@@ -182,7 +190,8 @@ const CartContent = (): JSX.Element => {
           onClick={handlePurchase}
           disabled={
             !!(isInsufficientBalance && !connectButton) ||
-            !!(!newDomains.length && !connectButton)
+            !!(!newDomains.length && !connectButton) ||
+            disableNextBtn
           }
         />
       </div>
