@@ -123,7 +123,6 @@ const ModalInfo = ({ data }: ModalInfoProps): JSX.Element => {
               className={manropeSemiBold.className}
               text={ipfs || '-'}
               view={{ sm: 10, md: 14, lg: 18 }}
-              link={ipfs && `https://gateway.pinata.cloud/ipfs/${ipfs}`}
             />
           ),
         })}

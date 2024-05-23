@@ -3,9 +3,9 @@ import classNames from "classnames";
 import style from "./index.module.css";
 import ButtonWithAddress from "./buttonWithAddress";
 import ConnectButton from "./connectButton";
-import useWallet from "@/hooks/useWallet";
 import { useStoreContext } from "@/store";
 import { Modals } from "../modals/modals.types";
+import { useWallet } from "@/hooks";
 
 const ConnectWalletButton = () => {
   const {

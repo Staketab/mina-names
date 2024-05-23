@@ -2,9 +2,9 @@ import React, { useState, useEffect, ReactNode } from "react";
 
 import styles from "./index.module.css";
 import classNames from "classnames";
-import { useMedia } from "../../../hooks/useMedia";
 import { View } from "@/comman/types";
 import { robotoMedium } from "@/app/fonts";
+import { useMedia } from "@/hooks";
 
 const StaticEllipse = ({
   text,

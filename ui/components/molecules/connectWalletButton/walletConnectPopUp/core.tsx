@@ -8,11 +8,10 @@ import InstallScreen from "./screens/installScreen";
 import SuccessScreen from "./screens/successScreen";
 import FailScreen from "./screens/failScreen";
 import WalletConnectPopUpMobileHeader from "./mobileHeader";
-import { useMedia } from "../../../../hooks/useMedia";
-import { useKeyPress } from "../../../../hooks/useKeyPress";
 import { useStoreContext } from "@/store";
 import { Modals } from "../../modals/modals.types";
 import getWalletConfig from "../hellper";
+import { useKeyPress, useMedia } from "@/hooks";
 
 const messages = {
   0: "Connecting your wallet is like “logging in” to Web3. Select your wallet from the options to get started.",

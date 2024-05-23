@@ -64,8 +64,7 @@ export interface IUseWallet {
     >;
   };
 }
-
-export default function useWallet(): IUseWallet {
+function useWallet(): IUseWallet {
   const {
     state: { walletData },
     actions: { setWalletData: setWalletDataToStore },
@@ -115,7 +114,7 @@ export default function useWallet(): IUseWallet {
         } as WalletData;
 
         setWalletDataToStore(newWalletData);
-        return data?.[0]
+        return data?.[0];
       }
     }
   };
@@ -159,3 +158,5 @@ export default function useWallet(): IUseWallet {
     },
   };
 }
+
+export { useWallet };

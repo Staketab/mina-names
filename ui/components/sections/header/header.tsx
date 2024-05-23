@@ -9,9 +9,10 @@ import Link from "next/link";
 import { Routs } from "@/comman/types";
 import { initWalletData, useStoreContext } from "@/store";
 import { useEffect } from "react";
-import { useRouter } from "next/router";
 import { usePathname } from "next/navigation";
 import classNames from "classnames";
+import { getTimeDifference } from "@/helpers/timeHelper";
+import { useCheckTimeReservation } from "@/hooks";
 
 const Header = (): JSX.Element => {
   const {
@@ -21,7 +22,10 @@ const Header = (): JSX.Element => {
     },
     actions: { initStore },
   } = useStoreContext();
-  const currentDomainsByAccount = bag?.[accountId]?.domains || [];
+
+  const time = useCheckTimeReservation();
+  const currentBagByAccount = bag?.[accountId];
+
   const pathName = usePathname();
   const isHomePage = pathName === Routs.HOME;
 
@@ -42,6 +46,8 @@ const Header = (): JSX.Element => {
     }
   }, []);
 
+  const domains = currentBagByAccount?.domains || [];
+
   return (
     <header
       className={classNames(style.header, {
@@ -55,7 +61,7 @@ const Header = (): JSX.Element => {
           <Link href={`${Routs.CART}`}>
             <Bag
               variant={BAG_VARIANTS.GRADIENT}
-              size={currentDomainsByAccount.length}
+              size={time ? domains.length : 0}
             />
           </Link>
         )}

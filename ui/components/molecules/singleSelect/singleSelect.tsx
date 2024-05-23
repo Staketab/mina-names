@@ -5,8 +5,7 @@ import classNames from 'classnames';
 import SelectPlate from '../selectPlate';
 import CustomScrollList from '../customScrollList';
 import { LimitOptions } from '../../../comman/types';
-import { useMedia } from '../../../hooks/useMedia';
-import { useHandleClickOutside } from '../../../hooks/useHandleClickOutside';
+import { useHandleClickOutside, useMedia } from '@/hooks';
 
 type SingleSelectProps = {
     options: LimitOptions;

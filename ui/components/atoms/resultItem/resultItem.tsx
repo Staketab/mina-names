@@ -11,9 +11,9 @@ import Bag from "../bag/bag";
 import { useStoreContext } from "@/store";
 import { Modals } from "@/components/molecules/modals/modals.types";
 import { amount } from "@/comman/constants";
-import useWallet from "@/hooks/useWallet";
 import { DOMAIN_STATUS } from "@/comman/types";
 import { addMinaText } from "@/helpers/name.helper";
+import { useWallet } from "@/hooks";
 
 const ResultItem = ({
   statusName,
