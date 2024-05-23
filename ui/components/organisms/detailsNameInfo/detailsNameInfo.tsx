@@ -88,8 +88,8 @@ const DetailsNameInfo = ({
                   icon
                 }
                 alt="icon"
-                width={120}
-                height={120}
+                width={64}
+                height={64}
               />
             </span>
             {isOwner && (
