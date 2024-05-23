@@ -8,6 +8,7 @@
   width: 100%;
   height: fit-content;
   border-radius: 12px;
+  overflow: hidden;
 }
 
 .wrapper > div {
