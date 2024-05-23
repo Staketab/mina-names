@@ -15,6 +15,7 @@ import { CopyIcon } from "@/components/atoms/copyIcon";
 import TruncateText from "../../truncateText/truncateText";
 import { getUrlToMinascan } from "@/helpers/getUrlToMinascan";
 import { addMinaText } from "@/helpers/name.helper";
+import { useRouter } from "next/navigation";
 
 type ModalInfoProps = {
   data: {
@@ -35,6 +36,8 @@ type ModalInfoProps = {
 };
 
 const ModalInfo = ({ data }: ModalInfoProps): JSX.Element => {
+  const router = useRouter();
+
   if (!data) return null;
 
   const {
@@ -52,11 +55,13 @@ const ModalInfo = ({ data }: ModalInfoProps): JSX.Element => {
     content,
     url,
     hiddenIcon,
+    action,
   }: {
     header: string;
     content: ReactNode;
     url?: string;
     hiddenIcon?: boolean;
+    action?: () => void;
   }): JSX.Element => {
     return (
       <div className={classNames(style.infoItem, manropeSemiBold.className)}>
@@ -64,7 +69,7 @@ const ModalInfo = ({ data }: ModalInfoProps): JSX.Element => {
           <span className={style.leftSideHeader}>{header}</span>
           {content}
         </div>
-        {url ? (
+        {url && (
           <a
             href={url}
             target="_blank"
@@ -72,12 +77,11 @@ const ModalInfo = ({ data }: ModalInfoProps): JSX.Element => {
           >
             <Image src={defaultIcon} alt="" width={24} height={20} />
           </a>
-        ) : (
-          !hiddenIcon && (
-            <span className={style.bottomContentRightSide}>
-              {<Image src={defaultIcon} alt="" width={24} height={20} />}
-            </span>
-          )
+        )}
+        {action && (
+          <span onClick={action} className={style.bottomContentRightSide}>
+            <Image src={defaultIcon} alt="" width={24} height={20} />
+          </span>
         )}
       </div>
     );
@@ -96,7 +100,7 @@ const ModalInfo = ({ data }: ModalInfoProps): JSX.Element => {
       <div className={style.bottomContent}>
         {renderContentItem({
           header: "Domain Owner",
-          url: getUrlToMinascan(`/devnet/account/${ownerAddress}`),
+          action: () => router.push(`${Routs.NAMES}/${ownerAddress}`),
           content: (
             <StaticEllipse
               className={manropeSemiBold.className}
@@ -121,7 +125,7 @@ const ModalInfo = ({ data }: ModalInfoProps): JSX.Element => {
           content: (
             <StaticEllipse
               className={manropeSemiBold.className}
-              text={ipfs || '-'}
+              text={ipfs || "-"}
               view={{ sm: 10, md: 14, lg: 18 }}
             />
           ),
