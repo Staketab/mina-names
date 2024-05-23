@@ -96,6 +96,7 @@ const CartContent = (): JSX.Element => {
         connectMessage,
         onConnectWallet,
       });
+      setDisableNextBtn(false);
       return;
     }
     try {
