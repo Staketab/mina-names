@@ -3,10 +3,10 @@ import React, { useState, useEffect, ReactNode } from "react";
 import { useCallback } from "react";
 import { useRef } from "react";
 import styles from "./index.module.css";
-import { useMedia } from "@/hooks/useMedia";
 import { useWindowResize } from "@/hooks/useWindowResixe";
 import Portal from "../../portal";
 import { manropeSemiBold } from "@/app/fonts";
+import { useMedia } from "@/hooks";
 
 export type FloatingTooltipProps = {
   text?: string | ReactNode;

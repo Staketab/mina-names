@@ -6,7 +6,6 @@ import { interSemiBold, manropeBold } from "@/app/fonts";
 import { Button } from "@/components/atoms/button";
 import { Variant } from "@/components/atoms/button/types";
 import React, { useState } from "react";
-import useWallet from "@/hooks/useWallet";
 import { saveName } from "@/app/actions/actions";
 import { accountAddress, fees } from "@/comman/constants";
 import Image from "next/image";
@@ -19,6 +18,7 @@ import { TABS_VARIANT, Tabs } from "../../tabs";
 
 import { useRouter } from "next/navigation";
 import { Routs } from "@/comman/types";
+import { useWallet } from "@/hooks";
 
 type ModalPurchaseProps = {
   name: string;

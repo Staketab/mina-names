@@ -18,8 +18,8 @@ import { Modals } from "@/components/molecules/modals/modals.types";
 import { Star } from "@/components/atoms/star";
 import { TABS_VARIANT, Tabs } from "@/components/molecules/tabs";
 import { ProfileContent } from "./components";
-import useWallet from "@/hooks/useWallet";
 import { addMinaText } from "@/helpers/name.helper";
+import { useWallet } from "@/hooks";
 
 const DetailsNameInfo = ({
   accountDomainDetails,

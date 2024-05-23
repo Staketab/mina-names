@@ -1,5 +1,3 @@
-import { ChainId } from "@/hooks/useWallet";
-
 export const fees = {
   slow: 0.0011,
   default: 0.0101,

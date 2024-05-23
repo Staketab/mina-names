@@ -3,8 +3,8 @@ import React from 'react';
 import style from './Pager.module.css';
 import ArrowIcon from './img/ArrowIcon.svg';
 import Image from 'next/image';
-import { useMedia } from '../../../hooks/useMedia';
 import { interMedium } from '@/app/fonts';
+import { useMedia } from '@/hooks';
 
 type PagerProps = {
     page: number;

@@ -15,13 +15,13 @@ import { MinaContent } from "./components/minaContent";
 import classNames from "classnames";
 import { manropeBold } from "@/app/fonts";
 import { Button } from "@/components/atoms/button";
-import useWallet from "@/hooks/useWallet";
 import { Variant } from "@/components/atoms/button/types";
 import { Modals } from "@/components/molecules/modals/modals.types";
 import { DATA_STATUS, Routs } from "@/comman/types";
 import { DomainForTable, DomainsForTable } from "./cartContent.types";
 import { useRouter } from "next/navigation";
 import { addMinaText, sliceName } from "@/helpers/name.helper";
+import { useWallet } from "@/hooks";
 
 const CartContent = (): JSX.Element => {
   const {
