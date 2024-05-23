@@ -37,19 +37,14 @@
 }
 
 .domainImg {
-  width: 64px;
-  height: 64px;
   background-color: #f7f7fa;
   border-radius: 50%;
-  padding: 5px;
   display: flex;
   align-items: center;
   justify-content: center;
 }
 
 .domainImg img {
-  width: 64px;
-  height: 64px;
   border-radius: 50%;
   object-fit: cover;
 }
