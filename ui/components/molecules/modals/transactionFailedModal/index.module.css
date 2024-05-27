@@ -41,3 +41,10 @@
   gap: 16px;
   margin-top: 32px;
 }
+
+.closeIcon {
+  position: absolute;
+  right: 16px;
+  top: 16px;
+  cursor: pointer;
+}
