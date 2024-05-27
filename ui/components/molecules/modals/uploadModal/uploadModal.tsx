@@ -95,7 +95,7 @@ const UploadModal = ({
       formData.append("pinataOptions", JSON.stringify({ cidVersion: 1 }));
 
       const ipfsHash = await pinFile(formData);
-      if(!ipfsHash) {        
+      if (!ipfsHash) {
         throw new Error(`IpfsHash does not exist`);
       }
 
@@ -130,14 +130,14 @@ const UploadModal = ({
       let createTxTaskArgs: string = JSON.stringify({
         contractAddress,
       });
-  
+
       const createTxTaskAnswer = await zkCloudWorkerRequest({
         command: "execute",
         task: "createTxTask",
         transactions: [],
         args: createTxTaskArgs,
         metadata: `backend txTask`,
-      });      
+      });
 
       const tx: Transaction = {
         operation: "update",

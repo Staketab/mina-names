@@ -88,8 +88,8 @@ const ModalPurchase = ({ name }: ModalPurchaseProps): JSX.Element => {
             button: {
               text: "Try Again",
               action: () => {
-                closeModal(Modals.transactionFailed)
-                handlePurchase()
+                closeModal(Modals.transactionFailed);
+                handlePurchase();
               },
             },
           });
