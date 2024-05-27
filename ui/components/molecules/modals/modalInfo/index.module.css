@@ -72,6 +72,7 @@
 
 .bottomContentLeftSide > div {
   color: #949499;
+  cursor: default;
 }
 
 .bottomContentLeftSide > div span {
