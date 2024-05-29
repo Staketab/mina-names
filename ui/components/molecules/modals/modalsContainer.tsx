@@ -17,11 +17,10 @@ const ModalContainer = (): JSX.Element => {
     <>
       {modals.map((modal) => {
         const Component = modalVariants[modal.modal];
-        console.log(modal.data);
 
         const ModalComponent = typeof Component === "object" && (
           //@ts-ignore
-          <Component {...modal.data} onClose={onClose} />
+          <Component {...modal.data} onClose={closeModal} />
         );
         // @ts-ignore
         const data = { ...modal.data, onClose: closeModal };
