@@ -25,7 +25,6 @@ const AllContent = ({
 
   const params = useParams();
 
-  console.log(domainStatus);
   const {
     state: {
       walletData: { accountId },
