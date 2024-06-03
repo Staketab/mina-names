@@ -24,6 +24,7 @@
   width: 144px;
   height: 120px;
   margin-bottom: 16px;
+  object-fit: cover
 }
 
 .bottomContent {

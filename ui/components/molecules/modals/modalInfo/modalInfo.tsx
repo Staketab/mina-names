@@ -32,6 +32,9 @@ type ModalInfoProps = {
     startTimestamp: number | null;
     transaction: string | null;
     ipfs: string | null;
+    oldMetadata: {
+      ipfsImg: string;
+    };
   };
 };
 
@@ -45,10 +48,17 @@ const ModalInfo = ({ data }: ModalInfoProps): JSX.Element => {
     ownerAddress,
     domainName,
     reservationTimestamp,
-    domainImg,
     domainStatus,
     ipfs,
+    oldMetadata,
   } = data;
+
+  const ipfsImgHash = JSON.parse(
+    oldMetadata.ipfsImg
+  )?.linkedObject?.storage.slice(2);
+
+  const domainImg =
+    ipfsImgHash && `https://gateway.pinata.cloud/ipfs/${ipfsImgHash}`;
 
   const renderContentItem = ({
     header,
