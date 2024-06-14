@@ -1,7 +1,7 @@
 import { Button } from "@/components/atoms/button";
 import style from "./index.module.css";
 import { Variant } from "@/components/atoms/button/types";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import classNames from "classnames";
 import { TABS_VARIANT } from "./tabs.types";
 
@@ -27,6 +27,10 @@ const Tabs = ({
   const [value, setValue] = useState<string | number>(
     initValue || items?.[0]?.value
   );
+
+  useEffect(() => {
+    setValue(initValue);
+  }, [initValue]);
 
   return (
     <div className={classNames(style.wrapper, className)}>

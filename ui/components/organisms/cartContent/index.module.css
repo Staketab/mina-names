@@ -35,3 +35,30 @@
 .summary > button {
   width: 100%;
 }
+
+.paymentMethod {
+  margin-bottom: 16px;
+}
+
+.paymentMethodHeader {
+  color: #57575a;
+  line-height: 20px;
+  margin-bottom: 9px;
+}
+
+.additionalFee {
+  color: #949499;
+}
+
+.radioGroup {
+  border: 1px solid #f2f2f3;
+  border-radius: 10px;
+}
+
+.radioGroup > div {
+  padding: 8px 12px;
+}
+
+.radioGroup > div:first-child {
+  border-bottom: 1px solid #f2f2f3;
+}
