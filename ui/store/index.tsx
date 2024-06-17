@@ -1,6 +1,6 @@
 "use client";
 import { bag } from "@/comman/constants";
-import { Modals } from "@/components/molecules/modals/modals.types";
+import { ModalData, Modals } from "@/components/molecules/modals/modals.types";
 import { ChainId, ChainInfoArgs } from "@/hooks/useWallet";
 import React, { useContext, useReducer } from "react";
 
@@ -79,7 +79,7 @@ type StoreActions =
   | SET_WALLET_DATA;
 
 type initStore = (value: IState) => void;
-type OpenModal = (modal: Modals, data?: unknown) => void;
+type OpenModal = <T extends Modals>(modal: T, data?: ModalData[T]) => void;
 type CloseModal = (modal?: Modals) => void;
 type addToBag = (data: Domain) => void;
 type addPeriod = (payload: { id: string; value: number; key: string }) => void;
@@ -119,7 +119,6 @@ export const initWalletData: WalletData = {
   },
 };
 
-
 export const initBag = {};
 
 export const initialState: IState = {
@@ -153,7 +152,7 @@ export const reducer = (state: IState, action: StoreActions): IState => {
       const newDataBag = {
         [action.payload.key]: {
           reservationTime: Date.now(),
-          domains: [...(domains? domains : []), action.payload]
+          domains: [...(domains ? domains : []), action.payload],
         },
       };
 

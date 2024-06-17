@@ -11,32 +11,10 @@ import style from "./index.module.css";
 import Link from "next/link";
 import { DOMAIN_STATUS, Routs } from "@/comman/types";
 import React, { ReactNode } from "react";
-import { CopyIcon } from "@/components/atoms/copyIcon";
 import TruncateText from "../../truncateText/truncateText";
-import { getUrlToMinascan } from "@/helpers/getUrlToMinascan";
 import { addMinaText } from "@/helpers/name.helper";
 import { useRouter } from "next/navigation";
-
-type ModalInfoProps = {
-  data: {
-    domainImg: string | null;
-    amount: number;
-    domainName: string;
-    domainStatus: string;
-    expirationTime: number;
-    isDefault: boolean;
-    isSendToCloudWorker: boolean;
-    id: string;
-    ownerAddress: string;
-    reservationTimestamp: number;
-    startTimestamp: number | null;
-    transaction: string | null;
-    ipfs: string | null;
-    oldMetadata: {
-      ipfsImg: string;
-    };
-  };
-};
+import { ModalInfoProps } from "../modals.types";
 
 const ModalInfo = ({ data }: ModalInfoProps): JSX.Element => {
   const router = useRouter();
