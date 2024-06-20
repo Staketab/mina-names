@@ -305,7 +305,7 @@ const CartContent = ({
           text={buttonText}
           variant={Variant.black}
           onClick={handlePurchase}
-          // disabled={disableNextBtn}
+          disabled={disableNextBtn}
         />
       </div>
     </div>
