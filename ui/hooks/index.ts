@@ -1,5 +1,4 @@
 export * from "./useCheckTimeReservation";
-export * from "./useAddressBalance";
 export * from "./useHandleClickOutside";
 export * from "./useKeyPress";
 export * from "./useLocalStorage";
