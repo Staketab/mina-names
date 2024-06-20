@@ -43,7 +43,24 @@ const ResultItem = ({
   const handleInfo = async () => {
     const response = await getAccountDomainDetails(id);
     openModal(Modals.info, {
-      data: response,
+      data: {
+        domainImg: response.domainImg,
+        amount: response.amount,
+        domainName: response.domainName,
+        domainStatus: response.domainStatus,
+        expirationTime: response.expirationTime,
+        isDefault: response.isDefault,
+        isSendToCloudWorker: response.isSendToCloudWorker,
+        id: response.id,
+        ownerAddress: response.ownerAddress,
+        reservationTimestamp: response.reservationTimestamp,
+        startTimestamp: response.startTimestamp,
+        transaction: response.transaction,
+        ipfs: response.ipfs,
+        oldMetadata: {
+          ipfsImg: response.oldMetadata.ipfsImg,
+        },
+      },
     });
   };
 

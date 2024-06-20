@@ -2,56 +2,45 @@ import { Button } from "@/components/atoms/button";
 import style from "./index.module.css";
 import { Variant } from "@/components/atoms/button/types";
 import { manropeBold, manropeMedium } from "@/app/fonts";
-import failedIcon from "../../../../assets/failed.svg";
+import appliedIcon from "../../../../assets/applied.svg";
 import closeIcon from "../../../../assets/close.svg";
 import Image from "next/image";
-import { Modals } from "../modals.types";
+import { Modals, TransactionAppliedModalProps } from "../modals.types";
 
-type TransactionAppliedModalProps = {
-  header: string;
-  text?: string;
-  button?: {
-    text: string;
-    action: () => void;
-  };
-  onClose: (value?: Modals) => void;
-};
-
-const TransactionFailedModal = ({
+const TransactionAppliedModal = ({
   header,
   text,
   button,
   onClose,
 }: TransactionAppliedModalProps): JSX.Element => {
-
   return (
     <div className={style.wrapper}>
+      <div className={style.topContent}>
+        <Image src={appliedIcon} alt="applied" />
+      </div>
       <Image
         src={closeIcon}
         alt="close"
         width={24}
         height={24}
         className={style.closeIcon}
-        onClick={() => {
-          onClose(Modals.transactionApplied);
-        }}
+        onClick={() => onClose(Modals.transactionApplied)}
       />
-      <div className={style.topContent}>
-        <Image src={failedIcon} alt="applied" />
-      </div>
       <div className={style.bottomContent}>
-        <div className={manropeBold.className}>{header}</div>
+        <div className={manropeBold.className}>
+          {header || "Transaction applied"}
+        </div>
         {text && <div className={manropeMedium.className}>{text}</div>}
-        <div className={style.buttonsBlock}>
-          {button && (
+        {button && (
+          <div className={style.buttonsBlock}>
             <Button variant={Variant.black} onClick={button.action}>
               {button.text}
             </Button>
-          )}
-        </div>
+          </div>
+        )}
       </div>
     </div>
   );
 };
 
-export default TransactionFailedModal;
+export { TransactionAppliedModal };

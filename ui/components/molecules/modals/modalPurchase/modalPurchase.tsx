@@ -13,16 +13,12 @@ import plusIcon from "../../../../assets/plus.svg";
 import minusIcon from "../../../../assets/minus.svg";
 import { MinaContent } from "./tabContents";
 import { useStoreContext } from "@/store";
-import { Modals } from "../modals.types";
+import { ModalPurchaseProps, Modals } from "../modals.types";
 import { TABS_VARIANT, Tabs } from "../../tabs";
 
 import { useRouter } from "next/navigation";
 import { Routs } from "@/comman/types";
 import { useWallet } from "@/hooks";
-
-type ModalPurchaseProps = {
-  name: string;
-};
 
 const ModalPurchase = ({ name }: ModalPurchaseProps): JSX.Element => {
   const [selectedPeriod, setSelectedPeriod] = useState<number>(1);

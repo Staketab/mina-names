@@ -60,4 +60,4 @@ const Input = ({
   );
 };
 
-export default Input;
+export { Input };

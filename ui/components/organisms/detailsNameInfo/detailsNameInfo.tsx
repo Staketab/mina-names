@@ -19,7 +19,6 @@ import { Star } from "@/components/atoms/star";
 import { TABS_VARIANT, Tabs } from "@/components/molecules/tabs";
 import { ProfileContent } from "./components";
 import { addMinaText } from "@/helpers/name.helper";
-import { useWallet } from "@/hooks";
 
 const DetailsNameInfo = ({
   accountDomainDetails,
@@ -38,12 +37,9 @@ const DetailsNameInfo = ({
     actions: { openModal },
   } = useStoreContext();
 
-  const wallet = useWallet();
-
   const handleEdit = (): void => {
     isOwner &&
       openModal(Modals.confirmation, {
-        wallet: wallet,
         accountDomainDetails,
       });
   };

@@ -5,21 +5,13 @@ import style from "./index.module.css";
 import { Button } from "@/components/atoms/button";
 import { Variant } from "@/components/atoms/button/types";
 import { useStoreContext } from "@/store";
-import { Modals } from "../modals.types";
-import { AccountDomainDetailsResponse } from "@/app/actions/types";
-import { IUseWallet } from "@/hooks/useWallet";
+import { ConfirmationModalProps, Modals } from "../modals.types";
 
 const ConfirmationModal = ({
   icon,
   text,
   accountDomainDetails,
-  wallet,
-}: {
-  icon?: string;
-  text?: string;
-  accountDomainDetails: AccountDomainDetailsResponse;
-  wallet: IUseWallet;
-}): JSX.Element => {
+}: ConfirmationModalProps): JSX.Element => {
   const {
     actions: { openModal, closeModal },
   } = useStoreContext();
@@ -50,4 +42,4 @@ const ConfirmationModal = ({
   );
 };
 
-export default ConfirmationModal;
+export { ConfirmationModal };

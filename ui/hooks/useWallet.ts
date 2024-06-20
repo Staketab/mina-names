@@ -42,7 +42,7 @@ export interface IUseWallet {
   balance: Balance;
   sendResultMessage: sendResultMessage;
   actions: {
-    onConnectWallet: () => Promise<void>;
+    onConnectWallet: () => Promise<undefined | string>;
     onDisconnectWallet: () => Promise<void>;
     setConnectMessage: (value: string | null) => void;
     getNetwork: () => Promise<ChainInfoArgs | ProviderError>;
@@ -88,7 +88,7 @@ function useWallet(): IUseWallet {
     return network;
   };
 
-  const onConnectWallet = async (): Promise<void> => {
+  const onConnectWallet = async (): Promise<undefined | string> => {
     if (!minaAdapter) {
       console.warn("No provider was found Auro Wallet");
     } else {

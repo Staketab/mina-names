@@ -8,13 +8,11 @@ import { FileInput } from "@/components/atoms/input/fileInput";
 import React, { useState } from "react";
 import { useStoreContext } from "@/store";
 import CryptoJS from "crypto-js";
-import { AccountDomainDetailsResponse } from "@/app/actions/types";
 import { chain, contractAddress, developer } from "@/comman/constants";
-import { Modals } from "../modals.types";
+import { Modals, UploadModalProps } from "../modals.types";
 import { useRouter } from "next/navigation";
 import { Routs } from "@/comman/types";
 import { pinFile } from "@/app/actions/clientActions";
-import { IUseWallet } from "@/hooks/useWallet";
 
 interface ImageData {
   size: number;
@@ -53,9 +51,7 @@ const fileTypes = [
 
 const UploadModal = ({
   accountDomainDetails,
-}: {
-  accountDomainDetails: AccountDomainDetailsResponse;
-}): JSX.Element => {
+}: UploadModalProps): JSX.Element => {
   const router = useRouter();
 
   const {
