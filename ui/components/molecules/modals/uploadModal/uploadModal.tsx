@@ -13,6 +13,7 @@ import { Modals, UploadModalProps } from "../modals.types";
 import { useRouter } from "next/navigation";
 import { Routs } from "@/comman/types";
 import { pinFile } from "@/app/actions/clientActions";
+import { WalletService } from "@/services/walletService";
 
 interface ImageData {
   size: number;
@@ -185,9 +186,7 @@ const UploadModal = ({
       const tx2 = JSON.parse(result);
       const signatureData = JSON.parse(tx2.signature).signatureData;
 
-      const result2 = await window["mina"]?.signFields({
-        message: signatureData,
-      });
+      const result2 = await WalletService.signFields(signatureData)
 
       const signature = result2.signature;
       tx2.signature = signature;

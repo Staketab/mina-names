@@ -1,8 +1,10 @@
 "use client";
 import { bag } from "@/comman/constants";
+import { NetworkID } from "@/comman/types";
 import { ModalData, Modals } from "@/components/molecules/modals/modals.types";
-import { ChainId, ChainInfoArgs } from "@/hooks/useWallet";
-import React, { useContext, useReducer } from "react";
+import { InitService } from "@/services/initService";
+import { WalletService } from "@/services/walletService";
+import React, { useContext, useEffect, useReducer } from "react";
 
 type Domain = {
   name: string;
@@ -21,15 +23,27 @@ type Bag = {
   [key: string]: BagByAccount;
 };
 
+type ChainInfoArgs = {
+  networkID: NetworkID;
+};
+
+export type Balance = {
+  balance: number;
+  balanceUsd: number;
+};
+
 export type WalletData = {
   accountId: string;
   connectMessage: string;
   network: ChainInfoArgs;
+  balance?: Balance;
 };
+
 export type OPEN_MODAL = {
   type: "OPEN_MODAL";
   payload: { modal: Modals; data?: unknown };
 };
+
 export type CLOSE_MODAL = { type: "CLOSE_MODAL"; payload: Modals };
 
 export type INIT_STOR_FROM_LOCAL_STORAGE = {
@@ -114,8 +128,11 @@ export const initWalletData: WalletData = {
   accountId: "",
   connectMessage: "",
   network: {
-    chainId: ChainId.devnet,
-    name: "Devnet",
+    networkID: NetworkID.devnet,
+  },
+  balance: {
+    balance: 0,
+    balanceUsd: 0,
   },
 };
 
@@ -149,7 +166,10 @@ export const reducer = (state: IState, action: StoreActions): IState => {
     case "ADD_TO_BAG":
       const domains = state?.bag?.[action.payload.key]?.domains;
 
+      const currentBag = state?.bag;
+
       const newDataBag = {
+        ...currentBag,
         [action.payload.key]: {
           reservationTime: Date.now(),
           domains: [...(domains ? domains : []), action.payload],
@@ -274,6 +294,33 @@ const Store = ({
 
   const deleteFromBag = (payload) =>
     dispatch({ type: "DELETE_FROM_BAG", payload: payload });
+
+  const initFunction = async (): Promise<void> => {
+    InitService.init();
+    WalletService.setAccountDataToStore = setWalletData;
+    const isWalletConnected = await WalletService.isWalletConnected();
+    console.log(isWalletConnected);
+
+    const bagStorage = localStorage.getItem("bag");
+    const accountStorage = localStorage.getItem("account");
+
+    if (bagStorage || accountStorage) {
+      initStore({
+        modals: [],
+        bag: bagStorage ? JSON.parse(bagStorage) : {},
+        walletData: accountStorage
+          ? {
+              ...JSON.parse(accountStorage),
+              accountId: JSON.parse(accountStorage)?.accountId,
+            }
+          : initWalletData,
+      });
+    }
+  };
+
+  useEffect(() => {
+    initFunction();
+  }, []);
 
   return (
     <StoreContext.Provider

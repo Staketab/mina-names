@@ -23,14 +23,15 @@ import { interSemiBold, manropeBold } from "@/app/fonts";
 import { Button } from "@/components/atoms/button";
 import { Variant } from "@/components/atoms/button/types";
 import { Modals } from "@/components/molecules/modals/modals.types";
-import { DATA_STATUS, Routs } from "@/comman/types";
+import { DATA_STATUS, NetworkID, Routs } from "@/comman/types";
 import { DomainForTable, DomainsForTable } from "./cartContent.types";
 import { useRouter } from "next/navigation";
 import { addMinaText, sliceName } from "@/helpers/name.helper";
-import { useWallet } from "@/hooks";
+import { ChainInfoArgs, useWallet } from "@/hooks";
 import { useEffect, useState } from "react";
 import { RadioGroup } from "@/components/molecules/radioGroup";
 import { RadioGroupOption } from "@/components/molecules/radioGroup/radioGroup.types";
+import { WalletService } from "@/services/walletService";
 
 const CartContent = ({
   hasCardPayment,
@@ -40,21 +41,23 @@ const CartContent = ({
   const [disableNextBtn, setDisableNextBtn] = useState(false);
   const [initTab, setInitTab] = useState<number | string>(1);
   const {
-    balance,
     actions: { onSendClick, onConnectWallet },
   } = useWallet();
-  const router = useRouter();
-
-  const isUSDTab = initTab === 2;
-  const isInsufficientBalance = balance?.balance < amount;
-
   const {
     state: {
       bag,
-      walletData: { accountId, connectMessage },
+      walletData: {
+        accountId,
+        connectMessage,
+        balance: { balance },
+      },
     },
     actions: { addPeriod, openModal, closeModal, clearBag, deleteFromBag },
   } = useStoreContext();
+
+  const router = useRouter();
+  const isUSDTab = initTab === 2;
+  const isInsufficientBalance = balance < amount;
 
   const currentDomainsByAccount = bag?.[accountId]?.domains || [];
 
@@ -113,14 +116,22 @@ const CartContent = ({
       setDisableNextBtn(false);
       return;
     }
+
     try {
       await onConnectWallet();
+      const chainInfoArgs: ChainInfoArgs = await WalletService.switchChain(
+        NetworkID.devnet
+      );
+      if (!chainInfoArgs.networkID) {
+        throw new Error("");
+      }
+
       const response = await onSendClick({
         amount: totalAmount,
         to: accountAddress,
         fee: fees.default,
       });
-      if (response?.hash) {
+      if (response?.hash || !chainInfoArgs.networkID) {
         openModal(Modals.transactionApplied, {
           header: "Transaction applied",
           text: "The Domain was successfully purchased!",
@@ -159,6 +170,17 @@ const CartContent = ({
         });
       }
     } catch (error) {
+      openModal(Modals.transactionFailed, {
+        header: "Transaction failed",
+        text: "The Domain has not been purchased!",
+        button: {
+          text: "Try Again",
+          action: () => {
+            closeModal(Modals.transactionFailed);
+            handlePurchase();
+          },
+        },
+      });
     } finally {
     }
     setDisableNextBtn(false);
@@ -283,7 +305,7 @@ const CartContent = ({
           text={buttonText}
           variant={Variant.black}
           onClick={handlePurchase}
-          disabled={disableNextBtn}
+          // disabled={disableNextBtn}
         />
       </div>
     </div>

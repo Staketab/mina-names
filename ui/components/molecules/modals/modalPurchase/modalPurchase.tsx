@@ -19,12 +19,13 @@ import { TABS_VARIANT, Tabs } from "../../tabs";
 import { useRouter } from "next/navigation";
 import { Routs } from "@/comman/types";
 import { useWallet } from "@/hooks";
+import { WalletService } from "@/services/walletService";
 
 const ModalPurchase = ({ name }: ModalPurchaseProps): JSX.Element => {
   const [selectedPeriod, setSelectedPeriod] = useState<number>(1);
   const {
     state: {
-      walletData: { accountId },
+      walletData: { accountId, balance },
     },
     actions: { openModal, closeModal },
   } = useStoreContext();
@@ -35,7 +36,6 @@ const ModalPurchase = ({ name }: ModalPurchaseProps): JSX.Element => {
   const amount = 1;
 
   const {
-    balance,
     actions: { onSendClick },
   } = useWallet();
 

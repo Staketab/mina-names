@@ -95,3 +95,9 @@ export enum Routs {
   NAME = "/name",
   CART = "/cart",
 }
+
+export enum NetworkID {
+  mainnet = "mina:mainnet",
+  devnet = "mina:testnet",
+  berkeley = "mina:berkeley",
+}

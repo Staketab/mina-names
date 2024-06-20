@@ -37,7 +37,7 @@ const HomeSection = () => {
   };
 
   const handleChange = async (value: string) => {
-    const cleanInput = value.toLocaleLowerCase().replace(/[^a-z0-9- ]/g, "");
+    const cleanInput = value.toLocaleLowerCase().trim().replace(/[^a-z0-9- ]/g, "");
     setValue(cleanInput);
 
     try {
