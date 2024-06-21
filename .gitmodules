@@ -1,3 +1,6 @@
 [submodule "mina-names-backend"]
 	path = mina-names-backend
 	url = https://github.com/Staketab/mina-names-backend
+[submodule "mina-names-lib"]
+	path = mina-names-lib
+	url = https://github.com/Staketab/mina-names-lib
