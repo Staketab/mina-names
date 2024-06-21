@@ -39,23 +39,44 @@ export async function saveName({
   return await res.json();
 }
 
+/**
+ * Fetches the list of domains associated with a specific account.
+ *
+ * @async
+ * @function getAccountDomains
+ * @param {Object} params - The parameters for fetching account domains.
+ * @param {string} params.accountAddress - The address of the account.
+ * @param {number} params.page - The page number for pagination.
+ * @param {number} params.size - The number of domains per page.
+ * @param {ORDER_BY} params.orderBy - The order by which to sort the results.
+ * @param {SORT_BY} params.sortBy - The field by which to sort the results.
+ * @param {DOMAIN_STATUS} [params.domainStatus] - The status of the domains to filter by (optional).
+ * @returns {Promise<Object>} The JSON response from the API containing the list of domains.
+ * @throws Will throw an error if the fetch request fails.
+ */
+
 export async function getAccountDomains({
   accountAddress,
   page,
   size,
   orderBy,
   sortBy,
+  domainStatus,
 }: {
   accountAddress: string;
   page: number;
   size: number;
   orderBy: ORDER_BY;
   sortBy: SORT_BY;
+  domainStatus?: DOMAIN_STATUS;
 }) {
   if (!accountAddress) return;
-
   const res = await fetch(
-    `${process.env.Non_NEXT_PUBLIC_API_URL}/domains/accounts/${accountAddress}?page=${page}&size=${size}&orderBy=${orderBy}&sortBy=${sortBy}`,
+    `${
+      process.env.Non_NEXT_PUBLIC_API_URL
+    }/domains/accounts/${accountAddress}?page=${page}&size=${size}&orderBy=${orderBy}&sortBy=${sortBy}&domainStatus=${
+      domainStatus || ""
+    }`,
     {
       headers: {
         "Content-Type": "application/json",
@@ -105,7 +126,6 @@ export async function getDomainsMetadata(id: string) {
 export async function checkReservedName(
   domainName: string
 ): Promise<{ id: string | null; status: DOMAIN_STATUS | null }> {
-
   const res = await fetch(
     `${process.env.Non_NEXT_PUBLIC_API_URL}/domains/${domainName}/reserved`,
     {
@@ -115,7 +135,7 @@ export async function checkReservedName(
       },
     }
   );
-  
+
   return await res.json();
 }
 

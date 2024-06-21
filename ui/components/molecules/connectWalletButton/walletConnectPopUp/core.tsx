@@ -8,11 +8,10 @@ import InstallScreen from "./screens/installScreen";
 import SuccessScreen from "./screens/successScreen";
 import FailScreen from "./screens/failScreen";
 import WalletConnectPopUpMobileHeader from "./mobileHeader";
-import { useMedia } from "../../../../hooks/useMedia";
-import { useKeyPress } from "../../../../hooks/useKeyPress";
 import { useStoreContext } from "@/store";
 import { Modals } from "../../modals/modals.types";
 import getWalletConfig from "../hellper";
+import { useKeyPress, useMedia } from "@/hooks";
 
 const messages = {
   0: "Connecting your wallet is like “logging in” to Web3. Select your wallet from the options to get started.",
@@ -32,12 +31,19 @@ const statuses = {
   rejected: "rejected",
 };
 
+export type WalletConnectPopUpCoreProps = {
+  connectMessage?: string;
+  isMobileConnection?: boolean;
+  onConnectWallet: () => Promise<undefined | string>;
+  onResolve?: (value: string) => void;
+};
+
 const WalletConnectPopUpCore = ({
   connectMessage,
   isMobileConnection,
   onConnectWallet,
-  onResolve
-}) => {
+  onResolve,
+}: WalletConnectPopUpCoreProps) => {
   const [step, setStep] = useState(0);
   const [stepStatus, setStepStatus] = useState(statuses.normal);
   const [connectingWalletName, setConnectingWalletName] =
@@ -52,7 +58,7 @@ const WalletConnectPopUpCore = ({
   const walletName = accountId ? "Auro Wallet" : null;
   const list = getWalletConfig();
   const rejected = connectMessage === "user reject";
-  
+
   const media = useMedia();
   const isMobile = !media.greater.xs;
   useKeyPress("Escape", () => {
@@ -70,12 +76,15 @@ const WalletConnectPopUpCore = ({
     ];
   }, [list]);
 
-  const cardClickHandler = async (name: string, installed: boolean): Promise<void> => {
+  const cardClickHandler = async (
+    name: string,
+    installed: boolean
+  ): Promise<void> => {
     setConnectingWalletName(name);
     if (installed) {
       setStepStatus(statuses.normal);
-      const accoutnId = await onConnectWallet(name);
-      onResolve && onResolve(accoutnId)
+      const accoutnId = await onConnectWallet();
+      onResolve && accoutnId && onResolve(accoutnId);
     } else setStepStatus(statuses.notInstalled);
     setStep(1);
   };

@@ -3,24 +3,28 @@ import style from "./index.module.css";
 import { Variant } from "@/components/atoms/button/types";
 import { manropeBold, manropeMedium } from "@/app/fonts";
 import failedIcon from "../../../../assets/failed.svg";
+import closeIcon from "../../../../assets/close.svg";
 import Image from "next/image";
-
-type TransactionAppliedModalProps = {
-  header: string;
-  text?: string;
-  button?: {
-    text: string;
-    action: () => void;
-  };
-};
+import { Modals, TransactionFailedModalProps } from "../modals.types";
 
 const TransactionFailedModal = ({
   header,
   text,
   button,
-}: TransactionAppliedModalProps): JSX.Element => {
+  onClose,
+}: TransactionFailedModalProps): JSX.Element => {  
   return (
     <div className={style.wrapper}>
+      <Image
+        src={closeIcon}
+        alt="close"
+        width={24}
+        height={24}
+        className={style.closeIcon}
+        onClick={() => {          
+          onClose(Modals.transactionFailed);
+        }}
+      />
       <div className={style.topContent}>
         <Image src={failedIcon} alt="applied" />
       </div>
@@ -39,4 +43,4 @@ const TransactionFailedModal = ({
   );
 };
 
-export default TransactionFailedModal;
+export { TransactionFailedModal };

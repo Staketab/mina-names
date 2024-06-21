@@ -6,7 +6,6 @@ import { interSemiBold, manropeBold } from "@/app/fonts";
 import { Button } from "@/components/atoms/button";
 import { Variant } from "@/components/atoms/button/types";
 import React, { useState } from "react";
-import useWallet from "@/hooks/useWallet";
 import { saveName } from "@/app/actions/actions";
 import { accountAddress, fees } from "@/comman/constants";
 import Image from "next/image";
@@ -14,21 +13,19 @@ import plusIcon from "../../../../assets/plus.svg";
 import minusIcon from "../../../../assets/minus.svg";
 import { MinaContent } from "./tabContents";
 import { useStoreContext } from "@/store";
-import { Modals } from "../modals.types";
+import { ModalPurchaseProps, Modals } from "../modals.types";
 import { TABS_VARIANT, Tabs } from "../../tabs";
 
 import { useRouter } from "next/navigation";
 import { Routs } from "@/comman/types";
-
-type ModalPurchaseProps = {
-  name: string;
-};
+import { useWallet } from "@/hooks";
+import { WalletService } from "@/services/walletService";
 
 const ModalPurchase = ({ name }: ModalPurchaseProps): JSX.Element => {
   const [selectedPeriod, setSelectedPeriod] = useState<number>(1);
   const {
     state: {
-      walletData: { accountId },
+      walletData: { accountId, balance },
     },
     actions: { openModal, closeModal },
   } = useStoreContext();
@@ -39,7 +36,6 @@ const ModalPurchase = ({ name }: ModalPurchaseProps): JSX.Element => {
   const amount = 1;
 
   const {
-    balance,
     actions: { onSendClick },
   } = useWallet();
 
@@ -88,8 +84,8 @@ const ModalPurchase = ({ name }: ModalPurchaseProps): JSX.Element => {
             button: {
               text: "Try Again",
               action: () => {
-                closeModal(Modals.transactionFailed)
-                handlePurchase()
+                closeModal(Modals.transactionFailed);
+                handlePurchase();
               },
             },
           });

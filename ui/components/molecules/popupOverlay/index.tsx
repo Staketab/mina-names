@@ -2,9 +2,9 @@ import classNames from "classnames";
 import React, { useEffect, useState, useRef } from "react";
 import { createPortal } from "react-dom";
 import style from "./PopupOverlay.module.css";
-import { useMedia } from "../../../hooks/useMedia";
-import { usePathname, useRouter } from "next/navigation";
+import { usePathname } from "next/navigation";
 import { useStoreContext } from "@/store";
+import { useMedia } from "@/hooks";
 
 type PopupOverlayProps = {
   children: React.ReactNode;

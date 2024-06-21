@@ -5,12 +5,12 @@ import PopupOverlay from "../popupOverlay";
 import { modalVariants } from "./modals.variant";
 
 import style from "./index.module.css";
-import React, { useMemo } from "react";
+import React from "react";
 
 const ModalContainer = (): JSX.Element => {
   const {
     state: { modals },
-    actions: {closeModal}
+    actions: { closeModal },
   } = useStoreContext();
 
   return (
@@ -20,10 +20,12 @@ const ModalContainer = (): JSX.Element => {
 
         const ModalComponent = typeof Component === "object" && (
           //@ts-ignore
-          <Component {...modal.data} />
+          <Component {...modal.data} onClose={closeModal} />
         );
+        // @ts-ignore
+        const data = { ...modal.data, onClose: closeModal };
         const modalChild =
-          ModalComponent || (Component ? Component(modal.data) : null);
+          ModalComponent || (Component ? Component(data) : null);
 
         return (
           <PopupOverlay
@@ -31,7 +33,7 @@ const ModalContainer = (): JSX.Element => {
             animation="appear"
             show={true}
             key={modal.modal}
-            onClose={() => closeModal()}
+            onClose={closeModal}
           >
             <div className={style.contentWrapper}>{modalChild}</div>
           </PopupOverlay>

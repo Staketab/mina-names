@@ -8,13 +8,12 @@ import { FileInput } from "@/components/atoms/input/fileInput";
 import React, { useState } from "react";
 import { useStoreContext } from "@/store";
 import CryptoJS from "crypto-js";
-import { AccountDomainDetailsResponse } from "@/app/actions/types";
 import { chain, contractAddress, developer } from "@/comman/constants";
-import { Modals } from "../modals.types";
+import { Modals, UploadModalProps } from "../modals.types";
 import { useRouter } from "next/navigation";
 import { Routs } from "@/comman/types";
 import { pinFile } from "@/app/actions/clientActions";
-import { IUseWallet } from "@/hooks/useWallet";
+import { WalletService } from "@/services/walletService";
 
 interface ImageData {
   size: number;
@@ -53,9 +52,7 @@ const fileTypes = [
 
 const UploadModal = ({
   accountDomainDetails,
-}: {
-  accountDomainDetails: AccountDomainDetailsResponse;
-}): JSX.Element => {
+}: UploadModalProps): JSX.Element => {
   const router = useRouter();
 
   const {
@@ -95,7 +92,7 @@ const UploadModal = ({
       formData.append("pinataOptions", JSON.stringify({ cidVersion: 1 }));
 
       const ipfsHash = await pinFile(formData);
-      if(!ipfsHash) {        
+      if (!ipfsHash) {
         throw new Error(`IpfsHash does not exist`);
       }
 
@@ -130,14 +127,14 @@ const UploadModal = ({
       let createTxTaskArgs: string = JSON.stringify({
         contractAddress,
       });
-  
+
       const createTxTaskAnswer = await zkCloudWorkerRequest({
         command: "execute",
         task: "createTxTask",
         transactions: [],
         args: createTxTaskArgs,
         metadata: `backend txTask`,
-      });      
+      });
 
       const tx: Transaction = {
         operation: "update",
@@ -189,9 +186,7 @@ const UploadModal = ({
       const tx2 = JSON.parse(result);
       const signatureData = JSON.parse(tx2.signature).signatureData;
 
-      const result2 = await window["mina"]?.signFields({
-        message: signatureData,
-      });
+      const result2 = await WalletService.signFields(signatureData)
 
       const signature = result2.signature;
       tx2.signature = signature;

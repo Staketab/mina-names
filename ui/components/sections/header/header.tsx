@@ -7,40 +7,24 @@ import { Bag } from "@/components/atoms/bag";
 import { BAG_VARIANTS } from "@/components/atoms/bag/bag.type";
 import Link from "next/link";
 import { Routs } from "@/comman/types";
-import { initWalletData, useStoreContext } from "@/store";
-import { useEffect } from "react";
-import { useRouter } from "next/router";
+import {  useStoreContext } from "@/store";
 import { usePathname } from "next/navigation";
 import classNames from "classnames";
+import {  useCheckTimeReservation } from "@/hooks";
 
 const Header = (): JSX.Element => {
   const {
-    state: {
-      walletData: { accountId },
-      bag,
-    },
-    actions: { initStore },
+    state: { walletData, bag },
   } = useStoreContext();
-  const currentDomainsByAccount = bag?.[accountId]?.domains || [];
+
+  const time = useCheckTimeReservation();
+  const currentBagByAccount = bag?.[walletData.accountId];
+
   const pathName = usePathname();
   const isHomePage = pathName === Routs.HOME;
 
-  useEffect(() => {
-    const bagStorage = localStorage.getItem("bag");
-    const accountStorage = localStorage.getItem("account");
-    if (bagStorage || accountStorage) {
-      initStore({
-        modals: [],
-        bag: bagStorage ? JSON.parse(bagStorage) : {},
-        walletData: accountStorage
-          ? {
-              ...JSON.parse(accountStorage),
-              accountId: JSON.parse(accountStorage)?.accountId,
-            }
-          : initWalletData,
-      });
-    }
-  }, []);
+
+  const domains = currentBagByAccount?.domains || [];
 
   return (
     <header
@@ -51,11 +35,11 @@ const Header = (): JSX.Element => {
       <Logo />
       <div className={style.rightSide}>
         <ConnectWalletButton />
-        {accountId && (
+        {walletData.accountId && (
           <Link href={`${Routs.CART}`}>
             <Bag
               variant={BAG_VARIANTS.GRADIENT}
-              size={currentDomainsByAccount.length}
+              size={time ? domains.length : 0}
             />
           </Link>
         )}

@@ -8,7 +8,12 @@ import { useParams } from "next/navigation";
 import { useStoreContext } from "@/store";
 import { addMinaText } from "@/helpers/name.helper";
 
+const initPage = 0;
+const initSize = 50;
+
 const ActivityContent = (): JSX.Element => {
+  const [size, setSize] = useState<number>(initSize);
+  const [page, setPage] = useState<number>(initPage);
   const [activities, setActivities] = useState<DataTable>(null);
   const [loading, setLoading] = useState<boolean>(true);
   const params = useParams();
@@ -20,12 +25,12 @@ const ActivityContent = (): JSX.Element => {
 
   useEffect(() => {
     (async () => {
-      try {
+      try {        
         setLoading(true);
         const response: DataTable = await getActivities({
           accountAddress: (params?.id as string) || accountId,
-          page: 0,
-          size: 50,
+          page,
+          size,
           sortBy: SORT_BY.TIMESTAMP,
           orderBy: ORDER_BY.DESC,
         });
@@ -41,7 +46,17 @@ const ActivityContent = (): JSX.Element => {
       } catch (error) {}
       setLoading(false);
     })();
-  }, []);
+  }, [params?.id, size, page]);
+
+  const onSize = (size) => {
+    setPage(initPage);
+    setSize(size);
+  };
+
+  const onPage = (page) => {
+    setPage(page);
+  };
+
 
   return (
     <Table
@@ -61,12 +76,8 @@ const ActivityContent = (): JSX.Element => {
       ]}
       sortBy={SORT_BY.RESERVATION_TIMESTAMP}
       orderBy={ORDER_BY.DESC}
-      onChangePage={(data) => {
-        console.log(data);
-      }}
-      onChangeLimit={(data) => {
-        console.log(data);
-      }}
+      onChangePage={onPage}
+      onChangeLimit={onSize}
       onChangeSort={(data) => {
         console.log(data);
       }}

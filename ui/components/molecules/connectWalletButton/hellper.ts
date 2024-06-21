@@ -1,3 +1,4 @@
+import { WalletService } from "@/services/walletService";
 import auroIcon from "./img/auro.png";
 import { StaticImageData } from "next/image";
 
@@ -12,7 +13,7 @@ const getWalletConfig = (): {
 }[] => [
   {
     // eslint-disable-next-line valid-typeof
-    installed: typeof window !== "undefined" && window["mina"]?.isAuro,
+    installed: WalletService.minaAdapter?.isAuro,
     name: "Auro Wallet",
     icon: auroIcon,
     downloadUrl: {

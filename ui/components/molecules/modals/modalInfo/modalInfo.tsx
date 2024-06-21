@@ -11,30 +11,14 @@ import style from "./index.module.css";
 import Link from "next/link";
 import { DOMAIN_STATUS, Routs } from "@/comman/types";
 import React, { ReactNode } from "react";
-import { CopyIcon } from "@/components/atoms/copyIcon";
 import TruncateText from "../../truncateText/truncateText";
-import { getUrlToMinascan } from "@/helpers/getUrlToMinascan";
 import { addMinaText } from "@/helpers/name.helper";
-
-type ModalInfoProps = {
-  data: {
-    domainImg: string | null;
-    amount: number;
-    domainName: string;
-    domainStatus: string;
-    expirationTime: number;
-    isDefault: boolean;
-    isSendToCloudWorker: boolean;
-    id: string;
-    ownerAddress: string;
-    reservationTimestamp: number;
-    startTimestamp: number | null;
-    transaction: string | null;
-    ipfs: string | null;
-  };
-};
+import { useRouter } from "next/navigation";
+import { ModalInfoProps } from "../modals.types";
 
 const ModalInfo = ({ data }: ModalInfoProps): JSX.Element => {
+  const router = useRouter();
+
   if (!data) return null;
 
   const {
@@ -42,21 +26,30 @@ const ModalInfo = ({ data }: ModalInfoProps): JSX.Element => {
     ownerAddress,
     domainName,
     reservationTimestamp,
-    domainImg,
     domainStatus,
     ipfs,
+    oldMetadata,
   } = data;
+
+  const ipfsImgHash = JSON.parse(
+    oldMetadata.ipfsImg
+  )?.linkedObject?.storage.slice(2);
+
+  const domainImg =
+    ipfsImgHash && `https://gateway.pinata.cloud/ipfs/${ipfsImgHash}`;
 
   const renderContentItem = ({
     header,
     content,
     url,
     hiddenIcon,
+    action,
   }: {
     header: string;
     content: ReactNode;
     url?: string;
     hiddenIcon?: boolean;
+    action?: () => void;
   }): JSX.Element => {
     return (
       <div className={classNames(style.infoItem, manropeSemiBold.className)}>
@@ -64,7 +57,7 @@ const ModalInfo = ({ data }: ModalInfoProps): JSX.Element => {
           <span className={style.leftSideHeader}>{header}</span>
           {content}
         </div>
-        {url ? (
+        {url && (
           <a
             href={url}
             target="_blank"
@@ -72,12 +65,11 @@ const ModalInfo = ({ data }: ModalInfoProps): JSX.Element => {
           >
             <Image src={defaultIcon} alt="" width={24} height={20} />
           </a>
-        ) : (
-          !hiddenIcon && (
-            <span className={style.bottomContentRightSide}>
-              {<Image src={defaultIcon} alt="" width={24} height={20} />}
-            </span>
-          )
+        )}
+        {action && (
+          <span onClick={action} className={style.bottomContentRightSide}>
+            <Image src={defaultIcon} alt="" width={24} height={20} />
+          </span>
         )}
       </div>
     );
@@ -96,7 +88,7 @@ const ModalInfo = ({ data }: ModalInfoProps): JSX.Element => {
       <div className={style.bottomContent}>
         {renderContentItem({
           header: "Domain Owner",
-          url: getUrlToMinascan(`/devnet/account/${ownerAddress}`),
+          action: () => router.push(`${Routs.NAMES}/${ownerAddress}`),
           content: (
             <StaticEllipse
               className={manropeSemiBold.className}
@@ -121,9 +113,8 @@ const ModalInfo = ({ data }: ModalInfoProps): JSX.Element => {
           content: (
             <StaticEllipse
               className={manropeSemiBold.className}
-              text={ipfs || '-'}
+              text={ipfs || "-"}
               view={{ sm: 10, md: 14, lg: 18 }}
-              link={ipfs && `https://gateway.pinata.cloud/ipfs/${ipfs}`}
             />
           ),
         })}

@@ -3,8 +3,8 @@ import style from './DropdownWrapper.module.css';
 import classNames from 'classnames';
 import CloseIcon from './Close.svg';
 import Image from 'next/image';
-import { useMedia } from '../../../hooks/useMedia';
 import PopupOverlay from '../popupOverlay';
+import { useMedia } from '@/hooks';
 
 type DropdownWrapperProps = {
     children: ReactNode;

@@ -3,25 +3,29 @@ import style from "./index.module.css";
 import { Variant } from "@/components/atoms/button/types";
 import { manropeBold, manropeMedium } from "@/app/fonts";
 import appliedIcon from "../../../../assets/applied.svg";
+import closeIcon from "../../../../assets/close.svg";
 import Image from "next/image";
+import { Modals, TransactionAppliedModalProps } from "../modals.types";
 
 const TransactionAppliedModal = ({
   header,
   text,
   button,
-}: {
-  header: string;
-  text?: string;
-  button?: {
-    action: () => void;
-    text: string;
-  };
-}): JSX.Element => {
+  onClose,
+}: TransactionAppliedModalProps): JSX.Element => {
   return (
     <div className={style.wrapper}>
       <div className={style.topContent}>
         <Image src={appliedIcon} alt="applied" />
       </div>
+      <Image
+        src={closeIcon}
+        alt="close"
+        width={24}
+        height={24}
+        className={style.closeIcon}
+        onClick={() => onClose(Modals.transactionApplied)}
+      />
       <div className={style.bottomContent}>
         <div className={manropeBold.className}>
           {header || "Transaction applied"}
@@ -39,4 +43,4 @@ const TransactionAppliedModal = ({
   );
 };
 
-export default TransactionAppliedModal;
+export { TransactionAppliedModal };

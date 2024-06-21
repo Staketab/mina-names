@@ -1,6 +1,7 @@
-import { useState } from "react";
-import useAddressBalance, { Balance } from "./useAddressBalance";
+import { useEffect, useState } from "react";
 import { WalletData, initWalletData, useStoreContext } from "@/store";
+import { NetworkID } from "@/comman/types";
+import { Balance, WalletService } from "@/services/walletService";
 
 export type SendPaymentresponse = {
   hash?: string;
@@ -28,24 +29,21 @@ export enum ChainId {
 }
 
 export type ChainInfoArgs = {
-  chainId: ChainId;
-  name: "Devnet" | "Berkeley" | "Mainnet";
+  networkID: NetworkID;
 };
 
-interface ProviderError extends Error {
+export interface ProviderError extends Error {
   message: string;
   code: number;
   data?: unknown;
 }
 
 export interface IUseWallet {
-  balance: Balance;
   sendResultMessage: sendResultMessage;
   actions: {
-    onConnectWallet: () => Promise<void>;
+    onConnectWallet: () => Promise<undefined | string>;
     onDisconnectWallet: () => Promise<void>;
     setConnectMessage: (value: string | null) => void;
-    getNetwork: () => Promise<ChainInfoArgs | ProviderError>;
     onSendClick: ({
       amount,
       to,
@@ -64,8 +62,7 @@ export interface IUseWallet {
     >;
   };
 }
-
-export default function useWallet(): IUseWallet {
+function useWallet(): IUseWallet {
   const {
     state: { walletData },
     actions: { setWalletData: setWalletDataToStore },
@@ -74,68 +71,54 @@ export default function useWallet(): IUseWallet {
   const [sendResultMessage, setSendResultMessage] =
     useState<sendResultMessage>();
 
-  const balance = useAddressBalance(walletData?.accountId);
-
   const setConnectMessage = (connectMessage) =>
     setWalletDataToStore({ ...walletData, connectMessage: connectMessage });
 
-  const minaAdapter = typeof window !== "undefined" && window["mina"];
-
-  const getNetwork = async (): Promise<ChainInfoArgs | ProviderError> => {
-    const network: ChainInfoArgs | ProviderError = await minaAdapter
-      ?.requestNetwork()
-      .catch((err: any) => err);
-
-    return network;
-  };
-
-  const onConnectWallet = async (): Promise<void> => {
-    if (!minaAdapter) {
+  const onConnectWallet = async (): Promise<undefined | string> => {
+    if (!WalletService.minaAdapter) {
       console.warn("No provider was found Auro Wallet");
     } else {
-      // setWalletDataToStore({
-      //   ...walletData,
-      //   connectMessage: "Onboarding in progress",
-      // });
+      const data = await WalletService.requestAccounts();
+      const network = await WalletService.getNetwork();
 
-      const data = await minaAdapter.requestAccounts().catch((err) => err);
-      const network = await getNetwork();
-
-      if (data.message) {
+      if ("message" in data && data.message) {
         setWalletDataToStore({
           ...walletData,
           connectMessage: data.message,
           network: network as ChainInfoArgs,
         });
       } else {
-        const newWalletData = {
-          accountId: data?.[0] || "",
-          network,
-          connectMessage: "Connected",
-        } as WalletData;
+        if ("networkID" in network) {
+          const balance: Balance = await WalletService.getBalance(
+            data?.[0],
+            network.networkID as NetworkID
+          );
+          const newWalletData = {
+            accountId: data?.[0] || "",
+            network,
+            connectMessage: "Connected",
+            balance,
+          } as WalletData;
 
-        setWalletDataToStore(newWalletData);
-        return data?.[0]
+          setWalletDataToStore(newWalletData);
+        }
+        return data?.[0];
       }
     }
   };
 
   const onDisconnectWallet = async (): Promise<void> => {
-    setWalletDataToStore(initWalletData);
+    WalletService.onDisconnectWallet()
   };
 
   const onSendClick = async ({ amount, to, fee, memo }) => {
     try {
-      let sendResult = await minaAdapter
-        .sendPayment({
-          amount,
-          to,
-          fee,
-          memo,
-        })
-        .catch((err) => {
-          console.log(err);
-        });
+      let sendResult = await WalletService.sendPayment({
+        amount,
+        to,
+        fee,
+        memo,
+      });
       setSendResultMessage({
         hash: sendResult?.hash,
         message: sendResult?.message,
@@ -148,14 +131,14 @@ export default function useWallet(): IUseWallet {
   };
 
   return {
-    balance,
     sendResultMessage,
     actions: {
       onConnectWallet,
       onDisconnectWallet,
       setConnectMessage,
       onSendClick,
-      getNetwork,
     },
   };
 }
+
+export { useWallet };

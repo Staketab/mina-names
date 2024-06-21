@@ -1,5 +1,11 @@
 "use client";
-import { accountAddress, amount, fees, rate } from "@/comman/constants";
+import {
+  accountAddress,
+  amount,
+  amountUSD,
+  fees,
+  rate,
+} from "@/comman/constants";
 import { Table } from "../table";
 import { tableConfig } from "./constants";
 import { TypeView } from "@/components/atoms/switchView/switchView";
@@ -11,40 +17,49 @@ import {
   reserveApplyName,
 } from "@/app/actions/actions";
 import { TABS_VARIANT, Tabs } from "@/components/molecules/tabs";
-import { MinaContent } from "./components/minaContent";
+import { PriceContent } from "./components";
 import classNames from "classnames";
-import { manropeBold } from "@/app/fonts";
+import { interSemiBold, manropeBold } from "@/app/fonts";
 import { Button } from "@/components/atoms/button";
-import useWallet from "@/hooks/useWallet";
 import { Variant } from "@/components/atoms/button/types";
 import { Modals } from "@/components/molecules/modals/modals.types";
-import { DATA_STATUS, Routs } from "@/comman/types";
+import { DATA_STATUS, NetworkID, Routs } from "@/comman/types";
 import { DomainForTable, DomainsForTable } from "./cartContent.types";
 import { useRouter } from "next/navigation";
 import { addMinaText, sliceName } from "@/helpers/name.helper";
+import { ChainInfoArgs, useWallet } from "@/hooks";
+import { useEffect, useState } from "react";
+import { RadioGroup } from "@/components/molecules/radioGroup";
+import { RadioGroupOption } from "@/components/molecules/radioGroup/radioGroup.types";
+import { WalletService } from "@/services/walletService";
 
-const CartContent = (): JSX.Element => {
+const CartContent = ({
+  hasCardPayment,
+}: {
+  hasCardPayment?: boolean;
+}): JSX.Element => {
+  const [disableNextBtn, setDisableNextBtn] = useState(false);
+  const [initTab, setInitTab] = useState<number | string>(1);
   const {
-    balance,
     actions: { onSendClick, onConnectWallet },
   } = useWallet();
-  const router = useRouter();
-
-  const isInsufficientBalance = balance?.balance < amount;
-
   const {
     state: {
       bag,
-      walletData: { accountId, connectMessage },
+      walletData: {
+        accountId,
+        connectMessage,
+        balance: { balance },
+      },
     },
     actions: { addPeriod, openModal, closeModal, clearBag, deleteFromBag },
   } = useStoreContext();
 
-  const currentDomainsByAccount = bag?.[accountId]?.domains || [];
+  const router = useRouter();
+  const isUSDTab = initTab === 2;
+  const isInsufficientBalance = balance < amount;
 
-  const connectButton = !accountId && "Connect Wallet";
-  const insufficientBalanceButton =
-    isInsufficientBalance && "Insufficient Balance";
+  const currentDomainsByAccount = bag?.[accountId]?.domains || [];
 
   const deleteReservedName = async (value: DomainForTable): Promise<void> => {
     try {
@@ -71,36 +86,52 @@ const CartContent = (): JSX.Element => {
     } catch (error) {}
   };
 
-  const newDomains: DomainsForTable = currentDomainsByAccount.map((item) => {
-    return {
-      ...item,
-      name: addMinaText(item.name),
-      amount: Number(item.amount) * item.years * rate + " MINA",
-      onClick: deleteReservedName,
-      onCount: onCount,
-    };
-  })?.reverse();
+  const newDomains: DomainsForTable = currentDomainsByAccount
+    .map((item) => {
+      return {
+        ...item,
+        name: addMinaText(item.name),
+        amount: Number(item.amount) * item.years * rate + " MINA",
+        onClick: deleteReservedName,
+        onCount: onCount,
+      };
+    })
+    ?.reverse();
 
   const totalAmount = newDomains.reduce((acc, domain) => {
     return (acc += parseInt(domain.amount));
   }, 0);
 
   const handlePurchase = async (): Promise<void> => {
+    setDisableNextBtn(true);
+    if (isUSDTab) {
+      console.log("credit card payment");
+      return;
+    }
     if (connectButton) {
       openModal(Modals.walletConnect, {
         connectMessage,
         onConnectWallet,
       });
+      setDisableNextBtn(false);
       return;
     }
+
     try {
       await onConnectWallet();
+      const chainInfoArgs: ChainInfoArgs = await WalletService.switchChain(
+        NetworkID.devnet
+      );
+      if (!chainInfoArgs.networkID) {
+        throw new Error("");
+      }
+
       const response = await onSendClick({
         amount: totalAmount,
         to: accountAddress,
         fee: fees.default,
       });
-      if (response?.hash) {
+      if (response?.hash || !chainInfoArgs.networkID) {
         openModal(Modals.transactionApplied, {
           header: "Transaction applied",
           text: "The Domain was successfully purchased!",
@@ -132,14 +163,67 @@ const CartContent = (): JSX.Element => {
           button: {
             text: "Try Again",
             action: () => {
-              closeModal(Modals.transactionFailed)
-              handlePurchase()
-            } ,
+              closeModal(Modals.transactionFailed);
+              handlePurchase();
+            },
           },
         });
       }
-    } catch (error) {}
+    } catch (error) {
+      openModal(Modals.transactionFailed, {
+        header: "Transaction failed",
+        text: "The Domain has not been purchased!",
+        button: {
+          text: "Try Again",
+          action: () => {
+            closeModal(Modals.transactionFailed);
+            handlePurchase();
+          },
+        },
+      });
+    } finally {
+    }
+    setDisableNextBtn(false);
   };
+
+  const options: RadioGroupOption[] = [
+    { value: "1", label: "Mina" },
+    {
+      value: "2",
+      label: (
+        <span>
+          Credit or debit card
+          <span className={style.additionalFee}> (Additional fee)</span>
+        </span>
+      ),
+    },
+  ];
+
+  const handleRadioChange = (value) => {
+    setInitTab(Number(value));
+  };
+
+  const connectButton = !accountId && "Connect Wallet";
+  const insufficientBalanceButton =
+    isInsufficientBalance && "Insufficient Balance";
+  const nextButton = "Next";
+
+  const buttonText =
+    (isUSDTab && nextButton) ||
+    connectButton ||
+    insufficientBalanceButton ||
+    nextButton;
+
+  useEffect(() => {
+    if (isUSDTab && newDomains.length) {
+      setDisableNextBtn(false);
+      return;
+    }
+    setDisableNextBtn(
+      !!(isInsufficientBalance && !connectButton) ||
+        !!(!newDomains.length && !connectButton)
+    );
+  }, [initTab, isInsufficientBalance, connectButton, newDomains.length]);
 
   return (
     <div className={style.wrapper}>
@@ -161,29 +245,67 @@ const CartContent = (): JSX.Element => {
         <Tabs
           className={style.tabs}
           variant={TABS_VARIANT.blackButton}
+          onTabChange={handleRadioChange}
           items={[
             {
               content: (
-                <MinaContent
+                <PriceContent
                   amount={newDomains.reduce((acc, domain) => {
-                    return (acc += parseInt(domain.amount));
+                    return (acc += parseFloat(domain.amount));
                   }, 0)}
+                  amountByYear={amount}
+                  currency="MINA"
                 />
               ),
-              title: "",
+              title: hasCardPayment ? "MINA" : "",
               value: 1,
             },
+            ...(hasCardPayment
+              ? [
+                  {
+                    content: (
+                      <PriceContent
+                        amount={newDomains.reduce((acc, domain) => {
+                          return (acc += Number(
+                            (amountUSD * domain.years).toFixed(2)
+                          ));
+                        }, 0)}
+                        currency="USD"
+                        amountByYear={amountUSD}
+                      />
+                    ),
+                    title: "USD",
+                    value: 2,
+                  },
+                ]
+              : []),
           ]}
-          initValue={1}
+          initValue={initTab}
         />
+        {hasCardPayment && (
+          <div className={style.paymentMethod}>
+            <div
+              className={classNames(
+                style.paymentMethodHeader,
+                interSemiBold.className
+              )}
+            >
+              Payment Method
+            </div>
+            <RadioGroup
+              className={style.radioGroup}
+              name="paymentMethod"
+              options={options}
+              defaultValue={initTab.toString()}
+              onChange={handleRadioChange}
+            />
+          </div>
+        )}
         <Button
-          text={connectButton || insufficientBalanceButton || "Next"}
+          text={buttonText}
           variant={Variant.black}
           onClick={handlePurchase}
-          disabled={
-            !!(isInsufficientBalance && !connectButton) ||
-            !!(!newDomains.length && !connectButton)
-          }
+          disabled={disableNextBtn}
         />
       </div>
     </div>

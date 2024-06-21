@@ -18,7 +18,6 @@ import { Modals } from "@/components/molecules/modals/modals.types";
 import { Star } from "@/components/atoms/star";
 import { TABS_VARIANT, Tabs } from "@/components/molecules/tabs";
 import { ProfileContent } from "./components";
-import useWallet from "@/hooks/useWallet";
 import { addMinaText } from "@/helpers/name.helper";
 
 const DetailsNameInfo = ({
@@ -38,12 +37,9 @@ const DetailsNameInfo = ({
     actions: { openModal },
   } = useStoreContext();
 
-  const wallet = useWallet();
-
   const handleEdit = (): void => {
     isOwner &&
       openModal(Modals.confirmation, {
-        wallet: wallet,
         accountDomainDetails,
       });
   };
@@ -88,8 +84,8 @@ const DetailsNameInfo = ({
                   icon
                 }
                 alt="icon"
-                width={120}
-                height={120}
+                width={64}
+                height={64}
               />
             </span>
             {isOwner && (

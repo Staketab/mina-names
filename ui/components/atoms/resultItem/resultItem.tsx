@@ -11,9 +11,9 @@ import Bag from "../bag/bag";
 import { useStoreContext } from "@/store";
 import { Modals } from "@/components/molecules/modals/modals.types";
 import { amount } from "@/comman/constants";
-import useWallet from "@/hooks/useWallet";
 import { DOMAIN_STATUS } from "@/comman/types";
 import { addMinaText } from "@/helpers/name.helper";
+import { useWallet } from "@/hooks";
 
 const ResultItem = ({
   statusName,
@@ -43,7 +43,24 @@ const ResultItem = ({
   const handleInfo = async () => {
     const response = await getAccountDomainDetails(id);
     openModal(Modals.info, {
-      data: response,
+      data: {
+        domainImg: response.domainImg,
+        amount: response.amount,
+        domainName: response.domainName,
+        domainStatus: response.domainStatus,
+        expirationTime: response.expirationTime,
+        isDefault: response.isDefault,
+        isSendToCloudWorker: response.isSendToCloudWorker,
+        id: response.id,
+        ownerAddress: response.ownerAddress,
+        reservationTimestamp: response.reservationTimestamp,
+        startTimestamp: response.startTimestamp,
+        transaction: response.transaction,
+        ipfs: response.ipfs,
+        oldMetadata: {
+          ipfsImg: response.oldMetadata.ipfsImg,
+        },
+      },
     });
   };
 
