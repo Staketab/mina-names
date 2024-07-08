@@ -1,2 +1,2 @@
-export { OwnershipContent } from "./ownership";
+export { ActivityContent } from "./activity";
 export { ProfileContent } from "./profile";

@@ -375,3 +375,30 @@ export async function getActivities({
   );
   return await res.json();
 }
+
+export async function getDomainActivities({
+  domainName,
+  page,
+  size,
+  orderBy,
+  sortBy,
+}: {
+  domainName: string;
+  page: number;
+  size: number;
+  orderBy: ORDER_BY;
+  sortBy: SORT_BY;
+}) {
+  if (!domainName) return;
+
+  const res = await fetch(
+    `${process.env.Non_NEXT_PUBLIC_API_URL}/activities/domain/${domainName}?page=${page}&size=${size}&orderBy=${orderBy}&sortBy=${sortBy}`,
+    {
+      headers: {
+        "Content-Type": "application/json",
+        "x-api-key": process.env.Non_NEXT_PUBLIC_API_KEY,
+      },
+    }
+  );
+  return await res.json();
+}

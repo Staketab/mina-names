@@ -18,8 +18,10 @@ const NamesTemplate = ({ data, config }: NamesTemplateProps) => {
   const hash = data[config.fields.hash];
   const name = data[config.fields.value];
   const imgUrl = data[config.fields.url];
+  const link = data[config.fields.redirectLink];
   const view = config.view;
   const hiddenImg = config.hiddenImg;
+
   return (
     <div className={classNames(style.namesTemplate, manropeSemiBold.className)}>
       {!hiddenImg && (
@@ -33,6 +35,7 @@ const NamesTemplate = ({ data, config }: NamesTemplateProps) => {
             className={manropeSemiBold.className}
             text={hash}
             view={view || { sm: 8, md: 12, lg: 14 }}
+            link={link}
           >
             <CopyIcon value={hash} />
           </StaticEllipse>

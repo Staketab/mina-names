@@ -9,6 +9,7 @@ import Image from "next/image";
 import classNames from "classnames";
 import { useParams } from "next/navigation";
 import { useStoreContext } from "@/store";
+import TruncateText from "@/components/molecules/truncateText";
 
 const AccountContent = () => {
   const params = useParams();
@@ -21,8 +22,8 @@ const AccountContent = () => {
   return (
     <div className={style.wrapper}>
       <div className={classNames(manropeBold.className, style.header)}>
-        <Image src={avatarIcon} alt="" width={40} height={40}/>
-        {params?.id || accountId}
+        <Image src={avatarIcon} alt="" width={40} height={40} />
+        <TruncateText>{params?.id || accountId}</TruncateText>
       </div>
       <Tabs
         className={style.contentTabs}
