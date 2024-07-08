@@ -15,6 +15,7 @@ import TruncateText from "../../truncateText/truncateText";
 import { addMinaText } from "@/helpers/name.helper";
 import { useRouter } from "next/navigation";
 import { ModalInfoProps } from "../modals.types";
+import { chain } from "@/comman/constants";
 
 const ModalInfo = ({ data }: ModalInfoProps): JSX.Element => {
   const router = useRouter();
@@ -88,12 +89,13 @@ const ModalInfo = ({ data }: ModalInfoProps): JSX.Element => {
       <div className={style.bottomContent}>
         {renderContentItem({
           header: "Domain Owner",
-          action: () => router.push(`${Routs.NAMES}/${ownerAddress}`),
+          url: `https://minascan.io/${chain}/account/${ownerAddress}/txs`,
           content: (
             <StaticEllipse
               className={manropeSemiBold.className}
               text={ownerAddress || ""}
               view={{ sm: 10, md: 14, lg: 18 }}
+              link={`${Routs.NAMES}/${ownerAddress}`}
             />
           ),
         })}

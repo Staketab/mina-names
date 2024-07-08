@@ -1,3 +1,4 @@
+import { chain } from "@/comman/constants";
 import { SORT_BY, TableConfig } from "@/comman/types";
 import { TableTemplates } from "@/components/organisms/table/templates";
 
@@ -8,11 +9,12 @@ export const activitiesConfig: TableConfig[] = [
     columnTemplate: TableTemplates.STRING,
     fields: {
       value: "domainName",
+      link:  'domainNameRedirect'
     },
     style: {
-      fontSize: '16px',
-      maxWidth: '200px',
-    }
+      fontSize: "16px",
+      maxWidth: "200px",
+    },
   },
   {
     colName: "Activity",
@@ -22,8 +24,8 @@ export const activitiesConfig: TableConfig[] = [
       value: "activity",
     },
     style: {
-      maxWidth: '200px'
-    }
+      maxWidth: "200px",
+    },
   },
   {
     colName: "names",
@@ -33,8 +35,8 @@ export const activitiesConfig: TableConfig[] = [
       value: "details",
     },
     style: {
-      maxWidth: '200px'
-    }
+      maxWidth: "200px",
+    },
   },
   {
     colName: "Time",
@@ -51,10 +53,11 @@ export const activitiesConfig: TableConfig[] = [
     headerText: "Tx Hash",
     fields: {
       hash: "transaction",
+      redirectLink: "redirectLink",
     },
     hiddenImg: true,
     style: {
-      color: '#1A1A1B'
-    }
+      color: "#1A1A1B",
+    },
   },
 ];

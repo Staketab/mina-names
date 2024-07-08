@@ -1,35 +1,31 @@
+import { getDomainActivities } from "@/app/actions/actions";
+import { chain } from "@/comman/constants";
 import { DataTable, ORDER_BY, Routs, SORT_BY } from "@/comman/types";
 import { TypeView } from "@/components/atoms/switchView/switchView";
+import { activitiesConfig } from "@/components/organisms/accountConent/components/activity/constants";
 import { Table } from "@/components/organisms/table";
-import { useEffect, useState } from "react";
-import { getActivities } from "@/app/actions/actions";
-import { activitiesConfig } from "./constants";
-import { useParams } from "next/navigation";
-import { useStoreContext } from "@/store";
 import { addMinaText } from "@/helpers/name.helper";
-import { chain } from "@/comman/constants";
+import { useEffect, useState } from "react";
 
 const initPage = 0;
 const initSize = 50;
 
-const ActivityContent = (): JSX.Element => {
+const ActivityContent = ({
+  domainName,
+}: {
+  domainName: string;
+}): JSX.Element => {
+  const [loading, setLoading] = useState<boolean>(true);
   const [size, setSize] = useState<number>(initSize);
   const [page, setPage] = useState<number>(initPage);
   const [activities, setActivities] = useState<DataTable>(null);
-  const [loading, setLoading] = useState<boolean>(true);
-  const params = useParams();
-  const {
-    state: {
-      walletData: { accountId },
-    },
-  } = useStoreContext();
 
   useEffect(() => {
     (async () => {
       try {
         setLoading(true);
-        const response: DataTable = await getActivities({
-          accountAddress: (params?.id as string) || accountId,
+        const response: DataTable = await getDomainActivities({
+          domainName: domainName,
           page,
           size,
           sortBy: SORT_BY.TIMESTAMP,
@@ -50,7 +46,7 @@ const ActivityContent = (): JSX.Element => {
       } catch (error) {}
       setLoading(false);
     })();
-  }, [params?.id, size, page]);
+  }, [domainName, size, page]);
 
   const onSize = (size) => {
     setPage(initPage);
@@ -60,6 +56,7 @@ const ActivityContent = (): JSX.Element => {
   const onPage = (page) => {
     setPage(page);
   };
+  console.log(activities);
 
   return (
     <Table

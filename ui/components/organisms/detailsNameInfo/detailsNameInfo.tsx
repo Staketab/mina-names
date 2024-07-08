@@ -19,6 +19,7 @@ import { Star } from "@/components/atoms/star";
 import { TABS_VARIANT, Tabs } from "@/components/molecules/tabs";
 import { ProfileContent } from "./components";
 import { addMinaText } from "@/helpers/name.helper";
+import { ActivityContent } from "./components/activity";
 
 const DetailsNameInfo = ({
   accountDomainDetails,
@@ -114,15 +115,17 @@ const DetailsNameInfo = ({
             )}
           </div>
         </div>
-        <div className={style.rightSide}>
-          <Switcher
-            text="Set as default name"
-            className={style.switcher}
-            initialState={isDefault}
-            onClick={handleDefaultName}
-            disabled={removeAndSetDefaultNameLoading || !isOwner}
-          />
-        </div>
+        {isOwner && (
+          <div className={style.rightSide}>
+            <Switcher
+              text="Set as default name"
+              className={style.switcher}
+              initialState={isDefault}
+              onClick={handleDefaultName}
+              disabled={removeAndSetDefaultNameLoading || !isOwner}
+            />
+          </div>
+        )}
       </div>
       <Tabs
         className={style.tabs}
@@ -134,6 +137,13 @@ const DetailsNameInfo = ({
             ),
             title: "Profile",
             value: 1,
+          },
+          {
+            content: (
+              <ActivityContent domainName={accountDomainDetails.domainName} />
+            ),
+            title: "Activity",
+            value: 2,
           },
         ]}
         initValue={1}

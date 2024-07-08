@@ -5,6 +5,7 @@ import classNames from "classnames";
 import { View } from "@/comman/types";
 import { robotoMedium } from "@/app/fonts";
 import { useMedia } from "@/hooks";
+import Link from "next/link";
 
 const StaticEllipse = ({
   text,
@@ -63,6 +64,8 @@ const StaticEllipse = ({
   if ((!firstString || !secondString || !text) && !string) return null;
 
   if (link) {
+    const isExternal = link.includes("http");
+
     return (
       <div
         className={classNames(
@@ -72,7 +75,7 @@ const StaticEllipse = ({
         )}
         style={{ ...style }}
       >
-        <a href={link} target="_blank">
+        <Link href={link} target={isExternal ? "_blank" : "_self"}>
           {string ? (
             <div className={styles.string}>{string}</div>
           ) : (
@@ -88,7 +91,7 @@ const StaticEllipse = ({
               <div className={styles.string}>{secondString}</div>
             </>
           )}
-        </a>
+        </Link>
 
         <div className={styles.copyIcon}>{children}</div>
       </div>
