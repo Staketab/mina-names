@@ -87,3 +87,7 @@
 .leftSideHeader {
   font-size: 16px;
 }
+
+.bottomContent a {
+  color: var(--link-active-color);
+}

@@ -1,0 +1,8 @@
+.link {
+    color: var(--link-active-color);
+    transition: all .2s;
+}
+
+.link:hover {
+    color: var(--col--link);
+}

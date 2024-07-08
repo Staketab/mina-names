@@ -56,6 +56,8 @@ export type TableConfig = {
     icon?: string | React.ReactElement;
     onClick?: string;
     hash?: string;
+    redirectLink?: string;
+    link?: string;
   };
   view?: View;
   sortBy?: SORT_BY;

@@ -6,6 +6,7 @@ import ButtonTemplate from "./buttonTemplate/buttonTemplate";
 import TimeTemplate from "./timeTemplate/timeTemplate";
 import { CounterTemplate } from "./counterTemplate";
 import { IconTemplate } from "./iconTemplate";
+import { LinkTemplate } from "./linkTemplate";
 
 export enum TableTemplates {
   STRING = "string",
@@ -16,6 +17,7 @@ export enum TableTemplates {
   TIME = "time",
   COUNTER = "counter",
   ICON = "icon",
+  LINK = "link",
 }
 
 const getCell = ({ data, config }): JSX.Element => {
@@ -34,6 +36,8 @@ const getCell = ({ data, config }): JSX.Element => {
       return <CounterTemplate data={data} config={config} />;
     case TableTemplates.ICON:
       return <IconTemplate data={data} config={config} />;
+    case TableTemplates.LINK:
+      return <LinkTemplate data={data} config={config} />;
   }
 };
 
