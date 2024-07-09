@@ -41,8 +41,12 @@ const ActivityContent = (): JSX.Element => {
           content: response?.content?.map((item) => {
             return {
               ...item,
-              domainNameRedirect: `${Routs.NAME}/${item.id}`,
-              redirectLink: `https://minascan.io/${chain}/tx/${item.transaction}`,
+              domainNameRedirect: `${Routs.NAME}/${item.domainId}`,
+              ...(item.transaction
+                ? {
+                    redirectLink: `https://minascan.io/${chain}/tx/${item.transaction}`,
+                  }
+                : []),
               domainName: addMinaText(item?.domainName),
             };
           }),
@@ -60,6 +64,7 @@ const ActivityContent = (): JSX.Element => {
   const onPage = (page) => {
     setPage(page);
   };
+  console.log(activities);
 
   return (
     <Table

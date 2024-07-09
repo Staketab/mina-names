@@ -37,7 +37,6 @@ const ActivityContent = ({
           content: response?.content?.map((item) => {
             return {
               ...item,
-              domainNameRedirect: `${Routs.NAME}/${item.id}`,
               redirectLink: `https://minascan.io/${chain}/tx/${item.transaction}`,
               domainName: addMinaText(item?.domainName),
             };
