@@ -6,7 +6,7 @@ export const activitiesConfig: TableConfig[] = [
   {
     colName: "DomainName",
     headerText: "Domain Name",
-    columnTemplate: TableTemplates.STRING,
+    columnTemplate: TableTemplates.LINK,
     fields: {
       value: "domainName",
       link:  'domainNameRedirect'
