@@ -8,7 +8,7 @@ import { addMinaText } from "@/helpers/name.helper";
 import { useEffect, useState } from "react";
 
 const initPage = 0;
-const initSize = 50;
+const initSize = 20;
 
 const ActivityContent = ({
   domainName,
@@ -55,23 +55,22 @@ const ActivityContent = ({
   const onPage = (page) => {
     setPage(page);
   };
-  console.log(activities);
 
   return (
     <Table
       data={activities}
       config={activitiesConfig}
       isLoading={loading}
-      currentPage={0}
-      pageLimit={50}
+      currentPage={page}
+      pageLimit={size}
       totalElements={activities?.totalElements}
       pagesCount={activities?.totalPages}
       typeView={TypeView.LIST}
       isHiddenTopPagination
       limitOptions={[
         { text: "10", value: 10 },
+        { text: "20", value: 20 },
         { text: "50", value: 50 },
-        { text: "100", value: 100 },
       ]}
       sortBy={SORT_BY.RESERVATION_TIMESTAMP}
       orderBy={ORDER_BY.DESC}
