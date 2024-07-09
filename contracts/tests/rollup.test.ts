@@ -184,8 +184,8 @@ describe("Domain Name Service Contract", () => {
     expect(deployer).toBeDefined();
     expect(sender).toBeDefined();
     expect(deployer.toPublicKey().toBase58()).toBe(sender.toBase58());
-    process.env.PINATA_JWT = PINATA_JWT;
-    expect(process.env.PINATA_JWT).toBeDefined();
+    //process.env.PINATA_JWT = PINATA_JWT;
+    //expect(process.env.PINATA_JWT).toBeDefined();
     Memory.info("blockchain initialized");
   });
 

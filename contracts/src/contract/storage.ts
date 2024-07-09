@@ -85,9 +85,11 @@ export async function saveToIPFS(params: {
       },
     };
 
-    if (auth === "Bearer ")
+    if (auth === "Bearer ") {
       //for running tests
+      console.error("saveToIPFS: no pinataJWT", { name, keyvalues });
       return `QmTosaezLecDB7bAoUoXcrJzeBavHNZyPbPff1QHWw8xus`;
+    }
 
     const res = await axios.post(
       "https://api.pinata.cloud/pinning/pinJSONToIPFS",

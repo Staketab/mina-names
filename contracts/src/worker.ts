@@ -76,9 +76,11 @@ import { nameContract } from "./config";
 import { RollupNFTData, createRollupNFT } from "./rollup/rollup-nft";
 import { Metadata } from "minanft";
 import { isMainThread } from "worker_threads";
+import { PINATA_JWT } from "../env.json";
+const pinataJWT = PINATA_JWT;
 
 const fullValidation = true;
-const proofsOff = true as boolean;
+const proofsOff = false as boolean;
 
 export class DomainNameServiceWorker extends zkCloudWorker {
   static mapUpdateVerificationKey: VerificationKey | undefined = undefined;
@@ -86,7 +88,7 @@ export class DomainNameServiceWorker extends zkCloudWorker {
   static blockContractVerificationKey: VerificationKey | undefined = undefined;
   static validatorsVerificationKey: VerificationKey | undefined = undefined;
   readonly cache: Cache;
-  readonly MIN_TIME_BETWEEN_BLOCKS = 1000 * 60 * 20; // 2 minutes
+  readonly MIN_TIME_BETWEEN_BLOCKS = 1000 * 60 * 2; // 2 minutes
   readonly MAX_TIME_BETWEEN_BLOCKS = 1000 * 60 * 60; // 60 minutes
   readonly MIN_TRANSACTIONS = 1;
   readonly MAX_TRANSACTIONS = 4;
@@ -110,6 +112,7 @@ export class DomainNameServiceWorker extends zkCloudWorker {
         DomainNameServiceWorker.mapUpdateVerificationKey = (
           await MapUpdate.compile({
             cache: this.cache,
+            //forceRecompile: true,
           })
         ).verificationKey;
         console.timeEnd("compiled MapUpdate");
@@ -350,11 +353,37 @@ export class DomainNameServiceWorker extends zkCloudWorker {
         return await this.getMetadata();
       case "restart":
         return await this.restart();
+      case "compile":
+        return await this.compileMapUpdate();
       case "prepareSignTransactionData":
         return await this.prepareSignTransactionData();
       default:
         console.error("Unknown task in execute:", this.cloud.task);
         return "Unknown task in execute";
+    }
+  }
+
+  private async compileMapUpdate() {
+    console.time("compiled MapUpdate");
+    try {
+      console.log(
+        "Compiling MapUpdate using node version",
+        process.versions.node,
+        process.version
+      );
+      const verificationKey = (
+        await MapUpdate.compile({
+          cache: this.cache,
+          //forceRecompile: true,
+        })
+      ).verificationKey;
+      console.timeEnd("compiled MapUpdate");
+      console.log("MapUpdate verification key", verificationKey.hash.toJSON());
+      return verificationKey.hash.toJSON();
+    } catch (error) {
+      console.error("Error in compileMapUpdate", error);
+      console.timeEnd("compiled MapUpdate");
+      return "Error in compileMapUpdate";
     }
   }
 
@@ -1984,9 +2013,10 @@ export class DomainNameServiceWorker extends zkCloudWorker {
     }
 
     console.time("map saved to IPFS");
+    if (pinataJWT === undefined) throw new Error("pinataJWT is undefined");
     const mapHash = await saveToIPFS({
       data: mapJson,
-      pinataJWT: process.env.PINATA_JWT!,
+      pinataJWT,
       name: `block.${blockNumber}.map.${contractAddress.toBase58()}.json`,
       keyvalues: {
         blockNumber: blockNumber.toString(),
@@ -2007,9 +2037,10 @@ export class DomainNameServiceWorker extends zkCloudWorker {
       database: database.data,
       map: "i:" + mapHash,
     };
+    if (pinataJWT === undefined) throw new Error("pinataJWT is undefined");
     const databaseHash = await saveToIPFS({
       data: databaseJson,
-      pinataJWT: process.env.PINATA_JWT!,
+      pinataJWT,
       name: `block.${blockNumber}.database.${contractAddress.toBase58()}.json`,
       keyvalues: {
         blockNumber: blockNumber.toString(),
@@ -2055,9 +2086,10 @@ export class DomainNameServiceWorker extends zkCloudWorker {
       database: "i:" + databaseHash,
       map: "i:" + mapHash,
     };
+    if (pinataJWT === undefined) throw new Error("pinataJWT is undefined");
     const hash = await saveToIPFS({
       data: json,
-      pinataJWT: process.env.PINATA_JWT!,
+      pinataJWT,
       name: `block.${blockNumber}.${contractAddress.toBase58()}.json`,
       keyvalues: {
         blockNumber: blockNumber.toString(),
