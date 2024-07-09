@@ -298,8 +298,6 @@ const Store = ({
   const initFunction = async (): Promise<void> => {
     InitService.init();
     WalletService.setAccountDataToStore = setWalletData;
-    const isWalletConnected = await WalletService.isWalletConnected();
-    console.log(isWalletConnected);
 
     const bagStorage = localStorage.getItem("bag");
     const accountStorage = localStorage.getItem("account");

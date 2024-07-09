@@ -1,5 +1,6 @@
-import Image from "next/image";
+import Image, { StaticImageData } from "next/image";
 import defaultIcon from "../../../../assets/default.svg";
+import ipfsIcon from "../../../../assets/ipfs.png";
 import { Button } from "@/components/atoms/button";
 import { Variant } from "@/components/atoms/button/types";
 import classNames from "classnames";
@@ -45,12 +46,14 @@ const ModalInfo = ({ data }: ModalInfoProps): JSX.Element => {
     url,
     hiddenIcon,
     action,
+    icon
   }: {
     header: string;
     content: ReactNode;
     url?: string;
     hiddenIcon?: boolean;
     action?: () => void;
+    icon?: StaticImageData;
   }): JSX.Element => {
     return (
       <div className={classNames(style.infoItem, manropeSemiBold.className)}>
@@ -64,7 +67,7 @@ const ModalInfo = ({ data }: ModalInfoProps): JSX.Element => {
             target="_blank"
             className={style.bottomContentRightSide}
           >
-            <Image src={defaultIcon} alt="" width={24} height={20} />
+            <Image src={icon || defaultIcon} alt="" width={24} height={20} />
           </a>
         )}
         {action && (
@@ -112,6 +115,7 @@ const ModalInfo = ({ data }: ModalInfoProps): JSX.Element => {
           header: "IPFS",
           url: ipfs && `https://gateway.pinata.cloud/ipfs/${ipfs}`,
           hiddenIcon: !ipfs,
+          icon: ipfsIcon,
           content: (
             <StaticEllipse
               className={manropeSemiBold.className}
