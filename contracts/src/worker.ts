@@ -76,11 +76,13 @@ import { nameContract } from "./config";
 import { RollupNFTData, createRollupNFT } from "./rollup/rollup-nft";
 import { Metadata } from "minanft";
 import { isMainThread } from "worker_threads";
-import { PINATA_JWT } from "../env.json";
+import { PINATA_JWT, NATS_SERVER } from "../env.json";
+import { connect } from "nats";
+import { hash } from "crypto";
 const pinataJWT = PINATA_JWT;
 
 const fullValidation = true;
-const proofsOff = false as boolean;
+const proofsOff = true as boolean;
 
 export class DomainNameServiceWorker extends zkCloudWorker {
   static mapUpdateVerificationKey: VerificationKey | undefined = undefined;
@@ -88,10 +90,10 @@ export class DomainNameServiceWorker extends zkCloudWorker {
   static blockContractVerificationKey: VerificationKey | undefined = undefined;
   static validatorsVerificationKey: VerificationKey | undefined = undefined;
   readonly cache: Cache;
-  readonly MIN_TIME_BETWEEN_BLOCKS = 1000 * 60 * 2; // 2 minutes
+  readonly MIN_TIME_BETWEEN_BLOCKS = 1000 * 60 * 4; // 4 minutes
   readonly MAX_TIME_BETWEEN_BLOCKS = 1000 * 60 * 60; // 60 minutes
   readonly MIN_TRANSACTIONS = 1;
-  readonly MAX_TRANSACTIONS = 4;
+  readonly MAX_TRANSACTIONS = 10;
 
   constructor(cloud: Cloud) {
     super(cloud);
@@ -384,6 +386,38 @@ export class DomainNameServiceWorker extends zkCloudWorker {
       console.error("Error in compileMapUpdate", error);
       console.timeEnd("compiled MapUpdate");
       return "Error in compileMapUpdate";
+    }
+  }
+
+  private async publishTransactionsStatus(params: {
+    txs: CloudTransaction[];
+    status: string;
+    hash: string;
+  }): Promise<void> {
+    try {
+      const { txs, status, hash } = params;
+      console.time("published txs status");
+      if (NATS_SERVER === undefined) {
+        console.error("NATS_SERVER is undefined");
+        console.timeEnd("published txs status");
+        return;
+      }
+      const nc = await connect({
+        servers: NATS_SERVER,
+        timeout: 5000,
+      });
+      const js = nc.jetstream({ timeout: 5000 });
+      const kv = await js.views.kv("profiles", { timeout: 5000 });
+      for (const tx of txs) {
+        const data = { ...tx, status, hash };
+        console.log("Publishing tx status", tx.txId, data);
+        await kv.put(`zkcloudworker.rolluptx.${tx.txId}`, JSON.stringify(data));
+      }
+      await nc.drain();
+      console.timeEnd("published txs status");
+    } catch (error) {
+      console.error("Error in publishTransactionsStatus", error);
+      console.timeEnd("published txs status");
     }
   }
 
@@ -865,6 +899,8 @@ export class DomainNameServiceWorker extends zkCloudWorker {
     }
     const block = new BlockContract(blockAddress, tokenId);
     const flags = BlockParams.unpack(block.blockParams.get());
+    const blockStorage = block.storage.get();
+    const hash = blockStorage.toIpfsHash();
     if (flags.isValidated.toBoolean() === false) {
       console.log(`Block ${blockNumber} is not yet validated`);
       console.timeEnd("proveBlock");
@@ -986,6 +1022,23 @@ export class DomainNameServiceWorker extends zkCloudWorker {
     //console.log("Deleting proveBlock task", this.cloud.taskId);
     console.log(`Block ${blockNumber} is proved`);
     await this.cloud.deleteTask(this.cloud.taskId);
+    const json = await loadFromIPFS(hash);
+    const processedTransactions: CloudTransaction[] = [];
+    for (const element of json.transactions) {
+      if (element.tx)
+        processedTransactions.push({
+          txId: element.tx.txId,
+          status: element.tx.status,
+          transaction: element.tx.transaction,
+          timeReceived: element.tx.timeReceived,
+        });
+    }
+    console.log("prove processedTransactions", processedTransactions);
+    await this.publishTransactionsStatus({
+      txs: processedTransactions,
+      status: `included into proved block ${blockNumber}`,
+      hash: txSent.hash,
+    });
     console.timeEnd("proveBlock");
     if (this.cloud.isLocalCloud === true) {
       if (this.cloud.chain !== "zeko") {
@@ -1032,6 +1085,7 @@ export class DomainNameServiceWorker extends zkCloudWorker {
     let previousBlockAddress: PublicKey | undefined = undefined;
 
     let blockNumber = 0;
+    const processedTransactions: CloudTransaction[] = [];
     try {
       await this.fetchMinaAccount({
         publicKey: blockAddress,
@@ -1077,7 +1131,8 @@ export class DomainNameServiceWorker extends zkCloudWorker {
           if (job == undefined) onlyRestartProving = true;
           else if (job.jobStatus === "failed") onlyRestartProving = true;
           else {
-            if (job?.jobStatus)
+            if (job?.jobStatus) {
+              const hash = block.storage.get().toIpfsHash();
               await this.cloud.addTask({
                 args: JSON.stringify(
                   {
@@ -1085,6 +1140,7 @@ export class DomainNameServiceWorker extends zkCloudWorker {
                     blockAddress: args.blockAddress,
                     blockNumber: blockNumber,
                     jobId,
+                    hash,
                   },
                   null,
                   2
@@ -1094,6 +1150,7 @@ export class DomainNameServiceWorker extends zkCloudWorker {
                 userId: this.cloud.userId,
                 maxAttempts: 50,
               });
+            }
             await this.cloud.deleteTask(this.cloud.taskId);
             console.timeEnd(`block ${args.blockNumber} validated`);
 
@@ -1308,6 +1365,7 @@ export class DomainNameServiceWorker extends zkCloudWorker {
               blockAddress: args.blockAddress,
               blockNumber: blockNumber,
               jobId,
+              hash,
             },
             null,
             2
@@ -1321,6 +1379,16 @@ export class DomainNameServiceWorker extends zkCloudWorker {
         console.timeEnd(`block ${blockNumber} validated`);
 
         return `Block ${blockNumber} is already validated`;
+      }
+
+      for (const element of elements) {
+        if (element.serializedTx)
+          processedTransactions.push({
+            txId: element.serializedTx.txId,
+            status: element.serializedTx.status,
+            transaction: element.serializedTx.transaction,
+            timeReceived: element.serializedTx.timeReceived,
+          });
       }
 
       await this.compile();
@@ -1480,6 +1548,7 @@ export class DomainNameServiceWorker extends zkCloudWorker {
             blockNumber: args.blockNumber,
             txHash: txSent.hash,
             jobId,
+            hash,
           },
           null,
           2
@@ -1488,6 +1557,12 @@ export class DomainNameServiceWorker extends zkCloudWorker {
         metadata: `prove block ${args.blockNumber}`,
         userId: this.cloud.userId,
         maxAttempts: 20,
+      });
+
+      await this.publishTransactionsStatus({
+        txs: processedTransactions,
+        status: `included into validated block ${blockNumber}`,
+        hash: txSent.hash,
       });
     }
     console.timeEnd(`block ${args.blockNumber} validated`);
@@ -1920,11 +1995,13 @@ export class DomainNameServiceWorker extends zkCloudWorker {
     const elements: DomainCloudTransactionData[] = [];
     let count = 0;
     let approvedNames: string[] = [];
+    const processedTxs: CloudTransaction[] = [];
     let rejectedNames: string[] = [];
     for (let i = 0; i < txs.length; i++) {
       if (count >= this.MAX_TRANSACTIONS) break;
       try {
         const element = await this.convertTransaction(txs[i]);
+        processedTxs.push({ ...txs[i], status: element.serializedTx.status });
         if (element.domainData !== undefined) {
           count++;
           approvedNames.push(
@@ -1944,6 +2021,7 @@ export class DomainNameServiceWorker extends zkCloudWorker {
         console.error("Error in convertTransaction: catch:", error);
       }
     }
+    await this.cloud.sendTransactions(processedTxs);
 
     console.log("Approved names:", approvedNames);
     console.log("Rejected names:", rejectedNames);
@@ -2282,6 +2360,11 @@ export class DomainNameServiceWorker extends zkCloudWorker {
         metadata: `block ${blockNumber} validation`,
         userId: this.cloud.userId,
         maxAttempts: 50,
+      });
+      await this.publishTransactionsStatus({
+        txs: processedTxs,
+        status: `included into block ${blockNumber}`,
+        hash: txSent.hash,
       });
 
       console.timeEnd(`block created`);
