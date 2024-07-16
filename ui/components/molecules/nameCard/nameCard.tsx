@@ -68,7 +68,6 @@ const NameCard = ({
       {isPendingStatus ? (
         <Status
           status={domainStatus}
-          onClick={handlePendingStatus}
           className={style.pendingStatus}
         />
       ) : (
