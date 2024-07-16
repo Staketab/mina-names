@@ -11,6 +11,10 @@
   overflow: hidden;
 }
 
+.pendingCard {
+  cursor: pointer;
+}
+
 .imgWrapper {
   width: 100%;
   height: 200px;
