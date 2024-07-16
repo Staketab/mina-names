@@ -11,7 +11,6 @@ import Image from "next/image";
 import { StaticEllipse } from "@/components/molecules/staticEllipse";
 import { DOMAIN_STATUS } from "@/comman/types";
 import { chain } from "@/comman/constants";
-import Link from "next/link";
 
 const getPendingComponent = (message) => (
   <span style={{ display: "flex", alignItems: "center", gap: "12px" }}>
@@ -19,12 +18,10 @@ const getPendingComponent = (message) => (
   </span>
 );
 
-const getDescription = (value, hash?: string) => {
-  const text = value?.match(/[^\d]+/);
-  const number = value?.match(/\d+/);
+const getDescription = (value) => {
   return (
     <div className={styles.description}>
-      {text} <Link href={`https://minascan.io/${chain}/tx/${hash}`} target="_blank">{number}</Link>
+      {value}
     </div>
   );
 };
@@ -112,7 +109,7 @@ const Timeline: FC<TimelineProps> = ({
             hash: item?.hash,
             statusTime,
             status: "Block Created",
-            description: getDescription(status, item?.hash),
+            description: getDescription(status),
           },
           isLastItem && {
             pendingComponent: getPendingComponent("Validating block.."),
@@ -125,7 +122,7 @@ const Timeline: FC<TimelineProps> = ({
           {
             statusTime,
             status: "Block Validated",
-            description: getDescription(status, item?.hash),
+            description: getDescription(status),
             hash: item?.hash,
           },
           isLastItem && {
@@ -139,7 +136,7 @@ const Timeline: FC<TimelineProps> = ({
           {
             statusTime,
             status: "Block Proved",
-            description: getDescription(status, item?.hash),
+            description: getDescription(status),
             hash: item?.hash,
           },
           isLastItem && DOMAIN_STATUS.ACTIVE !== domainStatus
@@ -202,7 +199,7 @@ const Timeline: FC<TimelineProps> = ({
   return (
     <div className={classNames(styles.wrapper, "full-mobile-width", className)}>
       <div className={styles.dots} />
-      <p className={styles.title}>Timeline</p>
+      <p className={styles.title}>Purchase Progress</p>
       {newData.map(
         (
           { status, statusTime, hash, pendingComponent, description },

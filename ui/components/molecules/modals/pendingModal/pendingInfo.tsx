@@ -41,10 +41,10 @@ const PendingModal: FC<PendingModalProps> = (props) => {
   return (
     <div className={styles.wrapper}>
       <Timeline
-        timelines={statuses}
         {...props}
+        timelines={statuses}
         zkTxId={availableZkTxId}
-        isSendToCloudWorker={isSendToCloudWorker || additionData?.zkTxId}
+        isSendToCloudWorker={isSendToCloudWorker || additionData?.isSendToCloudWorker}
         domainStatus={availableDomainStatus}
         transaction={transactionPay}
       />
