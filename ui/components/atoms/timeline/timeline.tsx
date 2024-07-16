@@ -78,7 +78,7 @@ const Timeline: FC<TimelineProps> = ({
             ...(DOMAIN_STATUS.ACTIVE === domainStatus
               ? {
                   statusTime: startTimestamp,
-                  status: "Finalization",
+                  status: "Domain Created",
                   description: getDescription("Finalization"),
                 }
               : { pendingComponent: getPendingComponent("Finalization..") }),
@@ -148,7 +148,7 @@ const Timeline: FC<TimelineProps> = ({
               }
             : {
                 statusTime,
-                status: "Finalization",
+                status: "Domain Created",
                 description: getDescription("Finalization"),
               },
         ];
