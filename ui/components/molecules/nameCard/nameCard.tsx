@@ -4,7 +4,7 @@ import { Button } from "../../atoms/button";
 import style from "./index.module.css";
 import { Variant } from "../../atoms/button/types";
 import { manropeMedium, manropeSemiBold } from "@/app/fonts";
-import defaultImg from "../../../assets/domainImg.svg";
+import defaultImg from "../../../assets/default.svg";
 
 import Link from "next/link";
 import { encode } from "js-base64";
