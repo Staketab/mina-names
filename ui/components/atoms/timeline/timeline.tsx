@@ -45,7 +45,7 @@ const Timeline: FC<TimelineProps> = ({
   className,
   isSendToCloudWorker,
   zkTxId,
-  domainStatus = DOMAIN_STATUS.ACTIVE,
+  domainStatus,
   startTimestamp,
   transaction,
 }) => {
