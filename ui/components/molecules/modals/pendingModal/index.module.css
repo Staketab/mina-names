@@ -1,0 +1,11 @@
+.wrapper {
+  max-width: 700px;
+  width: 100%;
+  min-height: 452px;
+  min-width: 414px;
+  background-color: #f8fafd;
+}
+
+.loader {
+  position: fixed;
+}

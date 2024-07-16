@@ -14,6 +14,7 @@ type LoaderProps = {
   gap?: number;
   duration?: number;
   variant?: LoaderVariant;
+  className?: string;
   circleSize?: {
     width: number;
     height: number;
@@ -30,6 +31,7 @@ const Loader = ({
   duration = 2000,
   variant = LoaderVariant.DOTS,
   circleSize,
+  className,
 }: LoaderProps): JSX.Element => {
   const r = radius;
   const g = gap;
@@ -81,6 +83,7 @@ const Loader = ({
         height={circleSize?.height ? circleSize?.height + "px" : "20px"}
         viewBox="0 0 100 100"
         preserveAspectRatio="xMidYMid"
+        className={className}
       >
         <circle
           cx="50"
@@ -106,6 +109,7 @@ const Loader = ({
 
   return (
     <svg
+      className={className}
       height={r * 2}
       width={width}
       viewBox={`0 0 ${width} ${r * 2}`}

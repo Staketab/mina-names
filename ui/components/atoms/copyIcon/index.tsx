@@ -5,20 +5,27 @@ import iconPressed from "./img/CopyPressed.svg";
 import styles from "./copyIcon.module.css";
 import classNames from "classnames";
 import Image from "next/image";
+import CopyIconSVG from "./iconElement";
 type CopyIconProps = {
   onClick?: () => void;
   className?: string;
-  value: string
+  value: string;
+  isActive?: boolean;
 };
 
-const CopyIcon = ({ onClick, className, value }: CopyIconProps): JSX.Element => {
+const CopyIcon = ({
+  onClick,
+  className,
+  value,
+  isActive,
+}: CopyIconProps): JSX.Element => {
   const [pressed, setPressed] = useState(false);
   const [showPressed, setShowPressed] = useState(false);
 
   const copyHandler = (e) => {
     e.stopPropagation();
     onClick?.();
-      navigator.clipboard.writeText(value);
+    navigator.clipboard.writeText(value);
     if (!pressed) {
       setPressed(true);
       setTimeout(() => {
@@ -55,13 +62,13 @@ const CopyIcon = ({ onClick, className, value }: CopyIconProps): JSX.Element => 
         className={classNames(styles.wrapper, className)}
         onClick={copyHandler}
       >
-        <Image
-          src={icon}
-          alt=""
+        <CopyIconSVG
           className={classNames(styles.copyIcon, {
             [styles.animationSlide]: pressed,
           })}
+          isActive={isActive}
         />
+
         {showPressed && (
           <Image
             src={iconPressed}

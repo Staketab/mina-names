@@ -20,6 +20,7 @@ type NameCardProps = {
   id: string;
   domainStatus: DOMAIN_STATUS;
   endTimestamp: number;
+  handlePendingStatus?: () => void;
 };
 
 const NameCard = ({
@@ -28,8 +29,10 @@ const NameCard = ({
   id,
   domainStatus,
   endTimestamp,
+  handlePendingStatus,
 }: NameCardProps): JSX.Element => {
   const base64Data = encode("../../../assets/blur.jpg");
+
   return (
     <div className={style.wrapper}>
       <div className={style.imgWrapper}>
@@ -51,7 +54,11 @@ const NameCard = ({
         </span>
       )}
       {domainStatus === DOMAIN_STATUS.PENDING ? (
-        <Status status={domainStatus} />
+        <Status
+          status={domainStatus}
+          onClick={handlePendingStatus}
+          className={style.pendingStatus}
+        />
       ) : (
         <Link href={`${Routs.NAME}/${id}`}>
           <Button text="Manage" variant={Variant.grey} />

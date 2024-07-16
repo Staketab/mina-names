@@ -19,7 +19,6 @@ import { TABS_VARIANT, Tabs } from "../../tabs";
 import { useRouter } from "next/navigation";
 import { Routs } from "@/comman/types";
 import { useWallet } from "@/hooks";
-import { WalletService } from "@/services/walletService";
 
 const ModalPurchase = ({ name }: ModalPurchaseProps): JSX.Element => {
   const [selectedPeriod, setSelectedPeriod] = useState<number>(1);

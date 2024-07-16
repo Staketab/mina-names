@@ -10,6 +10,7 @@ type NameCardsProps = {
     id: string;
     domainStatus: DOMAIN_STATUS;
     endTimestamp: number;
+    handlePendingStatus?: () => void;
   }[];
   isLoading: boolean;
 };
@@ -20,7 +21,10 @@ const NameCards = ({ data, isLoading }: NameCardsProps): JSX.Element => {
   return (
     <div className={style.nameCards}>
       {data.map(
-        ({ domainName, domainImg, id, domainStatus, endTimestamp }, index) => {
+        (
+          { domainName, domainImg, id, domainStatus, endTimestamp, handlePendingStatus },
+          index
+        ) => {
           return (
             <NameCard
               name={domainName}
@@ -29,6 +33,7 @@ const NameCards = ({ data, isLoading }: NameCardsProps): JSX.Element => {
               id={id}
               domainStatus={domainStatus}
               endTimestamp={endTimestamp}
+              handlePendingStatus={handlePendingStatus}
             />
           );
         }

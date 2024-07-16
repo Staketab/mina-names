@@ -1,3 +1,4 @@
+"use client";
 import Link from "next/link";
 import { Button } from "../../../../atoms/button";
 import { Variant } from "../../../../atoms/button/types";
@@ -32,7 +33,9 @@ const ButtonTemplate = ({ data, config }: ButtonTemplateProps) => {
   };
 
   if (status === DOMAIN_STATUS.PENDING) {
-    return <Status status={status} className={style.status} />;
+    return (
+      <Status status={status} className={style.status} onClick={handleButton} />
+    );
   }
 
   if (url) {

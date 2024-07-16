@@ -7,7 +7,6 @@
   padding: 12px;
   border-radius: 10px;
   border: 1px solid transparent;
-  cursor: pointer;
   transition: all 0.3s;
   overflow: hidden;
 }
@@ -51,4 +50,9 @@
   color: #949499;
   font-size: 13px;
   margin: 2px 0 0 0;
+}
+
+.pendingStatus {
+  cursor: pointer;
+  margin-top: 8px;
 }
