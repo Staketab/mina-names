@@ -287,8 +287,10 @@ const Store = ({
   const openModal = (modal: Modals, data: unknown) =>
     dispatch({ type: "OPEN_MODAL", payload: { modal, data } });
 
-  const closeModal = (modal: Modals) =>
+  const closeModal = (modal: Modals) => {
     dispatch({ type: "CLOSE_MODAL", payload: modal });
+    dispatch({ type: "SET_ADDITION_DATA", payload: null });
+  }
 
   const addToBag = (domain: Domain) =>
     dispatch({ type: "ADD_TO_BAG", payload: domain });

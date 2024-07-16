@@ -32,6 +32,7 @@ const AllContent = ({
   const {
     state: {
       walletData: { accountId },
+      modals,
     },
     actions: { openModal },
   } = useStoreContext();
@@ -48,7 +49,7 @@ const AllContent = ({
                 zkTxId: domain.zkTxId,
                 domainStatus: domain.domainStatus,
                 startTimestamp: domain.startTimestamp,
-                transaction: domain.transaction
+                transaction: domain.transaction,
               });
             },
           }
@@ -91,12 +92,17 @@ const AllContent = ({
     }
   }, [domainStatus, params?.id, accountId, size, page]);
 
-  useEffect(() => {
+  useEffect(() => {    
     if (selectedDomainId) {
-      const domain = accountDomains?.content?.find(
-        (item) => item.id === selectedDomainId
-      );
-      domain?.zkTxId && setAdditionData(domain);
+      const isOpenModal = modals.some(({ modal }) => modal === Modals.pending);
+      if (isOpenModal) {
+        const domain = accountDomains?.content?.find(
+          (item) => item.id === selectedDomainId
+        );
+        domain?.zkTxId && setAdditionData(domain);
+      } else {
+        setSelectedDomainId(null)
+      }
     }
   }, [accountDomains]);
 
