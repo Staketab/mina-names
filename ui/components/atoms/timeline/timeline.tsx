@@ -99,7 +99,7 @@ const Timeline: FC<TimelineProps> = ({
       if (status === "pending") {
         return [
           ...acc,
-          { statusTime, status: "Received" },
+          { statusTime, status: "Reserved" },
           isLastItem && {
             pendingComponent: getPendingComponent("Creating block.."),
           },
