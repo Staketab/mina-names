@@ -139,7 +139,7 @@ const Timeline: FC<TimelineProps> = ({
             description: getDescription(status),
             hash: item?.hash,
           },
-          isLastItem && DOMAIN_STATUS.ACTIVE !== domainStatus
+          isLastItem && DOMAIN_STATUS.ACTIVE === domainStatus
             ? {
                 pendingComponent: getPendingComponent("Finalization.."),
               }
