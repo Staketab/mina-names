@@ -1,3 +1,4 @@
+import { chain } from "@/comman/constants";
 import { NetworkID } from "@/comman/types";
 import { ChainInfoArgs, ProviderError } from "@/hooks";
 import { initWalletData } from "@/store";
@@ -97,7 +98,7 @@ class WalletServiceClass {
   async getBalance(address: string, networkID: NetworkID): Promise<Balance> {
     try {
       return fetch(
-        `https://minascan.io/${Networks[networkID]}/api/api/core/accounts/${address}/balance`
+        `https://minascan.io/${chain}/api/api/core/accounts/${address}/balance`
       )
         .then((data) => {
           return data.json();
