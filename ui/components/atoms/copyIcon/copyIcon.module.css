@@ -11,10 +11,14 @@
 }
 
 .wrapper .copyIcon {
-  fill: #a9b5ff;
+  fill: #949499;
   position: absolute;
   left: calc(50% - 6px);
   margin: 0;
+}
+
+.wrapper .activeIcon {
+  fill: #a9b5ff;
 }
 
 .wrapper .pressed {

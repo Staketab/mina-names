@@ -1,0 +1,120 @@
+.alertMessage {
+	display: flex;
+	align-items: flex-start;
+	justify-content: flex-start;
+	padding: 10px 16px;
+	flex-direction: column;
+	border-radius: 7px;
+	line-height: 22px;
+	background-color: #EDEFF5;
+	position: relative;
+}
+
+.alertMessage .messageWrapper {
+	width: 100%;
+	display: flex;
+	align-items: center;
+}
+
+@media (max-width: 768px) {
+	.alertMessage .messageWrapper {
+		flex-direction: column;
+		align-items: start;
+	}
+}
+
+.alertMessage .messageWrapper .messageInfo {
+	max-width: 100%;
+	width: 100%;
+	display: flex;
+	align-items: flex-start;
+}
+
+.alertMessage .messageWrapper .messageInfo .icon {
+	min-width: 16px;
+	min-height: 16px;
+	margin-right: 6px;
+	margin-top: 3px;
+	display: flex;
+	align-items: center;
+}
+
+.alertMessage .messageWrapper .readmoreBtn {
+	margin-left: 6px;
+	display: flex;
+	align-items: center;
+	padding-right: 5px;
+	user-select: none;
+}
+
+.alertMessage .messageWrapper .readmoreBtn:hover {
+	cursor: pointer;
+}
+
+@media (max-width: 768px) {
+	.alertMessage .messageWrapper .readmoreBtn {
+		margin-left: 22px;
+	}
+}
+
+.alertMessage .messageWrapper .readmoreBtn .buttonTextUnderlined {
+	text-decoration: underline;
+	margin-left: 6px;
+	width: max-content;
+}
+
+.alertMessage .closeIcon {
+	fill: #7f7f7f;
+	width: 24px;
+	height: 24px;
+	cursor: pointer;
+	transition: all ease 100ms;
+	position: absolute;
+	top: 21px;
+	transform: translate(0, -50%);
+	right: 12px;
+}
+
+.alertMessage .closeIcon:hover {
+	fill: #464646;
+}
+
+.alertMessage .text {
+	word-break: break-word;
+}
+
+.alertMessage .breakAllText {
+	word-break: break-all;
+}
+
+.success {
+	background: #F3FAF7;
+	color: #68734B;
+}
+
+.warning {
+	background: #FAF6F3;
+	color: #73604B;
+}
+
+.error {
+	background: #FAF3F3;
+	color: #7C5B56;
+}
+
+.info {
+	background: #F9FAF3;
+	color: #73714B;
+}
+
+.normal {
+	background: #F7F8FA;
+	color: rgba(0, 0, 0, 0.8);
+}
+
+.scam {
+	background: rgba(250, 242, 242, 1);
+	color: rgba(124, 91, 86, 1);
+}
+
+

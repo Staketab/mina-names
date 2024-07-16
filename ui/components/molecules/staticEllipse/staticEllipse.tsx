@@ -6,6 +6,7 @@ import { View } from "@/comman/types";
 import { robotoMedium } from "@/app/fonts";
 import { useMedia } from "@/hooks";
 import Link from "next/link";
+import { CopyIcon } from "@/components/atoms/copyIcon";
 
 const StaticEllipse = ({
   text,
@@ -15,6 +16,7 @@ const StaticEllipse = ({
   children,
   style,
   link,
+  isCopy,
 }: {
   text: string;
   view: View;
@@ -23,6 +25,7 @@ const StaticEllipse = ({
   children?: ReactNode;
   style?: React.CSSProperties;
   link?: string;
+  isCopy?: Boolean;
 }): JSX.Element | null => {
   const [firstString, setFirstString] = useState<string | null>(null);
   const [secondString, setSecondString] = useState<string | null>(null);
@@ -93,7 +96,8 @@ const StaticEllipse = ({
           )}
         </Link>
 
-        <div className={styles.copyIcon}>{children}</div>
+        <div>{children}</div>
+        {isCopy && <CopyIcon value={text} isActive={isActive} />}
       </div>
     );
   }
@@ -121,6 +125,7 @@ const StaticEllipse = ({
         </>
       )}
       <div className={styles.copyIcon}>{children}</div>
+      {isCopy && <CopyIcon value={text} isActive={isActive} />}
     </div>
   );
 };

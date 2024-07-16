@@ -127,3 +127,70 @@ export const getTimeDifference = (timelocalstorage: number): string => {
     return;
   }
 };
+
+export const exactTimeFuture = (timestamp) => {
+	const now = new Date()
+	const duration = require('dayjs/plugin/duration')
+	dayjs.extend(duration)
+	const x = dayjs(now)
+	const y = dayjs(timestamp)
+//@ts-ignore
+	const differenceBetweenXandY = duration in dayjs && dayjs?.duration(y.diff(x))['$d']
+	const titleYear = differenceBetweenXandY['years'] > 1 ? 'years' : 'year'
+	const titleMonth = differenceBetweenXandY['months'] > 1 ? 'months' : 'month'
+	const totalNumberDays = differenceBetweenXandY['days']
+	const numberWeeks = Math.floor(totalNumberDays / 7)
+	const numberDays = totalNumberDays - numberWeeks * 7
+	const titleDay = numberDays > 1 ? 'days' : 'day'
+
+	const years =
+		differenceBetweenXandY['years'] > 0 &&
+		`${differenceBetweenXandY['years']} ${titleYear}}`
+	const months =
+		differenceBetweenXandY['months'] > 0 &&
+		`${differenceBetweenXandY['months']} ${titleMonth}`
+	const days = totalNumberDays > 0 && `${totalNumberDays} ${titleDay}`
+	const hours =
+		differenceBetweenXandY['hours'] > 0 && `${differenceBetweenXandY['hours']}h`
+	const minutes =
+		differenceBetweenXandY['minutes'] > 0 &&
+		`${differenceBetweenXandY['minutes']}m`
+
+	return {
+		years,
+		months,
+		days,
+		hours,
+		minutes,
+	}
+}
+
+export const timeAgo = (timestamp) => {
+	if (!Number(timestamp)) return '-'
+	const now = new Date()
+	const duration = require('dayjs/plugin/duration')
+	dayjs.extend(duration)
+	const x = dayjs(now)
+	const y = dayjs(timestamp)
+//@ts-ignore
+	const differenceBetweenXandY = dayjs.duration(x.diff(y))['$d']
+
+	const totalNumberDays = differenceBetweenXandY['days']
+	if (differenceBetweenXandY['years'] > 0) {
+		return `${differenceBetweenXandY['years']} y ago`
+	}
+	if (differenceBetweenXandY['months'] > 0) {
+		return `${differenceBetweenXandY['months']} mon ago`
+	}
+	if (totalNumberDays > 0) {
+		return `${totalNumberDays} d ago`
+	}
+	if (differenceBetweenXandY['hours'] > 0) {
+		return `${differenceBetweenXandY['hours']} h ago`
+	}
+	if (differenceBetweenXandY['minutes'] > 0) {
+		return `${differenceBetweenXandY['minutes']} m ago`
+	}
+
+	return ''
+}

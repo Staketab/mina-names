@@ -1,6 +1,6 @@
 import { AccountDomainDetailsResponse } from "@/app/actions/types";
-import { IUseWallet } from "@/hooks";
 import { WalletConnectPopUpCoreProps } from "../connectWalletButton/walletConnectPopUp/core";
+import { PendingModalProps } from "./pendingModal/pendingInfo";
 
 export enum Modals {
   transactionApplied = "transactionApplied",
@@ -10,6 +10,7 @@ export enum Modals {
   confirmation = "confirmation",
   upload = "upload",
   walletConnect = "walletConnect",
+  pending = 'pending'
 }
 
 export type ConfirmationModalProps = {
@@ -68,4 +69,5 @@ export type ModalData = {
   confirmation: ConfirmationModalProps;
   upload: UploadModalProps;
   walletConnect: WalletConnectPopUpCoreProps;
+  pending: PendingModalProps;
 };
