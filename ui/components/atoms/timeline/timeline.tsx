@@ -11,6 +11,7 @@ import Image from "next/image";
 import { StaticEllipse } from "@/components/molecules/staticEllipse";
 import { DOMAIN_STATUS } from "@/comman/types";
 import { chain } from "@/comman/constants";
+import Link from "next/link";
 
 const getPendingComponent = (message) => (
   <span style={{ display: "flex", alignItems: "center", gap: "12px" }}>
@@ -18,12 +19,12 @@ const getPendingComponent = (message) => (
   </span>
 );
 
-const getDescription = (value) => {
+const getDescription = (value, hash?: string) => {
   const text = value?.match(/[^\d]+/);
   const number = value?.match(/\d+/);
   return (
     <div className={styles.description}>
-      {text} <span>{number}</span>
+      {text} <Link href={`https://minascan.io/${chain}/tx/${hash}`} target="_blank">{number}</Link>
     </div>
   );
 };
@@ -111,7 +112,7 @@ const Timeline: FC<TimelineProps> = ({
             hash: item?.hash,
             statusTime,
             status: "Block Created",
-            description: getDescription(status),
+            description: getDescription(status, item?.hash),
           },
           isLastItem && {
             pendingComponent: getPendingComponent("Validating block.."),
@@ -124,7 +125,7 @@ const Timeline: FC<TimelineProps> = ({
           {
             statusTime,
             status: "Block Validated",
-            description: getDescription(status),
+            description: getDescription(status, item?.hash),
             hash: item?.hash,
           },
           isLastItem && {
@@ -138,7 +139,7 @@ const Timeline: FC<TimelineProps> = ({
           {
             statusTime,
             status: "Block Proved",
-            description: getDescription(status),
+            description: getDescription(status, item?.hash),
             hash: item?.hash,
           },
           isLastItem && DOMAIN_STATUS.ACTIVE !== domainStatus
