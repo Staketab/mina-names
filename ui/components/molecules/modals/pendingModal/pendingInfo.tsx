@@ -12,9 +12,10 @@ export type PendingModalProps = {
   zkTxId: string | null;
   domainStatus: DOMAIN_STATUS;
   startTimestamp: number | null;
+  transaction: string;
 };
 const PendingModal: FC<PendingModalProps> = (props) => {
-  const { isSendToCloudWorker, zkTxId, domainStatus } = props;
+  const { isSendToCloudWorker, zkTxId, domainStatus, transaction } = props;
   const {
     state: { additionData },
   } = useStoreContext();
@@ -26,7 +27,7 @@ const PendingModal: FC<PendingModalProps> = (props) => {
     ? domainStatus
     : additionData?.domainStatus;
 
-  const transaction = additionData?.transaction;
+  const transactionPay = transaction || additionData?.transaction;
 
   useEffect(() => {
     if (availableZkTxId) {
@@ -45,7 +46,7 @@ const PendingModal: FC<PendingModalProps> = (props) => {
         zkTxId={availableZkTxId}
         isSendToCloudWorker={isSendToCloudWorker || additionData?.zkTxId}
         domainStatus={availableDomainStatus}
-        transaction={transaction}
+        transaction={transactionPay}
       />
     </div>
   );

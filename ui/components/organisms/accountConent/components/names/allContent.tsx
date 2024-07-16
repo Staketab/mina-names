@@ -9,7 +9,6 @@ import { useStoreContext } from "@/store";
 import { addMinaText } from "@/helpers/name.helper";
 import { Modals } from "@/components/molecules/modals/modals.types";
 
-
 const initPage = 0;
 const initSize = 50;
 
@@ -49,6 +48,7 @@ const AllContent = ({
                 zkTxId: domain.zkTxId,
                 domainStatus: domain.domainStatus,
                 startTimestamp: domain.startTimestamp,
+                transaction: domain.transaction
               });
             },
           }
