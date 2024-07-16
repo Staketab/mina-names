@@ -32,9 +32,21 @@ const NameCard = ({
   handlePendingStatus,
 }: NameCardProps): JSX.Element => {
   const base64Data = encode("../../../assets/blur.jpg");
+  const isPendingStatus = domainStatus === DOMAIN_STATUS.PENDING;
+
+  const handleCard = () => {
+    if (isPendingStatus) {
+      handlePendingStatus?.();
+    }
+  };
 
   return (
-    <div className={style.wrapper}>
+    <div
+      className={classNames(style.wrapper, {
+        [style.pendingCard]: isPendingStatus,
+      })}
+      onClick={handleCard}
+    >
       <div className={style.imgWrapper}>
         <Image
           src={img || defaultImg}
@@ -53,7 +65,7 @@ const NameCard = ({
           Expiration: {dayMonthYearFormat(Number(endTimestamp))}
         </span>
       )}
-      {domainStatus === DOMAIN_STATUS.PENDING ? (
+      {isPendingStatus ? (
         <Status
           status={domainStatus}
           onClick={handlePendingStatus}
