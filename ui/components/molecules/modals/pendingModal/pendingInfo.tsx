@@ -23,9 +23,7 @@ const PendingModal: FC<PendingModalProps> = (props) => {
   const { startNats, statuses, loading } = useZkcloudworkerWS();
 
   const availableZkTxId = zkTxId || additionData?.zkTxId;
-  const availableDomainStatus = zkTxId
-    ? domainStatus
-    : additionData?.domainStatus;
+  const availableDomainStatus = additionData?.domainStatus || domainStatus;    
 
   const transactionPay = transaction || additionData?.transaction;
 
