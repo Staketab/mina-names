@@ -1,5 +1,6 @@
 import Image, { StaticImageData } from "next/image";
 import defaultIcon from "../../../../assets/default.svg";
+import minascan from '../../../../assets/minascan.svg'
 import ipfsIcon from "../../../../assets/ipfs.png";
 import { Button } from "@/components/atoms/button";
 import { Variant } from "@/components/atoms/button/types";
@@ -67,12 +68,12 @@ const ModalInfo = ({ data }: ModalInfoProps): JSX.Element => {
             target="_blank"
             className={style.bottomContentRightSide}
           >
-            <Image src={icon || defaultIcon} alt="" width={24} height={20} />
+            <Image src={icon || minascan} alt="" width={24} height={20} />
           </a>
         )}
         {action && (
           <span onClick={action} className={style.bottomContentRightSide}>
-            <Image src={defaultIcon} alt="" width={24} height={20} />
+            <Image src={minascan} alt="" width={24} height={20} />
           </span>
         )}
       </div>

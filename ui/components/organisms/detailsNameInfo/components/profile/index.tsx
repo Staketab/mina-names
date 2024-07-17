@@ -6,7 +6,7 @@ import { dayMonthYearTimeFormat } from "@/helpers/timeHelper";
 import { StaticEllipse } from "@/components/molecules/staticEllipse";
 import { CopyIcon } from "@/components/atoms/copyIcon";
 import React, { ReactNode } from "react";
-import defaultIcon from "../../../../../assets/default.svg";
+import minascan from "../../../../../assets/minascan.svg";
 import { Routs } from "@/comman/types";
 import Image from "next/image";
 import Link from "next/link";
@@ -68,7 +68,7 @@ const ProfileContent = ({
         value: accountDomainDetails.ownerAddress,
         link: `${Routs.NAMES}/${accountDomainDetails.ownerAddress}`,
         isEllipse: true,
-        icon: defaultIcon,
+        icon: minascan,
       })}
       {itemRender({
         title: "IPFS",
