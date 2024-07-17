@@ -3,13 +3,14 @@ import classNames from "classnames";
 import { manropeSemiBold, wixMadeforDisplayExtraBold } from "@/app/fonts";
 import { Input } from "@/components/atoms/input";
 import { ResultItem } from "@/components/atoms/resultItem";
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { InputVariant } from "@/components/atoms/input/types";
 
 import style from "./index.module.css";
 import { DOMAIN_STATUS } from "@/comman/types";
 import { debounceAsync } from "@/helpers/debounce.helper";
 import { checkReservedName } from "@/app/actions/actions";
+import AlertMessage from "@/components/atoms/alertMessage";
 
 const HomeSection = () => {
   const [statusName, setStatusName] = useState<{
@@ -18,6 +19,7 @@ const HomeSection = () => {
     status: DOMAIN_STATUS;
   }>(null);
   const [value, setValue] = useState("");
+  const [isCorrectInput, setIsCorrectInput] = useState<boolean>(false);
 
   const handleInput = async (asyncValue: string): Promise<any> => {
     const currentValue = typeof asyncValue === "string" ? asyncValue : value;
@@ -37,12 +39,17 @@ const HomeSection = () => {
   };
 
   const handleChange = async (value: string) => {
-    const cleanInput = value.toLocaleLowerCase().trim().replace(/[^a-z0-9- ]/g, "");
-    setValue(cleanInput);
+    const regex = /^[a-z0-9-]*$/;
+    const isValid =
+      regex.test(value) &&
+      value === value.trim() &&
+      value === value.toLocaleLowerCase();
+    setIsCorrectInput(isValid);
+    setValue(value);
 
     try {
-      if (!cleanInput) return;
-      const result = await debouncedServerFetch(cleanInput);
+      if (!value || !isValid) return;
+      const result = await debouncedServerFetch(value);
 
       if (result === "skipped") {
         return;
@@ -51,7 +58,7 @@ const HomeSection = () => {
       if (result) {
         setStatusName({
           id: result.id,
-          name: `${cleanInput}`,
+          name: `${value}`,
           status: result.status,
         });
       }
@@ -79,11 +86,21 @@ const HomeSection = () => {
           maxLength={25}
           enableClear
         />
-        {statusName?.name && value && (
+        {isCorrectInput && statusName?.name && value && (
           <ResultItem
             statusName={statusName}
             className={style.resultItem}
             clearInput={clearInput}
+          />
+        )}
+        {!isCorrectInput && value && (
+          <AlertMessage
+            noIcon
+            type="error"
+            text={`Invalid characters in the name. Allowed characters are a-z, 0-9, and
+            - as long as it doesn’t appear at the beginning or end of the
+            string.`}
+            className={style.alertMessage}
           />
         )}
       </div>

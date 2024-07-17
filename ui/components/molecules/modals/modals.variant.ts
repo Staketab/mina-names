@@ -7,6 +7,7 @@ import {
   UploadModal,
   TransactionAppliedModal,
   TransactionFailedModal,
+  PendingModal
 } from ".";
 import WalletConnectPopUpCore from "../connectWalletButton/walletConnectPopUp/core";
 
@@ -18,4 +19,5 @@ export const modalVariants: Record<string, FC<any>> = {
   [Modals.confirmation]: ConfirmationModal,
   [Modals.upload]: UploadModal,
   [Modals.walletConnect]: WalletConnectPopUpCore,
+  [Modals.pending]: PendingModal,
 };

@@ -4,3 +4,4 @@ export * from "./modalPurchase";
 export * from "./transactionAppliedModal";
 export * from "./transactionFailedModal";
 export * from "./uploadModal";
+export * from "./pendingModal"

@@ -1,0 +1,125 @@
+.wrapper {
+  padding: 24px;
+  background-color: #f8fafd;
+  position: relative;
+  height: 100%;
+  width: 100%;
+}
+
+.wrapper > div:last-child {
+  margin: 0;
+}
+
+@media (min-width: 577px) {
+  .wrapper {
+    border-radius: 9px;
+  }
+}
+
+.dots {
+  position: absolute;
+  top: 85px;
+  left: 32px;
+  height: calc(100% - 130px);
+  border: 1px dashed #d7e0e5;
+  z-index: 0;
+}
+
+.title {
+  font-size: 18px;
+  font-weight: 700;
+  color: rgba(0, 0, 0, 0.8);
+  margin-bottom: 26px;
+}
+
+.item {
+  position: relative;
+  margin-bottom: 36px;
+  z-index: 1;
+}
+
+.itemHeader {
+  display: flex;
+  align-items: flex-start;
+}
+
+.time {
+  flex-grow: 1;
+  font-size: 14px;
+  font-weight: 500;
+  color: rgba(0, 0, 0, 0.8);
+}
+
+.iconStatus {
+  margin-right: 12px;
+}
+
+.textStatus {
+  margin-left: 5px;
+  padding: 1px 6px;
+  border-radius: 30px;
+  white-space: nowrap;
+  font-size: 12px;
+  font-weight: 500;
+}
+
+.active {
+  color: #7dd3a1;
+  background-color: rgba(125, 211, 161, 0.2);
+}
+
+.offchainIcon svg {
+  fill: #7dd3a1;
+}
+
+.inactiveOffchainIcon svg {
+  fill: #d7e0e5;
+}
+
+.remainingTime {
+  padding: 30px 0 0 30px;
+}
+
+.chartWrapper {
+  margin-bottom: 24px;
+}
+
+.chartWrapper p {
+  font-weight: 600;
+  font-size: 14px;
+  color: rgba(0, 0, 0, 0.8);
+  margin-bottom: 24px;
+}
+
+.votingStart {
+  margin-bottom: 24px;
+}
+
+.defaultStatusIcon {
+  display: block;
+  width: 18px;
+  height: 18px;
+  background-color: #e7f0f6;
+  border-radius: 50%;
+  margin-top: 36px;
+}
+
+.timeItem {
+  display: flex;
+  flex-direction: column;
+  margin-left: 12px;
+  flex-grow: 1;
+  color: rgba(0, 0, 0, 0.8);
+  margin-right: 12px;
+}
+
+.infoTimeItem {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+}
+
+.description a {
+  color: #7191fc;
+}
+

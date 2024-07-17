@@ -82,6 +82,11 @@ export type SET_WALLET_DATA = {
   payload?: WalletData;
 };
 
+export type SET_ADDITION_DATA = {
+  type: "SET_ADDITION_DATA";
+  payload?: any;
+};
+
 type StoreActions =
   | OPEN_MODAL
   | CLOSE_MODAL
@@ -90,7 +95,8 @@ type StoreActions =
   | ADD_PERIOD
   | INIT_STOR_FROM_LOCAL_STORAGE
   | CLEAR_BAG
-  | SET_WALLET_DATA;
+  | SET_WALLET_DATA
+  | SET_ADDITION_DATA;
 
 type initStore = (value: IState) => void;
 type OpenModal = <T extends Modals>(modal: T, data?: ModalData[T]) => void;
@@ -100,6 +106,7 @@ type addPeriod = (payload: { id: string; value: number; key: string }) => void;
 type clearBag = () => void;
 type setWalletData = (value?: WalletData) => void;
 type deleteFromBag = (payload: { id: string; key: string }) => void;
+type setAdditionData = (payload: any) => void;
 
 type IStore = {
   state: IState;
@@ -112,6 +119,7 @@ type IStore = {
     initStore: initStore;
     clearBag: clearBag;
     setWalletData: setWalletData;
+    setAdditionData: setAdditionData;
   };
 };
 
@@ -122,6 +130,7 @@ export interface IState {
   }[];
   walletData?: WalletData;
   bag?: Bag;
+  additionData?: any;
 }
 
 export const initWalletData: WalletData = {
@@ -239,6 +248,11 @@ export const reducer = (state: IState, action: StoreActions): IState => {
           ...action.payload,
         },
       };
+    case "SET_ADDITION_DATA":
+      return {
+        ...state,
+        additionData: action.payload,
+      };
 
     default:
       return state;
@@ -259,6 +273,7 @@ export const StoreContext: React.Context<IStore> = React.createContext({
     clearBag: noop,
     setWalletData: noop,
     newAddToBag: noop,
+    setAdditionData: noop,
   },
 });
 
@@ -272,8 +287,10 @@ const Store = ({
   const openModal = (modal: Modals, data: unknown) =>
     dispatch({ type: "OPEN_MODAL", payload: { modal, data } });
 
-  const closeModal = (modal: Modals) =>
+  const closeModal = (modal: Modals) => {
     dispatch({ type: "CLOSE_MODAL", payload: modal });
+    dispatch({ type: "SET_ADDITION_DATA", payload: null });
+  }
 
   const addToBag = (domain: Domain) =>
     dispatch({ type: "ADD_TO_BAG", payload: domain });
@@ -316,6 +333,9 @@ const Store = ({
     }
   };
 
+  const setAdditionData = (payload) =>
+    dispatch({ type: "SET_ADDITION_DATA", payload: payload });
+
   useEffect(() => {
     initFunction();
   }, []);
@@ -333,6 +353,7 @@ const Store = ({
           initStore,
           clearBag,
           setWalletData,
+          setAdditionData,
         },
       }}
     >

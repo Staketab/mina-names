@@ -7,6 +7,7 @@ import { useParams } from "next/navigation";
 import { getAccountDomains } from "@/app/actions/actions";
 import { useStoreContext } from "@/store";
 import { addMinaText } from "@/helpers/name.helper";
+import { Modals } from "@/components/molecules/modals/modals.types";
 
 const initPage = 0;
 const initSize = 50;
@@ -22,46 +23,88 @@ const AllContent = ({
   const [size, setSize] = useState<number>(initSize);
   const [page, setPage] = useState<number>(initPage);
   const [accountDomains, setAccountDomains] = useState<DataTable>(null);
-
+  const [selectedDomainId, setSelectedDomainId] = useState(null);
   const params = useParams();
+  const {
+    actions: { setAdditionData },
+  } = useStoreContext();
 
   const {
     state: {
       walletData: { accountId },
+      modals,
     },
+    actions: { openModal },
   } = useStoreContext();
   const mapDomainImgByIPFS = (domain) => {
-    const imgHash =
-      domain?.ipfsImg &&
-      JSON.parse(domain?.ipfsImg)?.linkedObject?.storage?.slice(2);
     return {
       ...domain,
       domainName: addMinaText(domain?.domainName),
+      ...(domain?.domainStatus === DOMAIN_STATUS.PENDING
+        ? {
+            handlePendingStatus: () => {
+              setSelectedDomainId(domain.id);
+              openModal(Modals.pending, {
+                isSendToCloudWorker: domain.isSendToCloudWorker,
+                zkTxId: domain.zkTxId,
+                domainStatus: domain.domainStatus,
+                startTimestamp: domain.startTimestamp,
+                transaction: domain.transaction,
+              });
+            },
+          }
+        : []),
       domainImg:
-        (imgHash && `https://gateway.pinata.cloud/ipfs/${imgHash}`) || null,
+        (domain?.domainImg &&
+          domain?.domainImg +
+            "?pinataGatewayToken=gFuDmY7m1Pa5XzZ3bL1TjPPvO4Ojz6tL-VGIdweN1fUa5oSFZXce3y9mL8y1nSSU") ||
+        null,
     };
+  };
+
+  const getData = async (id: string): Promise<void> => {
+    try {
+      const response = await getAccountDomains({
+        accountAddress: id,
+        page: page,
+        size: size,
+        sortBy: SORT_BY.RESERVATION_TIMESTAMP,
+        orderBy: ORDER_BY.DESC,
+        domainStatus: domainStatus,
+      });
+      const accountDomains = response?.content.map(mapDomainImgByIPFS);
+      setAccountDomains({ ...response, content: accountDomains });
+    } catch (error) {
+    } finally {
+      setLoading(false);
+    }
   };
   useEffect(() => {
     if (params?.id || accountId) {
-      (async () => {
-        try {
-          setLoading(true);
-          const response = await getAccountDomains({
-            accountAddress: (params?.id as string) || accountId,
-            page: page,
-            size: size,
-            sortBy: SORT_BY.RESERVATION_TIMESTAMP,
-            orderBy: ORDER_BY.DESC,
-            domainStatus: domainStatus,
-          });
-          const accountDomains = response?.content.map(mapDomainImgByIPFS);
-          setAccountDomains({ ...response, content: accountDomains });
-        } catch (error) {}
-        setLoading(false);
-      })();
-      return;
+      setLoading(true);
+      const interval = setInterval(() => {
+        getData((params?.id as string) || accountId);
+      }, 5000);
+
+      return () => {
+        clearInterval(interval);
+      };
     }
   }, [domainStatus, params?.id, accountId, size, page]);
+
+  useEffect(() => {    
+    if (selectedDomainId) {
+      const isOpenModal = modals.some(({ modal }) => modal === Modals.pending);
+      if (isOpenModal) {
+        const domain = accountDomains?.content?.find(
+          (item) => item.id === selectedDomainId
+        );
+        domain?.zkTxId && setAdditionData(domain);
+      } else {
+        setSelectedDomainId(null)
+      }
+    }
+  }, [accountDomains]);
 
   const onSize = (size) => {
     setPage(initPage);

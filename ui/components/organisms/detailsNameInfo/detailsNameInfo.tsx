@@ -1,7 +1,7 @@
 "use client";
 import { AccountDomainDetailsResponse } from "@/app/actions/types";
 import { Switcher } from "@/components/atoms/switcher";
-import icon from "../../../assets/domainImg.svg";
+import icon from "../../../assets/default.svg";
 import defaultNameApplied from "../../../assets/defaultNameApplied.svg";
 
 import editIcon from "../../../assets/edit.svg";

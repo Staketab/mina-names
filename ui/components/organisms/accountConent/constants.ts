@@ -17,8 +17,8 @@ export const ScoringConfig: TableConfig[] = [
       lg: 12,
     },
     style: {
-      width: '300px'
-    }
+      width: "300px",
+    },
   },
   {
     colName: "button",
@@ -29,6 +29,7 @@ export const ScoringConfig: TableConfig[] = [
       url: "id",
       parentPage: "name",
       status: "domainStatus",
+      onClick: "handlePendingStatus",
     },
   },
   {

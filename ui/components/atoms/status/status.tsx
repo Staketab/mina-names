@@ -9,12 +9,16 @@ import Image from "next/image";
 const Status = ({
   status,
   className,
+  onClick,
 }: {
   status: DOMAIN_STATUS;
   className?: string;
+  onClick?: () => void;
 }): JSX.Element => {
+
   return (
     <div
+      onClick={onClick}
       className={classNames(
         style.status,
         manropeSemiBold.className,
