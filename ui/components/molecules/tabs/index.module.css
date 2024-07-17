@@ -25,3 +25,18 @@
   padding-left: 0;
   padding-right: 0;
 }
+
+.activeBlackButton {
+  border: 1px solid transparent;
+}
+
+.activeBlackButton:hover {
+  background-color: #1a1a1b;
+  color: var(--col--light);
+}
+
+.inActiveBlackButton:hover {
+  border: 1px solid #1a1a1b;
+  background-color: var(--col--gray3);
+  color: #1a1a1b;
+}

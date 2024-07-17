@@ -49,6 +49,9 @@ const Tabs = ({
                       onTabChange?.(item?.value);
                       setValue(item?.value);
                     }}
+                    className={classNames(style.activeBlackButton,{
+                      [style.inActiveBlackButton]: value !== item?.value,
+                    })}
                   >
                     {item.title}
                   </Button>
