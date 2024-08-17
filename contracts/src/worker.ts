@@ -396,6 +396,7 @@ export class DomainNameServiceWorker extends zkCloudWorker {
   }): Promise<void> {
     try {
       const { txs, status, hash } = params;
+      const statusTime = Date.now();
       console.time("published txs status");
       if (NATS_SERVER === undefined) {
         console.error("NATS_SERVER is undefined");
@@ -409,7 +410,7 @@ export class DomainNameServiceWorker extends zkCloudWorker {
       const js = nc.jetstream({ timeout: 5000 });
       const kv = await js.views.kv("profiles", { timeout: 5000 });
       for (const tx of txs) {
-        const data = { ...tx, status, hash };
+        const data = { ...tx, status, hash, statusTime };
         console.log("Publishing tx status", tx.txId, data);
         await kv.put(`zkcloudworker.rolluptx.${tx.txId}`, JSON.stringify(data));
       }
@@ -687,6 +688,12 @@ export class DomainNameServiceWorker extends zkCloudWorker {
           force: true,
           timeout: 5 * 1000,
         });
+        if (!Mina.hasAccount(blockAddress, tokenId)) {
+          console.error(
+            `getBlocksInfo: Block ${blockAddress.toBase58()} not found`
+          );
+          return `error: Block ${blockAddress.toBase58()} not found`;
+        }
         blockNumber = Number(block.blockNumber.get().toBigInt());
         count++;
       }
@@ -2415,7 +2422,7 @@ export class DomainNameServiceWorker extends zkCloudWorker {
           return result;
         }
       }
-      await sleep(1000 * 5);
+      await sleep(1000 * 6);
     }
     if (force === true)
       throw new Error(
